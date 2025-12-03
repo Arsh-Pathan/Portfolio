@@ -1,14 +1,57 @@
 ---
+import "../styles/global.css";
+import SpaceBackground from "../components/SpaceBackground.astro";
 import Hero from "../components/Hero.astro";
 import Skills from "../components/Skills.astro";
+import Projects from "../components/Projects.astro";
+import Education from "../components/Education.astro";
+import Certificates from "../components/Certificates.astro";
+import Interests from "../components/Interests.astro";
 import Contact from "../components/Contact.astro";
-import Project from "../components/Project.astro";
-import Layout from "../layouts/Layout.astro";
+import Footer from "../components/Footer.astro";
+
+const title = "Arsh Pathan | Full Stack Developer & AI Enthusiast";
+const description =
+	"Portfolio of Arsh Pathan - Full Stack Developer, AI Enthusiast, and Creative Coder specializing in modern web technologies and 3D experiences.";
 ---
 
-<Layout>
-	<Hero />
-	<Skills />
-	<Project />
-	<Contact />
-</Layout>
+<html lang="en" class="scroll-smooth">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://arshpathan.dev/" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content="/og-image.jpg" />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content="https://arshpathan.dev/" />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content="/og-image.jpg" />
+	</head>
+	<body class="bg-cream-light text-text-main antialiased">
+		<!-- Background Animation -->
+		<SpaceBackground />
+
+		<main>
+			<Hero />
+			<Skills />
+			<Projects />
+			<Education />
+			<Certificates />
+			<Interests />
+			<Contact />
+		</main>
+
+		<Footer />
+	</body>
+</html>

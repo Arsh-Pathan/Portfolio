@@ -1,7 +1,559 @@
 ---
-
+const skills = [
+    {
+        name: "JavaScript",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+    },
+    {
+        name: "TypeScript",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
+    },
+    {
+        name: "Python",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+    },
+    {
+        name: "Java",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
+    },
+    {
+        name: "Kotlin",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg",
+    },
+    {
+        name: "C",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg",
+    },
+    {
+        name: "React",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+    },
+    {
+        name: "Node.js",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
+    },
+    {
+        name: "Astro",
+        logo: "https://astro.build/assets/press/astro-icon-light.svg",
+    },
+    {
+        name: "Three.js",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/threejs/threejs-original.svg",
+    },
+    {
+        name: "Express",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg",
+    },
+    {
+        name: "PostgreSQL",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
+    },
+    {
+        name: "MySQL",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
+    },
+    {
+        name: "MongoDB",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
+    },
+    {
+        name: "Git",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
+    },
+    {
+        name: "GitHub",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg",
+    },
+    {
+        name: "VS Code",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg",
+    },
+    {
+        name: "Docker",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
+    },
+    {
+        name: "Firebase",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg",
+    },
+    {
+        name: "GraphQL",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain.svg",
+    },
+];
 ---
 
-<div id="container">
-    <h1>Skills</h1>
-</div>
+<section id="skills" class="section skills-section relative">
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="skills-header text-center mb-12">
+            <h2 class="section-title text-4xl md:text-5xl font-bold mb-4">
+                Technical Skills
+            </h2>
+            <p class="skills-subtitle text-lg text-text-muted">
+                Interactive 3D Skill Sphere & Proficiency Breakdown
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <!-- Left Column: 3D Sphere -->
+            <div class="sphere-wrapper relative order-2 lg:order-1">
+                <div class="sphere-container">
+                    <canvas id="skillsSphere"></canvas>
+                    <div class="interaction-hint">Drag to rotate</div>
+                </div>
+            </div>
+
+            <!-- Right Column: Skills List -->
+            <div class="skills-content order-1 lg:order-2">
+                <div class="skills-categories space-y-8">
+                    <!-- Languages -->
+                    <div class="skill-category">
+                        <h3
+                            class="text-2xl font-semibold mb-4 text-accent-gold"
+                        >
+                            Languages
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            {
+                                [
+                                    "JavaScript",
+                                    "TypeScript",
+                                    "Python",
+                                    "Java",
+                                    "Kotlin",
+                                    "C",
+                                ].map((skill) => (
+                                    <span class="px-4 py-2 bg-white/50 backdrop-blur-sm rounded-full text-text-main font-medium border border-white/60 hover:scale-105 transition-transform cursor-default shadow-sm">
+                                        {skill}
+                                    </span>
+                                ))
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Frontend -->
+                    <div class="skill-category">
+                        <h3
+                            class="text-2xl font-semibold mb-4 text-accent-sage"
+                        >
+                            Frontend & 3D
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            {
+                                [
+                                    "React",
+                                    "Astro",
+                                    "Three.js",
+                                    "Tailwind CSS",
+                                ].map((skill) => (
+                                    <span class="px-4 py-2 bg-white/50 backdrop-blur-sm rounded-full text-text-main font-medium border border-white/60 hover:scale-105 transition-transform cursor-default shadow-sm">
+                                        {skill}
+                                    </span>
+                                ))
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Backend & Database -->
+                    <div class="skill-category">
+                        <h3
+                            class="text-2xl font-semibold mb-4 text-accent-blue"
+                        >
+                            Backend & Database
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            {
+                                [
+                                    "Node.js",
+                                    "Express",
+                                    "PostgreSQL",
+                                    "MySQL",
+                                    "MongoDB",
+                                    "Firebase",
+                                    "GraphQL",
+                                ].map((skill) => (
+                                    <span class="px-4 py-2 bg-white/50 backdrop-blur-sm rounded-full text-text-main font-medium border border-white/60 hover:scale-105 transition-transform cursor-default shadow-sm">
+                                        {skill}
+                                    </span>
+                                ))
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Tools -->
+                    <div class="skill-category">
+                        <h3 class="text-2xl font-semibold mb-4 text-text-muted">
+                            Tools & DevOps
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            {
+                                ["Git", "GitHub", "VS Code", "Docker"].map(
+                                    (skill) => (
+                                        <span class="px-4 py-2 bg-white/50 backdrop-blur-sm rounded-full text-text-main font-medium border border-white/60 hover:scale-105 transition-transform cursor-default shadow-sm">
+                                            {skill}
+                                        </span>
+                                    ),
+                                )
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Curved Divider Bottom -->
+    <div class="custom-shape-divider-bottom">
+        <svg
+            data-name="Layer 1"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1200 120"
+            preserveAspectRatio="none"
+        >
+            <path
+                d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                class="shape-fill"></path>
+        </svg>
+    </div>
+</section>
+
+<script>
+    import * as THREE from "three";
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        const canvas = document.getElementById(
+            "skillsSphere",
+        ) as HTMLCanvasElement;
+        if (!canvas) return;
+
+        const skills = [
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
+            "https://astro.build/assets/press/astro-icon-light.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/threejs/threejs-original.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg",
+            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain.svg",
+        ];
+
+        // Scene setup
+        const scene = new THREE.Scene();
+        // Adjust camera aspect ratio initially
+        const camera = new THREE.PerspectiveCamera(
+            50,
+            canvas.clientWidth / canvas.clientHeight,
+            0.1,
+            1000,
+        );
+        camera.position.z = 12;
+
+        const renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            alpha: true,
+            antialias: true,
+        });
+
+        // Use clientWidth/Height for correct sizing in grid
+        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        const radius = 3.5;
+        const iconSize = 0.8;
+        const skillMeshes: THREE.Mesh[] = [];
+
+        const textureLoader = new THREE.TextureLoader();
+        const phi = Math.PI * (3 - Math.sqrt(5));
+
+        for (let i = 0; i < skills.length; i++) {
+            const y = 1 - (i / (skills.length - 1)) * 2;
+            const radiusAtY = Math.sqrt(1 - y * y);
+            const theta = phi * i;
+
+            const x = Math.cos(theta) * radiusAtY;
+            const z = Math.sin(theta) * radiusAtY;
+
+            const geometry = new THREE.PlaneGeometry(iconSize, iconSize);
+            const material = new THREE.MeshBasicMaterial({
+                transparent: true,
+                side: THREE.DoubleSide,
+                depthTest: false,
+            });
+
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(x * radius, y * radius, z * radius);
+            mesh.lookAt(0, 0, 0);
+
+            textureLoader.load(skills[i], (texture) => {
+                material.map = texture;
+                material.needsUpdate = true;
+            });
+
+            scene.add(mesh);
+            skillMeshes.push(mesh);
+        }
+
+        let targetRotationX = 0;
+        let targetRotationY = 0;
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+
+        canvas.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+
+        canvas.addEventListener("mouseup", () => {
+            isDragging = false;
+        });
+
+        canvas.addEventListener("mousemove", (event) => {
+            if (isDragging) {
+                const deltaMove = {
+                    x: event.clientX - previousMousePosition.x,
+                    y: event.clientY - previousMousePosition.y,
+                };
+
+                targetRotationY += deltaMove.x * 0.005;
+                targetRotationX += deltaMove.y * 0.005;
+
+                previousMousePosition = { x: event.clientX, y: event.clientY };
+            }
+        });
+
+        canvas.addEventListener("touchstart", (e) => {
+            isDragging = true;
+            previousMousePosition = {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY,
+            };
+        });
+
+        canvas.addEventListener("touchend", () => {
+            isDragging = false;
+        });
+
+        canvas.addEventListener("touchmove", (event) => {
+            if (isDragging && event.touches.length > 0) {
+                const touch = event.touches[0];
+                const deltaMove = {
+                    x: touch.clientX - previousMousePosition.x,
+                    y: touch.clientY - previousMousePosition.y,
+                };
+
+                targetRotationY += deltaMove.x * 0.005;
+                targetRotationX += deltaMove.y * 0.005;
+
+                previousMousePosition = { x: touch.clientX, y: touch.clientY };
+            }
+        });
+
+        let autoRotation = 0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (!isDragging) {
+                autoRotation += 0.001;
+                scene.rotation.y += 0.002;
+            } else {
+                // Smooth rotation towards target
+                scene.rotation.y += (targetRotationY - scene.rotation.y) * 0.1;
+                scene.rotation.x += (targetRotationX - scene.rotation.x) * 0.1;
+            }
+
+            // Update icon opacity and make them face camera
+            skillMeshes.forEach((mesh) => {
+                // Make icon always face the camera (billboard effect)
+                mesh.lookAt(camera.position);
+
+                const worldPos = new THREE.Vector3();
+                mesh.getWorldPosition(worldPos);
+
+                // Calculate distance from camera (z-depth)
+                const distance = worldPos.z;
+
+                // Icons behind get more transparent
+                // Map z range roughly from -radius to +radius
+                // Front is +radius (closer to camera at z=12), Back is -radius
+                const normalizedDepth = (distance + radius) / (2 * radius); // 0 (back) to 1 (front)
+
+                const opacity = Math.max(
+                    0.15,
+                    Math.min(1, normalizedDepth + 0.2),
+                );
+                (mesh.material as THREE.MeshBasicMaterial).opacity = opacity;
+
+                // Scale effect based on depth
+                const scale = Math.max(
+                    0.8,
+                    Math.min(1.2, normalizedDepth + 0.5),
+                );
+                mesh.scale.set(scale, scale, scale);
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle resize
+        function handleResize() {
+            // Use parent container dimensions or canvas client dimensions
+            const width = canvas.clientWidth;
+            const height = canvas.clientHeight;
+
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(width, height, false); // false to prevent setting style.width/height which might conflict with CSS
+        }
+
+        window.addEventListener("resize", handleResize);
+        // Call once to ensure correct initial size
+        handleResize();
+
+        gsap.from(".skills-header", {
+            scrollTrigger: {
+                trigger: ".skills-section",
+                start: "top 80%",
+            },
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out",
+        });
+
+        gsap.from(".sphere-wrapper", {
+            scrollTrigger: {
+                trigger: ".skills-section",
+                start: "top 70%",
+            },
+            x: -50,
+            opacity: 0,
+            duration: 1.2,
+            delay: 0.3,
+            ease: "power3.out",
+        });
+
+        gsap.from(".skills-content", {
+            scrollTrigger: {
+                trigger: ".skills-section",
+                start: "top 70%",
+            },
+            x: 50,
+            opacity: 0,
+            duration: 1.2,
+            delay: 0.5,
+            ease: "power3.out",
+        });
+
+        let hasInteracted = false;
+        canvas.addEventListener("mousedown", () => {
+            if (!hasInteracted) {
+                hasInteracted = true;
+                gsap.to(".interaction-hint", {
+                    opacity: 0,
+                    duration: 0.5,
+                });
+            }
+        });
+    });
+</script>
+
+<style>
+    .skills-section {
+        padding: 6rem 0;
+        overflow: hidden;
+        background: transparent; /* Or a specific background color if needed */
+    }
+
+    .sphere-container {
+        position: relative;
+        width: 100%;
+        height: 500px; /* Fixed height for the sphere container */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #skillsSphere {
+        width: 100%;
+        height: 100%;
+        cursor: grab;
+        outline: none;
+    }
+
+    #skillsSphere:active {
+        cursor: grabbing;
+    }
+
+    .interaction-hint {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(4px);
+        color: var(--text-main);
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        pointer-events: none;
+    }
+
+    /* Custom Shape Divider */
+    .custom-shape-divider-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        overflow: hidden;
+        line-height: 0;
+        transform: rotate(180deg);
+    }
+
+    .custom-shape-divider-bottom svg {
+        position: relative;
+        display: block;
+        width: calc(100% + 1.3px);
+        height: 60px;
+    }
+
+    .custom-shape-divider-bottom .shape-fill {
+        fill: #ffffff; /* Match the next section's background or a transition color */
+        opacity: 0.3;
+    }
+
+    /* Adjust fill color based on theme if needed, assuming white/light theme based on 'bg-cream-light' in index.astro */
+    :global(.dark) .custom-shape-divider-bottom .shape-fill {
+        fill: #0f172a; /* Dark mode color */
+    }
+
+    @media (max-width: 768px) {
+        .skills-section {
+            padding: 4rem 0;
+        }
+        .sphere-container {
+            height: 400px;
+        }
+    }
+</style>

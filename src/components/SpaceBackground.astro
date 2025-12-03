@@ -1,0 +1,227 @@
+---
+// This component creates an animated star field using Three.js
+---
+
+<canvas id="space-background"></canvas>
+
+<script>
+    import * as THREE from "three";
+
+    // Wait for DOM to be ready
+    const canvas = document.getElementById(
+        "space-background",
+    ) as HTMLCanvasElement;
+
+    if (canvas) {
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000,
+        );
+        const renderer = new THREE.WebGLRenderer({
+            canvas,
+            alpha: true,
+            antialias: true,
+        });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Create stars
+        const starsGeometry = new THREE.BufferGeometry();
+        const starsMaterial = new THREE.PointsMaterial({
+            color: 0xffffff,
+            size: 2,
+            sizeAttenuation: true,
+            transparent: true,
+            opacity: 0.8,
+        });
+
+        const starsCount = 5000;
+        const positions = new Float32Array(starsCount * 3);
+        const colors = new Float32Array(starsCount * 3);
+
+        for (let i = 0; i < starsCount * 3; i += 3) {
+            // Position
+            positions[i] = (Math.random() - 0.5) * 2000;
+            positions[i + 1] = (Math.random() - 0.5) * 2000;
+            positions[i + 2] = (Math.random() - 0.5) * 2000;
+
+            // Colors (Soft cream palette)
+            const palette = [
+                { r: 0.83, g: 0.69, b: 0.22 }, // Gold #D4AF37
+                { r: 0.56, g: 0.64, b: 0.56 }, // Sage #8FA38F
+                { r: 0.36, g: 0.69, b: 0.89 }, // Blue #5DADE2
+                { r: 1, g: 1, b: 1 }, // White #FFFFFF
+            ];
+
+            const color = palette[Math.floor(Math.random() * palette.length)];
+            colors[i] = color.r;
+            colors[i + 1] = color.g;
+            colors[i + 2] = color.b;
+        }
+
+        starsGeometry.setAttribute(
+            "position",
+            new THREE.BufferAttribute(positions, 3),
+        );
+        starsGeometry.setAttribute(
+            "color",
+            new THREE.BufferAttribute(colors, 3),
+        );
+
+        starsMaterial.vertexColors = true;
+
+        const stars = new THREE.Points(starsGeometry, starsMaterial);
+        scene.add(stars);
+
+        // --- Floating Symbols System ---
+        const symbols = [
+            "<",
+            ">",
+            "/",
+            "{",
+            "}",
+            ";",
+            "@",
+            "∑",
+            "π",
+            "θ",
+            "√",
+            "∫",
+            "≠",
+            "∞",
+            "λ",
+            "Δ",
+            "Ω",
+            "β",
+            "f(x)",
+        ];
+
+        const symbolGroup = new THREE.Group();
+        scene.add(symbolGroup);
+
+        function createTextTexture(text: string, color: string) {
+            const canvas = document.createElement("canvas");
+            const size = 256;
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return null;
+            ctx.fillStyle = color;
+            ctx.font = 'bold 48px "Outfit", sans-serif';
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(text, size / 2, size / 2);
+            const texture = new THREE.CanvasTexture(canvas);
+            return texture;
+        }
+
+        const symbolCount = 70;
+        const symbolSprites: {
+            sprite: THREE.Sprite;
+            speed: number;
+            axis: THREE.Vector3;
+        }[] = [];
+
+        for (let i = 0; i < symbolCount; i++) {
+            const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+            const paletteHex = ["#D4AF37", "#8FA38F", "#5DADE2"];
+            const color =
+                paletteHex[Math.floor(Math.random() * paletteHex.length)];
+
+            const texture = createTextTexture(symbol, color);
+            if (texture) {
+                const material = new THREE.SpriteMaterial({
+                    map: texture,
+                    transparent: true,
+                    opacity: 0.4 + Math.random() * 0.6,
+                    depthWrite: true,
+                });
+
+                const sprite = new THREE.Sprite(material);
+                sprite.position.set(
+                    (Math.random() - 0.5) * 1500,
+                    (Math.random() - 0.5) * 1500,
+                    (Math.random() - 0.5) * 1500,
+                );
+
+                const scale = 20 + Math.random() * 100;
+                sprite.scale.set(scale, scale, 1);
+                symbolGroup.add(sprite);
+
+                symbolSprites.push({
+                    sprite: sprite,
+                    speed: (Math.random() - 0.5) * 0.02,
+                    axis: new THREE.Vector3(
+                        Math.random() + 10,
+                        Math.random() + 10,
+                        Math.random() + 10,
+                    ).normalize(),
+                });
+            }
+        }
+
+        camera.position.z = 500;
+
+        let mouseX = 0;
+        let mouseY = 0;
+
+        document.addEventListener("mousemove", (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotate stars slowly
+            stars.rotation.y += 0.0005;
+            stars.rotation.x += 0.0002;
+
+            // Rotate symbol group
+            symbolGroup.rotation.y -= 0.0003;
+            symbolGroup.rotation.x -= 0.0001;
+
+            // Animate individual symbols (float)
+            symbolSprites.forEach((item) => {
+                item.sprite.position.y +=
+                    Math.sin(Date.now() * 0.001 + item.sprite.position.x) * 0.1;
+                // Billboard effect is automatic for Sprites
+            });
+
+            // Camera follows mouse with damping
+            camera.position.x += (mouseX * 50 - camera.position.x) * 0.05;
+            camera.position.y += (mouseY * 50 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+
+            renderer.render(scene, camera);
+        }
+
+        // Handle window resize
+        window.addEventListener("resize", () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+    }
+</script>
+
+<style>
+    #space-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: transparent;
+        pointer-events: none;
+    }
+</style>

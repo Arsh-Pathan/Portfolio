@@ -1,0 +1,278 @@
+---
+// Projects Section
+const projects = [
+  {
+    title: 'AureX',
+    description: 'Smart Curriculum Activities & Attendance Management App built with React Native',
+    tags: ['React Native', 'Mobile', 'Education'],
+    github: '#',
+    stars: 12,
+  },
+  {
+    title: 'Romar',
+    description: 'Offline Traveling AI Agent App with integrated offline maps and smart recommendations',
+    tags: ['Kotlin', 'AI', 'Android'],
+    github: '#',
+    stars: 24,
+  },
+  {
+    title: 'Neural Network (Java)',
+    description: 'Custom neural network implementation from scratch in Java with backpropagation',
+    tags: ['Java', 'AI', 'Machine Learning'],
+    github: '#',
+    stars: 45,
+  },
+  {
+    title: 'Chess Game',
+    description: 'Full-featured chess game with AI opponent using minimax algorithm',
+    tags: ['Java', 'Game Dev', 'AI'],
+    github: '#',
+    stars: 18,
+  },
+  {
+    title: 'Discord Bot Suite',
+    description: 'Advanced Discord bot with ticket system, AI support, logging, and mini-games',
+    tags: ['Node.js', 'Discord API', 'AI'],
+    github: '#',
+    stars: 67,
+  },
+  {
+    title: 'Minecraft Plugin Suite',
+    description: '20+ custom Minecraft plugins including JustWap, ScoresSMP, CSkyCore series',
+    tags: ['Java', 'Spigot API', 'Game Dev'],
+    github: '#',
+    stars: 89,
+  },
+  {
+    title: 'Physics Simulations',
+    description: 'Interactive gravity and fluid dynamics simulations with real-time visualization',
+    tags: ['Java', 'Physics', 'Simulation'],
+    github: '#',
+    stars: 31,
+  },
+  {
+    title: 'AI Trip Planner',
+    description: 'Intelligent trip planning application with currency converter and translator',
+    tags: ['Android', 'AI', 'Travel'],
+    github: '#',
+    stars: 22,
+  },
+  {
+    title: 'LAMS Website',
+    description: 'Learning Management System with modern UI and comprehensive features',
+    tags: ['React', 'Node.js', 'Education'],
+    github: '#',
+    stars: 15,
+  },
+  {
+    title: 'License & Encryption System',
+    description: 'Secure licensing system for Minecraft plugin distribution and deployment',
+    tags: ['Java', 'Security', 'Encryption'],
+    github: '#',
+    stars: 28,
+  },
+  {
+    title: 'Server Benchmark Tool',
+    description: 'Performance benchmarking tool for Minecraft servers built with JavaScript',
+    tags: ['JavaScript', 'Performance', 'Testing'],
+    github: '#',
+    stars: 19,
+  },
+  {
+    title: 'Math Game',
+    description: 'Educational math game with multiple difficulty levels and progress tracking',
+    tags: ['Java', 'Education', 'Game Dev'],
+    github: '#',
+    stars: 11,
+  },
+];
+---
+
+<section id="projects" class="section relative">
+  <div class="container">
+    <h2 class="section-title">Featured Projects</h2>
+    
+    <div class="projects-grid">
+      {projects.map((project, index) => (
+        <div class="project-card glass card" data-project={index}>
+          <div class="project-card-inner">
+            <!-- Project Icon/Visual -->
+            <div class="project-icon">
+              <span class="icon-text">P</span>
+            </div>
+            
+            <!-- Project Info -->
+            <div class="project-info">
+              <h3 class="text-2xl font-bold mb-3">{project.title}</h3>
+              <p class="text-text-muted mb-4">{project.description}</p>
+              
+              <!-- Tags -->
+              <div class="flex flex-wrap gap-2 mb-4">
+                {project.tags.map(tag => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+              
+              <!-- Footer -->
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 text-text-muted">
+                  <span class="text-accent-gold">★</span>
+                  <span>{project.stars}</span>
+                </div>
+                
+                <a href={project.github} class="github-link" target="_blank" rel="noopener noreferrer">
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    </div>
+  </div>
+  <!-- Curved Divider Bottom -->
+  <div class="custom-shape-divider-bottom">
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+      </svg>
+  </div>
+</section>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+    import VanillaTilt from "vanilla-tilt";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const cards = document.querySelectorAll(".project-card");
+
+        // Initialize VanillaTilt
+        VanillaTilt.init(
+            document.querySelectorAll(
+                ".project-card",
+            ) as unknown as HTMLElement[],
+            {
+                max: 10,
+                speed: 400,
+                glare: true,
+                "max-glare": 0.2,
+                scale: 1.02,
+            },
+        );
+
+        cards.forEach((card, index) => {
+            // Scroll Animation
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse",
+                },
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                delay: index * 0.1,
+                ease: "power3.out",
+            });
+        });
+    });
+</script>
+
+<style>
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+    }
+
+    .project-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        padding: 2rem;
+    }
+
+    .project-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(212, 175, 55, 0.1);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        margin-bottom: 1.5rem;
+    }
+
+    .icon-text {
+        font-weight: 800;
+        font-size: 1.5rem;
+        color: #D4AF37;
+    }
+
+    .tag {
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        background: rgba(212, 175, 55, 0.1);
+        color: #D4AF37;
+        border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .github-link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #2C3E50;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .github-link:hover {
+        color: #D4AF37;
+    }
+    
+    @media (max-width: 768px) {
+        .projects-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+    }
+
+    /* Custom Shape Divider */
+    .custom-shape-divider-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        overflow: hidden;
+        line-height: 0;
+        transform: rotate(180deg);
+    }
+
+    .custom-shape-divider-bottom svg {
+        position: relative;
+        display: block;
+        width: calc(100% + 1.3px);
+        height: 60px;
+    }
+
+    .custom-shape-divider-bottom .shape-fill {
+        fill: #1e293b; /* Dark slate to match Education section */
+        opacity: 1;
+    }
+
+    :global(.dark) .custom-shape-divider-bottom .shape-fill {
+        fill: #0f172a;
+    }
+</style>

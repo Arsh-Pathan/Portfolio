@@ -19,6 +19,7 @@ body {
     background: #FDFBF7;
     color: #426385;
     overflow-x: hidden;
+    position: relative;
 }
 
 /* Custom Scrollbar */
@@ -31,13 +32,13 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #3778d4;
+    background: #1e293b;
     border-radius: 5px;
     border: 2px solid #F5F0E6;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #3778d4;
+    background: #1e293b;
 }
 
 /* Utilities */
@@ -56,7 +57,7 @@ body {
 .section-title {
     font-size: 3rem;
     font-weight: 800;
-    color: #3778d4;
+    color: #1e293b;
     margin-bottom: 3rem;
     text-align: center;
     position: relative;
@@ -67,7 +68,7 @@ body {
     display: block;
     width: 60px;
     height: 4px;
-    background: #3778d4;
+    background: #1e293b;
     margin: 1rem auto 0;
     border-radius: 2px;
 }
@@ -91,7 +92,7 @@ body {
 
 /* Gradient Text */
 .gradient-text {
-    background: linear-gradient(135deg, #2C3E50, #3778d4);
+    background: linear-gradient(135deg, #2C3E50, #1e293b);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -130,13 +131,13 @@ body {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    background: #3778d4;
+    background: #1e293b;
     box-shadow: 0 8px 25px rgba(44, 62, 80, 0.3);
 }
 
 .btn-outline {
-    border: 2px solid #3778d4;
-    color: #3778d4;
+    border: 2px solid #1e293b;
+    color: #1e293b;
     background: transparent;
 }
 

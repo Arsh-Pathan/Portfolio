@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import SpaceBackground from "../components/SpaceBackground.astro";
+import Background from "../components/Background.astro";
 import Hero from "../components/Hero.astro";
 import Skills from "../components/Skills.astro";
 import Projects from "../components/Projects.astro";
@@ -9,10 +9,6 @@ import Certificates from "../components/Certificates.astro";
 import Interests from "../components/Interests.astro";
 import Contact from "../components/Contact.astro";
 import Footer from "../components/Footer.astro";
-
-const title = "Arsh Pathan | Full Stack Developer & AI Enthusiast";
-const description =
-	"Portfolio of Arsh Pathan - Full Stack Developer, AI Enthusiast, and Creative Coder specializing in modern web technologies and 3D experiences.";
 ---
 
 <html lang="en" class="scroll-smooth">
@@ -20,24 +16,9 @@ const description =
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-		<meta name="description" content={description} />
-
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content="https://arshpathan.dev/" />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:image" content="/og-image.jpg" />
-
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content="https://arshpathan.dev/" />
-		<meta property="twitter:title" content={title} />
-		<meta property="twitter:description" content={description} />
-		<meta property="twitter:image" content="/og-image.jpg" />
 	</head>
 	<body class="bg-cream-light text-text-main antialiased">
-		<SpaceBackground />
+		<Background />
 
 		<main>
 			<Hero />

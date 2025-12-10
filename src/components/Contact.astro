@@ -3,14 +3,16 @@
 ---
 
 <section id="contact" class="section py-20">
-    <div class="container max-w-6xl mx-auto px-6">
+    <div class="container max-w-6xl mx-auto px-6 relative z-10">
         <h2
             class="section-title text-center mb-16 text-4xl font-bold gradient-text"
         >
             Get In Touch
         </h2>
 
-        <div class="contact-container grid md:grid-cols-2 gap-12 items-start">
+        <div
+            class="contact-container grid grid-cols-1 md:grid-cols-2 gap-12 items-start"
+        >
             <!-- Left: Contact Info -->
             <div
                 class="contact-info glass p-8 rounded-2xl shadow-lg backdrop-blur-md border border-cream-dark"
@@ -215,12 +217,6 @@
 
         .glass {
             background: rgba(255, 255, 255, 0.05);
-        }
-
-        @media (max-width: 768px) {
-            .contact-container {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </section>

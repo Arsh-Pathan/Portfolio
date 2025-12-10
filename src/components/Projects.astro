@@ -1,254 +1,380 @@
 ---
-// Projects Section
 const projects = [
   {
     title: 'AureX',
-    description: 'Smart Curriculum Activities & Attendance Management App built with React Native',
+    shortDesc: 'Smart Curriculum & Attendance App',
+    description: 'A comprehensive mobile application built with React Native for managing curriculum activities and attendance. Features include real-time tracking, automated reports, and parent-teacher communication channels.',
     tags: ['React Native', 'Mobile', 'Education'],
     github: '#',
+    website: '#',
+    image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop', // Placeholder
     stars: 12,
   },
   {
     title: 'Romar',
-    description: 'Offline Traveling AI Agent App with integrated offline maps and smart recommendations',
+    shortDesc: 'Offline AI Travel Agent',
+    description: 'An intelligent traveling AI agent app designed for offline usage. It integrates offline maps, location-based recommendations, and itinerary planning without requiring an active internet connection.',
     tags: ['Kotlin', 'AI', 'Android'],
     github: '#',
+    website: '#',
+    image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1000&auto=format&fit=crop',
     stars: 24,
   },
   {
-    title: 'Neural Network (Java)',
-    description: 'Custom neural network implementation from scratch in Java with backpropagation',
-    tags: ['Java', 'AI', 'Machine Learning'],
+    title: 'Neural Network',
+    shortDesc: 'Java-based Deep Learning',
+    description: 'A custom implementation of a neural network from scratch in Java. Supports backpropagation, various activation functions, and configurable layer architectures for educational purposes.',
+    tags: ['Java', 'AI', 'ML'],
     github: '#',
+    website: '#',
+    image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1000&auto=format&fit=crop',
     stars: 45,
   },
   {
-    title: 'Chess Game',
-    description: 'Full-featured chess game with AI opponent using minimax algorithm',
+    title: 'Chess AI',
+    shortDesc: 'Minimax Algorithm Game',
+    description: 'A fully functional Chess game featuring a smart AI opponent powered by the Minimax algorithm with alpha-beta pruning. Includes move validation, history tracking, and varying difficulty levels.',
     tags: ['Java', 'Game Dev', 'AI'],
     github: '#',
+    website: '#',
+    image: 'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?q=80&w=1000&auto=format&fit=crop',
     stars: 18,
   },
   {
-    title: 'Discord Bot Suite',
-    description: 'Advanced Discord bot with ticket system, AI support, logging, and mini-games',
-    tags: ['Node.js', 'Discord API', 'AI'],
+    title: 'Discord Suite',
+    shortDesc: 'Multi-purpose Bot Cluster',
+    description: 'An advanced suite of Discord bots offering ticket management, AI-powered support, server logging, and interactive mini-games to enhance community engagement.',
+    tags: ['Node.js', 'Discord', 'AI'],
     github: '#',
+    website: '#',
+    image: 'https://images.unsplash.com/photo-1614680376593-902f74cf0d41?q=80&w=1000&auto=format&fit=crop',
     stars: 67,
   },
   {
-    title: 'Minecraft Plugin Suite',
-    description: '20+ custom Minecraft plugins including JustWap, ScoresSMP, CSkyCore series',
-    tags: ['Java', 'Spigot API', 'Game Dev'],
+    title: 'Minecraft Plugins',
+    shortDesc: 'Server Utility Collections',
+    description: 'A collection of over 20 custom Minecraft plugins including JustWap, ScoresSMP, and CSkyCore. backend systems for large-scale servers affecting gameplay mechanics and economy.',
+    tags: ['Java', 'Spigot', 'Game Dev'],
     github: '#',
+    website: '#',
+    image: 'https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?q=80&w=1000&auto=format&fit=crop',
     stars: 89,
   },
   {
-    title: 'Physics Simulations',
-    description: 'Interactive gravity and fluid dynamics simulations with real-time visualization',
-    tags: ['Java', 'Physics', 'Simulation'],
+    title: 'Physics Sim',
+    shortDesc: 'Gravity & Fluid Dynamics',
+    description: 'Interactive visualization of physical concepts including gravity simulations and fluid dynamics calculations. Built to demonstrate complex physics in real-time.',
+    tags: ['Java', 'Physics', 'Sim'],
     github: '#',
+    website: '#',
+    image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1000&auto=format&fit=crop',
     stars: 31,
   },
   {
-    title: 'AI Trip Planner',
-    description: 'Intelligent trip planning application with currency converter and translator',
+    title: 'Trip Planner',
+    shortDesc: 'AI-Enhanced Itineraries',
+    description: 'Smart trip planning application containing currency conversion, language translation, and AI-driven route optimization for travelers.',
     tags: ['Android', 'AI', 'Travel'],
     github: '#',
+    website: '#',
+    image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=1000&auto=format&fit=crop',
     stars: 22,
   },
   {
-    title: 'LAMS Website',
-    description: 'Learning Management System with modern UI and comprehensive features',
-    tags: ['React', 'Node.js', 'Education'],
+    title: 'LAMS Platform',
+    shortDesc: 'Modern LMS Soltuion',
+    description: 'A full-featured Learning Management System designed with a modern approach to UX/UI, facilitating course management, student progress tracking, and resource distribution.',
+    tags: ['React', 'Node.js', 'Edu'],
     github: '#',
+    website: '#',
+    image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=1000&auto=format&fit=crop',
     stars: 15,
   },
   {
-    title: 'License & Encryption System',
-    description: 'Secure licensing system for Minecraft plugin distribution and deployment',
-    tags: ['Java', 'Security', 'Encryption'],
+    title: 'Secure License',
+    shortDesc: 'Encryption & Distribution',
+    description: 'A robust licensing and encryption system ensuring secure distribution of software artifacts, preventing unauthorized usage and piracy.',
+    tags: ['Java', 'Security', 'Crypto'],
     github: '#',
+    website: '#',
+    image: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=1000&auto=format&fit=crop',
     stars: 28,
   },
   {
-    title: 'Server Benchmark Tool',
-    description: 'Performance benchmarking tool for Minecraft servers built with JavaScript',
-    tags: ['JavaScript', 'Performance', 'Testing'],
+    title: 'Benchmark Tool',
+    shortDesc: 'Server Performance',
+    description: 'A JavaScript-based tool designed to stress-test and benchmark Minecraft server performance, providing detailed metrics and analysis logs.',
+    tags: ['JS', 'Testing', 'DevOps'],
     github: '#',
+    website: '#',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop',
     stars: 19,
   },
   {
-    title: 'Math Game',
-    description: 'Educational math game with multiple difficulty levels and progress tracking',
-    tags: ['Java', 'Education', 'Game Dev'],
+    title: 'Math Quest',
+    shortDesc: 'Educational Game',
+    description: 'An engaging educational math game featuring multiple difficulty levels, progress tracking, and gamified learning rewards for students.',
+    tags: ['Java', 'Edu', 'Game'],
     github: '#',
+    website: '#',
+    image: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?q=80&w=1000&auto=format&fit=crop',
     stars: 11,
   },
 ];
+
+const row1 = [...projects.slice(0, 6), ...projects.slice(0, 6)];
+const row2 = [...projects.slice(6, 12), ...projects.slice(6, 12)];
 ---
 
-<section id="projects" class="section relative">
-  <div class="container">
-    <h2 class="section-title">Featured Projects</h2>
+<section id="projects" class="section relative overflow-hidden bg-cream-medium">
+  <div class="relative z-10 w-full project-section-inner py-20 flex flex-col justify-center min-h-screen">
+    <h2 class="section-title text-center mb-16" style="font-size: 4rem;">Featured Projects</h2>
     
-    <div class="projects-grid">
-      {projects.map((project, index) => (
-        <div class="project-card glass card" data-project={index}>
-          <div class="project-card-inner">
-            <!-- Project Icon/Visual -->
-            <div class="project-icon">
-              <span class="icon-text">P</span>
+    <div id="projects-container" class="flex flex-col gap-10 w-full overflow-hidden">
+      <div id="row-1" class="flex w-max">
+        {row1.map((project, index) => (
+          <div 
+            class="project-card mr-8 relative w-[450px] h-[280px] rounded-2xl overflow-hidden cursor-pointer group shrink-0 shadow-lg"
+            data-json={JSON.stringify(project)}
+          >
+            <!-- Background Image -->
+            <div class="absolute inset-0">
+                <img src={project.image} alt={project.title} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
             </div>
-            
-            <!-- Project Info -->
-            <div class="project-info">
-              <h3 class="text-2xl font-bold mb-3">{project.title}</h3>
-              <p class="text-text-muted mb-4">{project.description}</p>
-              
-              <!-- Tags -->
-              <div class="flex flex-wrap gap-2 mb-4">
-                {project.tags.map(tag => (
-                  <span class="tag">{tag}</span>
-                ))}
-              </div>
-              
-              <!-- Footer -->
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2 text-text-muted">
-                  <span class="text-accent-gold">★</span>
-                  <span>{project.stars}</span>
-                </div>
+
+            <!-- Content -->
+            <div class="relative h-full flex flex-col justify-end p-6 text-white z-10 transition-transform duration-300 group-hover:-translate-y-2">
+                <h3 class="text-3xl font-bold mb-1">{project.title}</h3>
+                <p class="text-gray-300 text-sm mb-4 line-clamp-2">{project.shortDesc}</p>
                 
-                <a href={project.github} class="github-link" target="_blank" rel="noopener noreferrer">
-                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                  </svg>
-                </a>
-              </div>
+                <div class="flex items-center justify-between mt-auto">
+                    <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -translate-x-2 group-hover:translate-x-0">Click for Details</span>
+                    
+                     <a href={project.github} class="github-btn p-3 bg-white/20 hover:bg-white/40 rounded-full backdrop-blur-md transition-colors shadow-lg z-20" target="_blank" onclick="event.stopPropagation()">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                        </svg>
+                    </a>
+                </div>
             </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+
+      <div id="row-2" class="flex w-max">
+         {row2.map((project, index) => (
+          <div 
+            class="project-card mr-8 relative w-[450px] h-[280px] rounded-2xl overflow-hidden cursor-pointer group shrink-0 shadow-lg"
+            data-json={JSON.stringify(project)}
+          >
+           <!-- Background Image -->
+            <div class="absolute inset-0">
+                <img src={project.image} alt={project.title} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
+                 <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
+            </div>
+
+            <!-- Content -->
+            <div class="relative h-full flex flex-col justify-end p-6 text-white z-10 transition-transform duration-300 group-hover:-translate-y-2">
+                <h3 class="text-3xl font-bold mb-1">{project.title}</h3>
+                <p class="text-gray-300 text-sm mb-4 line-clamp-2">{project.shortDesc}</p>
+                
+                 <div class="flex items-center justify-between mt-auto">
+                     <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -translate-x-2 group-hover:translate-x-0">Click for Details</span>
+
+                    <a href={project.github} class="github-btn p-3 bg-white/20 hover:bg-white/40 rounded-full backdrop-blur-md transition-colors shadow-lg z-20" target="_blank" onclick="event.stopPropagation()">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   </div>
-  <!-- Curved Divider Bottom -->
-  <div class="custom-shape-divider-bottom">
-      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
-      </svg>
-  </div>
+
+   <!-- Custom Shape Divider -->
+    <div class="custom-shape-divider-bottom">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+        </svg>
+    </div>
 </section>
+  
+  <!-- Project Modal -->
+  <div id="project-modal" class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" id="modal-overlay"></div>
+    
+    <div class="relative bg-cream-light rounded-3xl w-[90vw] md:w-[800px] max-h-[85vh] overflow-y-auto shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col" id="modal-content">
+        <!-- Close Button -->
+        <button id="modal-close" class="absolute top-4 right-4 z-20 p-2 bg-black/10 hover:bg-black/20 rounded-full transition-colors">
+            <svg class="w-6 h-6 text-text-main" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+
+        <div class="flex flex-col md:flex-row h-full">
+            <!-- Media Section -->
+            <div class="w-full md:w-5/12 h-64 md:h-auto bg-gray-200 relative shrink-0">
+                <img id="modal-image" src="" alt="Project Preview" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+            </div>
+
+            <!-- Details Section -->
+            <div class="w-full md:w-7/12 p-8 md:p-10 flex flex-col">
+                <h3 id="modal-title" class="text-3xl md:text-4xl font-bold mb-4 text-text-main font-outfit">Project Title</h3>
+                
+                <div class="flex flex-wrap gap-2 mb-6" id="modal-tags">
+                    <!-- Tags injected here -->
+                </div>
+
+                <p id="modal-desc" class="text-text-muted leading-relaxed mb-8 flex-grow">
+                    Description goes here...
+                </p>
+
+                <div class="flex flex-wrap gap-4 mt-auto">
+                    <a id="modal-github" href="#" target="_blank" class="btn btn-outline flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                        GitHub
+                    </a>
+                    <a id="modal-website" href="#" target="_blank" class="btn btn-primary flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        Live Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
 
 <script>
     import { gsap } from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
-    import VanillaTilt from "vanilla-tilt";
-
+    
     gsap.registerPlugin(ScrollTrigger);
 
     document.addEventListener("DOMContentLoaded", () => {
-        const cards = document.querySelectorAll(".project-card");
+        const section = document.getElementById("projects") as HTMLElement;
+        const row1 = document.getElementById("row-1") as HTMLElement;
+        const row2 = document.getElementById("row-2") as HTMLElement;
+        
+        if (!section || !row1 || !row2) return;
+        
+        // Row 1 moves Left (0 to -50%)
+        gsap.to(row1, {
+            xPercent: -50,
+            ease: "none",
+            duration: 60, // Slow constant speed
+            repeat: -1
+        });
 
-        // Initialize VanillaTilt
-        VanillaTilt.init(
-            document.querySelectorAll(
-                ".project-card",
-            ) as unknown as HTMLElement[],
-            {
-                max: 10,
-                speed: 400,
-                glare: true,
-                "max-glare": 0.2,
-                scale: 1.02,
-            },
-        );
+        // Row 2 moves Right (starts at -50% and moves to 0)
+        gsap.set(row2, { xPercent: -50 });
+        gsap.to(row2, {
+            xPercent: 0,
+            ease: "none",
+            duration: 70, // Slightly different slow speed
+            repeat: -1
+        });
+        
+        // Modal Logic
+        const modal = document.getElementById("project-modal");
+        const overlay = document.getElementById("modal-overlay");
+        const closeBtn = document.getElementById("modal-close");
+        const modalContent = document.getElementById("modal-content");
+        
+        const mTitle = document.getElementById("modal-title");
+        const mDesc = document.getElementById("modal-desc");
+        const mImage = document.getElementById("modal-image") as HTMLImageElement;
+        const mTags = document.getElementById("modal-tags");
+        const mGithub = document.getElementById("modal-github") as HTMLAnchorElement;
+        const mWebsite = document.getElementById("modal-website") as HTMLAnchorElement;
 
-        cards.forEach((card, index) => {
-            // Scroll Animation
-            gsap.from(card, {
-                scrollTrigger: {
-                    trigger: card,
-                    start: "top 85%",
-                    toggleActions: "play none none reverse",
-                },
-                y: 50,
-                opacity: 0,
-                duration: 0.8,
-                delay: index * 0.1,
-                ease: "power3.out",
+    interface ProjectData {
+        title: string;
+        shortDesc: string;
+        description: string;
+        tags: string[];
+        github: string;
+        website: string;
+        image: string;
+        stars: number;
+    }
+
+    function openModal(data: ProjectData) {
+            // Null checks
+            if(!mTitle || !mDesc || !mImage || !mTags || !mGithub || !mWebsite) return;
+
+            mTitle.innerText = data.title;
+            mDesc.innerText = data.description;
+            mImage.src = data.image;
+            mGithub.href = data.github;
+            mWebsite.href = data.website || '#';
+            
+            // Clear and Add Tags
+            mTags.innerHTML = '';
+            data.tags.forEach(tag => {
+                const span = document.createElement('span');
+                span.className = 'px-3 py-1 bg-accent-gold/20 text-accent-gold text-sm rounded-full border border-accent-gold/20';
+                span.innerText = tag;
+                mTags.appendChild(span);
             });
+
+            // Show
+            if(modal && modalContent) {
+                modal.style.pointerEvents = 'auto';
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+                document.body.style.overflow = "hidden";
+            }
+        }
+
+        function closeModal() {
+            if(modal && modalContent) {
+                modal.classList.add('opacity-0');
+                modal.style.pointerEvents = 'none';
+                modalContent.classList.remove('scale-100');
+                modalContent.classList.add('scale-95');
+                document.body.style.overflow = "";
+            }
+        }
+
+        // Attach Click Listeners
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const json = card.getAttribute('data-json');
+                if(json) {
+                    const data = JSON.parse(json);
+                    openModal(data);
+                }
+            });
+        });
+
+        if(closeBtn) closeBtn.addEventListener('click', closeModal);
+        if(overlay) overlay.addEventListener('click', closeModal);
+        
+        // Close on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
         });
     });
 </script>
 
 <style>
-    .projects-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 2rem;
+    /* Custom Scrollbar for Modal */
+    #modal-content::-webkit-scrollbar {
+        width: 8px;
+    }
+    #modal-content::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    #modal-content::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 4px;
     }
 
-    .project-card {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        transform-style: preserve-3d;
-        perspective: 1000px;
-        background: rgba(255, 255, 255, 0.7);
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        padding: 2rem;
-    }
-
-    .project-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(212, 175, 55, 0.1);
-        border: 1px solid rgba(212, 175, 55, 0.2);
-        margin-bottom: 1.5rem;    }
-
-    .icon-text {
-        font-weight: 800;
-        font-size: 1.5rem;
-        color: #D4AF37;
-    }
-
-    .tag {
-        padding: 0.25rem 0.75rem;
-        border-radius: 9999px;
-        font-size: 0.875rem;
-        font-weight: 500;
-        background: rgba(212, 175, 55, 0.1);
-        color: #D4AF37;
-        border: 1px solid rgba(212, 175, 55, 0.2);
-    }
-
-    .github-link {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: #2C3E50;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-    .github-link:hover {
-        color: #D4AF37;
-    }
-    
-    @media (max-width: 768px) {
-        .projects-grid {
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-    }
-
-    /* Custom Shape Divider */
+    /* Shape Divider */
     .custom-shape-divider-bottom {
         position: absolute;
         bottom: 0;
@@ -257,7 +383,8 @@ const projects = [
         overflow: hidden;
         line-height: 0;
         transform: rotate(180deg);
-        z-index: -2;
+        z-index: 5;
+        pointer-events: none;
     }
 
     .custom-shape-divider-bottom svg {
@@ -268,11 +395,6 @@ const projects = [
     }
 
     .custom-shape-divider-bottom .shape-fill {
-        fill: #1e293b; /* Dark slate to match Education section */
-        opacity: 1;
-    }
-
-    :global(.dark) .custom-shape-divider-bottom .shape-fill {
-        fill: #0f172a;
+        fill: #1e293b;
     }
 </style>

@@ -132,7 +132,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 7;
+        z-index: 0;
         pointer-events: none;
         overflow: hidden;
     }
@@ -185,5 +185,56 @@
     .bottom-right {
         bottom: 62rem;
         right: 30rem;
+    }
+
+    @media (max-width: 1024px) {
+        .symbol {
+            font-size: 10rem;
+        }
+
+        .top-right {
+            top: 15rem;
+        }
+
+        .bottom-left,
+        .bottom-right {
+            bottom: 40rem;
+            left: auto;
+            right: auto;
+        }
+
+        .bottom-left {
+            left: 10rem;
+        }
+
+        .bottom-right {
+            right: 10rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .symbol {
+            font-size: 6rem;
+        }
+
+        .top-left {
+            top: 1rem;
+            left: 1rem;
+        }
+
+        .top-right {
+            top: 10rem;
+            right: 1rem;
+        }
+
+        .bottom-left {
+            bottom: 20rem;
+            left: 2rem;
+        }
+
+        .bottom-right {
+            bottom: 10rem;
+            right: 2rem;
+        }
     }
 </style>

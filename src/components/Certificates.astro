@@ -1,13 +1,38 @@
 ---
-const certificates = [
+const initialCertificates = [
   {
-    title: "Outlook Certificate",
-    issuer: "Bootcamp Program",
+    title: "3rd Place - VibeState '25",
+    issuer: "Singularity",
     description:
-      "Completed comprehensive bootcamp in Agentic AI and Generative AI",
-    date: "2024",
-    icon: "🏆",
+      "Awarded 3rd Place in the VibeState'25 competition for outstanding performance and hard work.",
+    date: "Feb 2025",
+    icon: "🥉",
+    image: "/certificates/singularity_3rd.png",
   },
+  {
+    title: "Gen AI Engineering Mastermind",
+    issuer: "Outskill",
+    description:
+      "Successfully completed an intensive program on Generative AI Engineering and Agentic AI systems.",
+    date: "2025",
+    icon: "🤖",
+    image: "/certificates/outskill_genai.png",
+  },
+  {
+    title: "Certificate of Participation",
+    issuer: "Unstop",
+    description:
+      "Participated in VibeState '25 organized by Guru Gobind Singh Indraprastha University (GGSIPU), Delhi.",
+    date: "Feb 2025",
+    icon: "🤝",
+    image: "/certificates/unstop_participation.png",
+  },
+];
+
+const certificates = [
+  ...initialCertificates,
+  ...initialCertificates,
+  ...initialCertificates,
 ];
 ---
 
@@ -23,43 +48,193 @@ const certificates = [
       </h2>
     </div>
 
-    <div class="certificates-grid">
-      {
-        certificates.map((cert, index) => (
-          <div class="certificate-card glass" data-cert={index}>
-            <div class="cert-glow-line" />
+    <div class="certificates-wrapper">
+      <div class="certificates-grid">
+        {
+          certificates.map((cert) => (
+            <div class="certificate-card" data-cert={JSON.stringify(cert)}>
+              <div class="card-glass-bg" />
+              <div class="card-scanline" />
+              <div class="cert-glow-line" />
 
-            <div class="cert-icon-wrap">
-              <span class="text-5xl">{cert.icon}</span>
+              <div class="cert-icon-wrap">
+                <span class="text-6xl filter drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+                  {cert.icon}
+                </span>
+              </div>
+
+              <div class="cert-body">
+                <h3 class="cert-title">{cert.title}</h3>
+                <p class="cert-issuer">{cert.issuer}</p>
+                <div class="cert-divider" />
+                <p class="cert-desc">{cert.description}</p>
+                <div class="cert-footer">
+                  <span class="cert-date">{cert.date}</span>
+                </div>
+              </div>
+
+              <button class="view-cert-btn btn">
+                <span class="btn-text">View Credential</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  class="w-4 h-4 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  />
+                </svg>
+              </button>
+
+              <div class="cert-shine" />
             </div>
+          ))
+        }
 
-            <div class="cert-body">
-              <h3 class="cert-title">{cert.title}</h3>
-              <p class="cert-issuer">{cert.issuer}</p>
-              <p class="cert-desc">{cert.description}</p>
-              <span class="cert-date">{cert.date}</span>
-            </div>
-
-            <button class="view-cert-btn btn btn-outline mt-6">
-              View Certificate
-            </button>
-
-            <div class="cert-shine" />
+        <div class="placeholder-card">
+          <div class="placeholder-icon">
+            <span class="text-5xl opacity-20">📜</span>
           </div>
-        ))
-      }
-
-      <div class="placeholder-card glass">
-        <div class="placeholder-icon">
-          <span class="text-5xl opacity-40">📜</span>
+          <p
+            class="text-gray-500 mt-4 font-bold tracking-widest uppercase text-[10px]"
+          >
+            More to come...
+          </p>
         </div>
-        <p class="text-gray-500 mt-4 font-medium">
-          More achievements coming soon...
-        </p>
       </div>
     </div>
   </div>
 </section>
+
+<!-- Certificate Modal -->
+<div
+  id="cert-modal"
+  class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-500"
+>
+  <div
+    class="absolute inset-0 bg-black/98 backdrop-blur-2xl"
+    id="cert-modal-overlay"
+  >
+  </div>
+
+  <div
+    class="relative w-[95vw] lg:w-[1150px] h-[90vh] lg:h-[750px] glass rounded-[3rem] overflow-hidden transform scale-95 opacity-0 flex flex-col lg:flex-row shadow-[0_0_120px_rgba(0,0,0,0.6)] border border-white/10"
+    id="cert-modal-content"
+  >
+    <!-- Modal Left: Image Container -->
+    <div
+      class="w-full lg:w-3/5 h-[45%] lg:h-full relative overflow-hidden group bg-black/40"
+    >
+      <div
+        id="modal-bg-glow"
+        class="absolute inset-0 opacity-30 transition-transform duration-1000 group-hover:scale-110"
+      >
+      </div>
+
+      <div
+        class="absolute inset-0 flex items-center justify-center p-8 lg:p-16 z-20"
+      >
+        <div class="relative w-full h-full flex items-center justify-center">
+          <div
+            class="absolute inset-0 bg-blue-500/10 blur-[120px] rounded-full"
+          >
+          </div>
+          <img
+            id="cert-modal-image"
+            src=""
+            alt="Certificate"
+            class="relative w-full h-full object-contain drop-shadow-[0_25px_60px_rgba(0,0,0,0.9)] rounded-xl border border-white/5 transition-transform duration-700 hover:scale-[1.01]"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Right: Content Container -->
+    <div
+      class="w-full lg:w-2/5 h-[55%] lg:h-full p-10 lg:p-14 flex flex-col bg-[#0d1427]/90 backdrop-blur-3xl overflow-y-auto border-l border-white/5"
+    >
+      <div class="mb-auto">
+        <div class="flex items-center gap-3 mb-8">
+          <span
+            id="modal-date-tag"
+            class="px-4 py-1.5 bg-blue-500/10 text-blue-400 text-[11px] font-black uppercase tracking-[0.2em] rounded-lg border border-blue-500/20"
+          ></span>
+          <div class="h-px flex-grow bg-white/5"></div>
+        </div>
+
+        <h3
+          id="cert-modal-title"
+          class="text-4xl lg:text-5xl font-black text-white leading-tight mb-6"
+        >
+        </h3>
+        <p
+          id="cert-modal-issuer"
+          class="text-2xl font-bold gradient-text mb-10 tracking-tight"
+        >
+        </p>
+
+        <div class="space-y-10">
+          <div class="group/item">
+            <h4
+              class="text-[10px] font-black text-gray-500 uppercase tracking-[0.3em] mb-4 flex items-center gap-3"
+            >
+              <span
+                class="w-6 h-[1px] bg-blue-500 group-hover/item:w-10 transition-all duration-300"
+              ></span>
+              Overview
+            </h4>
+            <p
+              id="cert-modal-desc"
+              class="text-gray-400 text-base leading-relaxed font-medium"
+            >
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/5">
+              <h4
+                class="text-[9px] font-black text-gray-600 uppercase tracking-widest mb-2"
+              >
+                Category
+              </h4>
+              <p class="text-gray-200 text-sm font-bold">Achievement</p>
+            </div>
+            <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/5">
+              <h4
+                class="text-[9px] font-black text-gray-600 uppercase tracking-widest mb-2"
+              >
+                Date Issued
+              </h4>
+              <p id="modal-date-value" class="text-gray-200 text-sm font-bold">
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-16 flex flex-col gap-5">
+        <button
+          id="cert-modal-close"
+          class="w-full py-5 bg-white/5 hover:bg-white/10 text-white rounded-2xl font-black text-xs uppercase tracking-[0.3em] transition-all border border-white/10 flex items-center justify-center group"
+        >
+          <span class="group-hover:scale-105 transition-transform duration-300"
+            >Exit Inspector</span
+          >
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
   import { gsap } from "gsap";
@@ -68,6 +243,7 @@ const certificates = [
   gsap.registerPlugin(ScrollTrigger);
 
   document.addEventListener("DOMContentLoaded", () => {
+    // Scroll animations for section header
     gsap.from(".certificates-section .section-label", {
       scrollTrigger: { trigger: ".certificates-section", start: "top 80%" },
       y: 30,
@@ -87,30 +263,160 @@ const certificates = [
       ease: "power3.out",
     });
 
-    const cards = document.querySelectorAll(
-      ".certificate-card, .placeholder-card",
-    );
-    cards.forEach((card, index) => {
-      gsap.from(card, {
-        scrollTrigger: {
-          trigger: card,
-          start: "top 85%",
-          toggleActions: "play none none reverse",
-        },
-        scale: 0.85,
+    // Modal Handlers
+    const modal = document.getElementById("cert-modal");
+    const modalContent = document.getElementById("cert-modal-content");
+    const modalOverlay = document.getElementById("cert-modal-overlay");
+    const modalClose = document.getElementById("cert-modal-close");
+    const modalImage = document.getElementById(
+      "cert-modal-image",
+    ) as HTMLImageElement;
+    const modalTitle = document.getElementById("cert-modal-title");
+    const modalIssuer = document.getElementById("cert-modal-issuer");
+    const modalDesc = document.getElementById("cert-modal-desc");
+    const dateTag = document.getElementById("modal-date-tag");
+    const dateValue = document.getElementById("modal-date-value");
+
+    function openModal(certData: any) {
+      if (
+        !modal ||
+        !modalContent ||
+        !modalImage ||
+        !modalTitle ||
+        !modalIssuer ||
+        !modalDesc
+      )
+        return;
+
+      modalTitle.innerText = certData.title;
+      modalIssuer.innerText = certData.issuer;
+      modalDesc.innerText = certData.description;
+      modalImage.src = certData.image;
+      if (dateTag) dateTag.innerText = certData.date;
+      if (dateValue) dateValue.innerText = certData.date;
+
+      modal.classList.remove("opacity-0", "pointer-events-none");
+      gsap.fromTo(
+        modalContent,
+        { scale: 0.9, opacity: 0, y: 30 },
+        { scale: 1, opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+      );
+      gsap.to(modalOverlay, { opacity: 1, duration: 0.4 });
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+      if (!modal || !modalContent || !modalOverlay) return;
+      gsap.to(modalContent, {
+        scale: 0.95,
         opacity: 0,
-        rotateY: 15,
-        filter: "blur(6px)",
-        duration: 0.9,
-        delay: index * 0.15,
-        ease: "power3.out",
+        y: 20,
+        duration: 0.3,
+        onComplete: () => {
+          modal.classList.add("opacity-0", "pointer-events-none");
+          document.body.style.overflow = "";
+        },
+      });
+      gsap.to(modalOverlay, { opacity: 0, duration: 0.3 });
+    }
+
+    // Infinite Loop & Interaction Logic
+    const grid = document.querySelector(".certificates-grid") as HTMLElement;
+    const cards = document.querySelectorAll(".certificate-card");
+
+    if (grid && cards.length > 0) {
+      const cardWidth = 380 + 48; // width + gap (3rem = 48px)
+      const setWidth = cardWidth * (cards.length / 3);
+
+      const loop = gsap.to(grid, {
+        x: -setWidth,
+        duration: 35,
+        repeat: -1,
+        ease: "none",
+        modifiers: {
+          x: gsap.utils.unitize((x) => parseFloat(x) % setWidth),
+        },
+      });
+
+      // Interactive behaviors
+      grid.addEventListener("mouseenter", () =>
+        gsap.to(loop, { timeScale: 0.1, duration: 1 }),
+      );
+      grid.addEventListener("mouseleave", () =>
+        gsap.to(loop, { timeScale: 1, duration: 1 }),
+      );
+
+      cards.forEach((card) => {
+        const cardEl = card as HTMLElement;
+        const glow = card.querySelector(".cert-shine") as HTMLElement;
+        const certData = JSON.parse(card.getAttribute("data-cert") || "{}");
+
+        // Click actions
+        card.addEventListener("click", () => openModal(certData));
+        card.querySelector(".view-cert-btn")?.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openModal(certData);
+        });
+
+        // 3D Effects
+        card.addEventListener("mousemove", (e: any) => {
+          const rect = cardEl.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          if (glow)
+            gsap.to(glow, { left: x, top: y, duration: 0.1, opacity: 1 });
+
+          const rX = (y - rect.height / 2) / 15;
+          const rY = (rect.width / 2 - x) / 15;
+          gsap.to(card, {
+            rotateX: rX,
+            rotateY: rY,
+            scale: 1.02,
+            duration: 0.4,
+          });
+        });
+
+        card.addEventListener("mouseleave", () => {
+          if (glow) gsap.to(glow, { opacity: 0, duration: 0.4 });
+          gsap.to(card, { rotateX: 0, rotateY: 0, scale: 1, duration: 0.6 });
+        });
+      });
+    }
+
+    // Floating Icons
+    document.querySelectorAll(".cert-icon-wrap span").forEach((icon) => {
+      gsap.to(icon, {
+        y: -10,
+        duration: 2 + Math.random(),
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
       });
     });
 
+    // Magnetic Buttons
     document.querySelectorAll(".view-cert-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        gsap.to(btn, { scale: 0.92, duration: 0.1, yoyo: true, repeat: 1 });
+      const btnEl = btn as HTMLElement;
+      btn.addEventListener("mousemove", (e: any) => {
+        const rect = btnEl.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        gsap.to(btn, { x: x * 0.4, y: y * 0.4, duration: 0.3 });
       });
+      btn.addEventListener("mouseleave", () => {
+        gsap.to(btn, {
+          x: 0,
+          y: 0,
+          duration: 0.6,
+          ease: "elastic.out(1, 0.3)",
+        });
+      });
+    });
+
+    modalClose?.addEventListener("click", closeModal);
+    modalOverlay?.addEventListener("click", closeModal);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeModal();
     });
   });
 </script>
@@ -118,31 +424,74 @@ const certificates = [
 <style>
   .certificates-section {
     background: #0a0f1c;
-    padding: 8rem 0;
+    padding: 10rem 0;
+    perspective: 1500px;
+    overflow: hidden;
+  }
+
+  .certificates-wrapper {
+    width: 100%;
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 10%,
+      black 90%,
+      transparent
+    );
   }
 
   .certificates-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-    max-width: 900px;
-    margin: 0 auto;
+    display: flex;
+    gap: 3rem;
+    padding: 4rem 2rem;
+    width: max-content;
+    transform-style: preserve-3d;
   }
 
-  .certificate-card,
-  .placeholder-card {
-    padding: 2.5rem;
+  .certificate-card {
+    width: 380px;
+    height: 520px;
+    padding: 3.5rem 2.5rem;
     position: relative;
     overflow: hidden;
-    text-align: center;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: rgba(17, 26, 46, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 2.5rem;
+    cursor: pointer;
+    transition: border-color 0.4s ease;
+  }
+
+  .card-glass-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent);
+    backdrop-filter: blur(20px);
+    z-index: -1;
+  }
+
+  .card-scanline {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(59, 130, 246, 0.03) 50%,
+      transparent
+    );
+    background-size: 100% 3px;
+    pointer-events: none;
   }
 
   .certificate-card:hover {
-    transform: translateY(-8px) scale(1.02);
     box-shadow:
-      0 30px 60px rgba(0, 0, 0, 0.4),
-      0 0 50px rgba(59, 130, 246, 0.1);
+      0 40px 100px rgba(0, 0, 0, 0.7),
+      0 0 60px rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.4);
   }
 
   .cert-glow-line {
@@ -151,96 +500,166 @@ const certificates = [
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, #3b82f6, #06b6d4, #818cf8, #3b82f6);
-    background-size: 300% 100%;
-    animation: glow-line-shift 4s linear infinite;
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      #3b82f6,
+      #06b6d4,
+      transparent
+    );
+    background-size: 200% 100%;
+    animation: flow-light 4s linear infinite;
+    z-index: 5;
   }
 
-  @keyframes glow-line-shift {
+  @keyframes flow-light {
     0% {
-      background-position: 0% 50%;
+      background-position: -200% 0;
     }
     100% {
-      background-position: 300% 50%;
+      background-position: 200% 0;
     }
   }
 
   .cert-icon-wrap {
-    margin: 1.5rem 0;
-    filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.3));
+    transform: translateZ(90px);
+    margin-bottom: 2rem;
+  }
+
+  .cert-body {
+    transform: translateZ(60px);
   }
 
   .cert-title {
-    font-size: 1.6rem;
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #60a5fa, #06b6d4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
   }
 
   .cert-issuer {
-    font-size: 1rem;
-    color: #06b6d4;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    color: #3b82f6;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 1.5rem;
+  }
+
+  .cert-divider {
+    width: 30px;
+    height: 2px;
+    background: #3b82f6;
+    margin-bottom: 1.5rem;
   }
 
   .cert-desc {
-    color: #7a8ba8;
-    margin-bottom: 0.75rem;
-    line-height: 1.6;
-    font-size: 0.9rem;
+    color: #94a3b8;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    font-weight: 500;
+  }
+
+  .cert-footer {
+    display: flex;
+    justify-content: flex-start;
   }
 
   .cert-date {
-    color: #5a6d8a;
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    font-size: 0.7rem;
+    font-weight: 900;
+    color: #475569;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .view-cert-btn {
+    transform: translateZ(70px);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding: 1.1rem;
+    border-radius: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .view-cert-btn:hover {
+    background: #fff;
+    border-color: #fff;
+    color: #000 !important;
+    box-shadow: 0 15px 35px rgba(255, 255, 255, 0.2);
   }
 
   .cert-shine {
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-      45deg,
-      transparent,
-      rgba(59, 130, 246, 0.05),
-      transparent
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(
+      circle,
+      rgba(59, 130, 246, 0.2) 0%,
+      transparent 70%
     );
-    transform: rotate(45deg);
-    animation: cert-shine 5s infinite;
+    border-radius: 50%;
     pointer-events: none;
-  }
-
-  @keyframes cert-shine {
-    0% {
-      transform: translateX(-100%) translateY(-100%) rotate(45deg);
-    }
-    100% {
-      transform: translateX(100%) translateY(100%) rotate(45deg);
-    }
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    z-index: 10;
+    mix-blend-mode: plus-lighter;
   }
 
   .placeholder-card {
+    width: 380px;
+    height: 520px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 2.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 350px;
-    border: 2px dashed rgba(59, 130, 246, 0.1);
-    background: transparent;
+    opacity: 0.5;
+    background: rgba(255, 255, 255, 0.01);
   }
 
-  @media (max-width: 768px) {
+  #cert-modal-content {
+    background: #060912;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+
+  @media (max-width: 1024px) {
     .certificates-grid {
-      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .certificate-card {
+      width: 340px;
+      height: 480px;
+    }
+
+    .cert-title {
+      font-size: 1.75rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .certificates-grid {
+      flex-direction: column;
+      width: 100%;
+      align-items: center;
+    }
+
+    .certificate-card {
+      width: 100%;
+      max-width: 380px;
     }
   }
 </style>

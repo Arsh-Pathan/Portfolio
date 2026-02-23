@@ -2,13 +2,13 @@
 
 ---
 
-<canvas id="space-background"></canvas>
+<canvas id="background"></canvas>
 
 <script>
   import * as THREE from "three";
 
   const canvas = document.getElementById(
-    "space-background",
+    "background",
   ) as HTMLCanvasElement;
 
   if (canvas) {
@@ -28,8 +28,6 @@
 
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    /* ---------------- STARS ---------------- */
 
     const starsGeometry = new THREE.BufferGeometry();
     const starsMaterial = new THREE.PointsMaterial({
@@ -71,14 +69,11 @@
     const stars = new THREE.Points(starsGeometry, starsMaterial);
     scene.add(stars);
 
-    /* ---------------- CAMERA (SPACESHIP) ---------------- */
-
     camera.position.z = 500;
 
     let mouseX = 0;
     let mouseY = 0;
 
-    // NEW: spaceship movement vars
     let targetZ = 500;
     let currentZ = 500;
 
@@ -91,7 +86,6 @@
       mouseY = -(event.clientY / window.innerHeight) * 4 + 1;
     });
 
-    // scroll = thrust forward/back
     window.addEventListener("wheel", (event) => {
       targetZ += event.deltaY * SCROLL_SPEED;
       targetZ = Math.max(MIN_Z, Math.min(MAX_Z, targetZ));
@@ -100,16 +94,13 @@
     function animate() {
       requestAnimationFrame(animate);
 
-      // smooth forward motion
       currentZ += (targetZ - currentZ) * 0.05;
       camera.position.z = currentZ;
 
-      // steering
       camera.position.x += (mouseX * 50 - camera.position.x) * 0.05;
       camera.position.y += (mouseY * 50 - camera.position.y) * 0.05;
       camera.lookAt(scene.position);
 
-      // speed illusion (closer = faster stars)
       const speedFactor = (500 - currentZ) * 0.000002;
 
       stars.rotation.y += 0.0004 + speedFactor;
@@ -129,7 +120,7 @@
 </script>
 
 <style>
-  #space-background {
+  #background {
     position: fixed;
     top: 0;
     left: 0;

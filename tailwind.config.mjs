@@ -1,27 +1,21 @@
-/** @type {import('tailwindcss').Config} */
 export default {
     content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
     theme: {
         extend: {
             colors: {
-                // Dark backgrounds
                 'bg-primary': '#0a0f1c',
                 'bg-secondary': '#0d1427',
                 'bg-card': '#111a2e',
                 'bg-elevated': '#162040',
                 'surface': '#1a2744',
-                // Borders
                 'border-subtle': 'rgba(59, 130, 246, 0.15)',
                 'border-glow': 'rgba(59, 130, 246, 0.4)',
-                // Old cream aliases (for hero compatibility)
                 'cream-light': '#0a0f1c',
                 'cream-medium': '#0d1427',
                 'cream-dark': '#1a2744',
-                // Text
                 'text-main': '#e8edf5',
                 'text-muted': '#7a8ba8',
                 'text-secondary': '#94a3c4',
-                // Accents
                 'accent-gold': '#60a5fa',
                 'accent-sage': '#34d399',
                 'accent-blue': '#3b82f6',
@@ -29,7 +23,6 @@ export default {
                 'accent-indigo': '#818cf8',
                 'accent-electric': '#60a5fa',
                 'soft-white': '#e8edf5',
-                // Glows
                 'glow-blue': 'rgba(59, 130, 246, 0.5)',
                 'glow-cyan': 'rgba(6, 182, 212, 0.3)',
             },

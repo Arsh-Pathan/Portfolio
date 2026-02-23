@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import LoadingScreen from "../components/LoadingScreen.astro";
 import Background from "../components/Background.astro";
 import Hero from "../components/Hero.astro";
 import Skills from "../components/Skills.astro";
@@ -15,19 +16,24 @@ import Footer from "../components/Footer.astro";
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Arsh Pathan — Developer, Creator, and Tech Enthusiast. Explore my portfolio of projects, skills, and achievements."
+    />
+    <title>Arsh Pathan — Portfolio</title>
   </head>
-  <body class="bg-cream-light text-text-main antialiased">
+  <body class="bg-bg-primary text-text-main antialiased">
     <Background />
 
     <main>
       <Hero />
-      <Skills />
+      <!-- <Skills />
       <Projects />
       <Education />
       <Certificates />
       <Interests />
-      <Contact />
+      <Contact /> -->
     </main>
 
     <Footer />

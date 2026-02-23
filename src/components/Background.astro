@@ -4,14 +4,6 @@
 
 <canvas id="space-background"></canvas>
 
-<div class="background-symbols">
-  <span class="symbol top-left cream">&#123;</span>
-  <span class="symbol top-right cream">&#125;</span>
-
-  <span class="symbol bottom-left cream">&#34;</span>
-  <span class="symbol bottom-right cream">&#34;</span>
-</div>
-
 <script>
   import * as THREE from "three";
 
@@ -22,11 +14,12 @@
   if (canvas) {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
-      75,
+      80,
       window.innerWidth / window.innerHeight,
-      0.1,
-      1000,
+      50,
+      2000,
     );
+
     const renderer = new THREE.WebGLRenderer({
       canvas,
       alpha: true,
@@ -36,6 +29,8 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
+    /* ---------------- STARS ---------------- */
+
     const starsGeometry = new THREE.BufferGeometry();
     const starsMaterial = new THREE.PointsMaterial({
       color: 0xffffff,
@@ -43,6 +38,7 @@
       sizeAttenuation: true,
       transparent: true,
       opacity: 0.8,
+      vertexColors: true,
     });
 
     const starsCount = 3000;
@@ -55,10 +51,9 @@
       positions[i + 2] = (Math.random() - 0.5) * 2000;
 
       const palette = [
-        { r: 0.83, g: 0.69, b: 0.22 }, // Gold #D4AF37
-        { r: 0.56, g: 0.64, b: 0.56 }, // Sage #8FA38F
-        { r: 0.36, g: 0.69, b: 0.89 }, // Blue #5DADE2
-        { r: 1, g: 1, b: 1 }, // White #FFFFFF
+        { r: 0.56, g: 0.64, b: 0.56 },
+        { r: 0.36, g: 0.69, b: 0.89 },
+        { r: 1, g: 1, b: 1 },
       ];
 
       const color = palette[Math.floor(Math.random() * palette.length)];
@@ -73,30 +68,52 @@
     );
     starsGeometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
-    starsMaterial.vertexColors = true;
-
     const stars = new THREE.Points(starsGeometry, starsMaterial);
     scene.add(stars);
+
+    /* ---------------- CAMERA (SPACESHIP) ---------------- */
 
     camera.position.z = 500;
 
     let mouseX = 0;
     let mouseY = 0;
 
+    // NEW: spaceship movement vars
+    let targetZ = 500;
+    let currentZ = 500;
+
+    const MIN_Z = 120;
+    const MAX_Z = 1200;
+    const SCROLL_SPEED = 0.6;
+
     document.addEventListener("mousemove", (event) => {
-      mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-      mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+      mouseX = (event.clientX / window.innerWidth) * 4 - 1;
+      mouseY = -(event.clientY / window.innerHeight) * 4 + 1;
+    });
+
+    // scroll = thrust forward/back
+    window.addEventListener("wheel", (event) => {
+      targetZ += event.deltaY * SCROLL_SPEED;
+      targetZ = Math.max(MIN_Z, Math.min(MAX_Z, targetZ));
     });
 
     function animate() {
       requestAnimationFrame(animate);
 
-      stars.rotation.y += 0.0004;
-      stars.rotation.x += 0.00025;
+      // smooth forward motion
+      currentZ += (targetZ - currentZ) * 0.05;
+      camera.position.z = currentZ;
 
+      // steering
       camera.position.x += (mouseX * 50 - camera.position.x) * 0.05;
       camera.position.y += (mouseY * 50 - camera.position.y) * 0.05;
       camera.lookAt(scene.position);
+
+      // speed illusion (closer = faster stars)
+      const speedFactor = (500 - currentZ) * 0.000002;
+
+      stars.rotation.y += 0.0004 + speedFactor;
+      stars.rotation.x += 0.00025 + speedFactor * 0.5;
 
       renderer.render(scene, camera);
     }
@@ -121,117 +138,5 @@
     z-index: -1;
     background: transparent;
     pointer-events: none;
-  }
-
-  .background-symbols {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .symbol {
-    position: absolute;
-    font-family: "Outfit", monospace;
-    font-weight: 700;
-    font-size: 15rem;
-    line-height: 1;
-    user-select: none;
-    filter: none;
-    animation: float 6s ease-in-out infinite;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  .cream {
-    color: rgba(95, 153, 223, 0.25);
-  }
-
-  @keyframes float {
-    0% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-20px);
-    }
-    100% {
-      transform: translateY(0px);
-    }
-  }
-
-  .top-left {
-    top: 2rem;
-    left: 2rem;
-  }
-
-  .top-right {
-    top: 25rem;
-    right: 2rem;
-  }
-
-  .bottom-left {
-    bottom: 62rem;
-    left: 30rem;
-  }
-
-  .bottom-right {
-    bottom: 62rem;
-    right: 30rem;
-  }
-
-  @media (max-width: 1024px) {
-    .symbol {
-      font-size: 10rem;
-    }
-
-    .top-right {
-      top: 15rem;
-    }
-
-    .bottom-left,
-    .bottom-right {
-      bottom: 40rem;
-      left: auto;
-      right: auto;
-    }
-
-    .bottom-left {
-      left: 10rem;
-    }
-
-    .bottom-right {
-      right: 10rem;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .symbol {
-      font-size: 6rem;
-    }
-
-    .top-left {
-      top: 1rem;
-      left: 1rem;
-    }
-
-    .top-right {
-      top: 10rem;
-      right: 1rem;
-    }
-
-    .bottom-left {
-      bottom: 20rem;
-      left: 2rem;
-    }
-
-    .bottom-right {
-      bottom: 10rem;
-      right: 2rem;
-    }
   }
 </style>

@@ -7,10 +7,19 @@
   class="section relative overflow-hidden select-none"
   style="min-height: 120vh;"
 >
+  <div class="dev-badge-corner">
+    <span class="pulse-dot"></span>
+    Portfolio Under Development
+  </div>
   <div
     class="container z-10 flex items-center justify-center"
     style="min-height: 100vh; margin-top: -10vh;"
   >
+    <div class="background-symbols">
+      <span class="symbol top-left cream">&#123;</span>
+      <span class="symbol top-right cream">&#125;</span>
+    </div>
+
     <div
       class="flex flex-col md:flex-row items-center justify-center w-full gap-12 md:gap-20"
     >
@@ -70,24 +79,6 @@
     <div class="scroll-indicator absolute bottom-10 left-1/2 -translate-x-1/2">
       <div class="scroll-arrow"></div>
     </div>
-  </div>
-
-  <div class="custom-shape-divider-bottom">
-    <svg
-      data-name="Layer 1"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1200 120"
-      preserveAspectRatio="none"
-    >
-      <path
-        d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19
-                c-82.26-17.34-168.06-16.33-250.45.39
-                -57.84,11.73-114,31.07-172,41.86
-                A600.21,600.21,0,0,1,0,27.35V120H1200
-                V95.8C1132.19,118.92,1055.71,111.31,
-                985.66,92.83Z"
-        class="shape-fill"></path>
-    </svg>
   </div>
 </section>
 
@@ -267,6 +258,105 @@
     }
   }
 
+  /* ===== Corner Dev Badge ===== */
+
+  .dev-badge-corner {
+    position: absolute;
+    top: 24px;
+    right: 28px;
+    z-index: 50;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 8px 16px;
+
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+
+    color: #7dd3fc;
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+
+    border-radius: 999px;
+    backdrop-filter: blur(10px);
+
+    box-shadow: 0 0 18px rgba(56, 189, 248, 0.15);
+  }
+
+  /* glow dot */
+  .pulse-dot {
+    width: 10px;
+    height: 10px;
+    background: #38bdf8;
+    border-radius: 50%;
+    position: relative;
+  }
+
+  .pulse-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #38bdf8;
+    animation: pulse-ring 1.6s infinite;
+  }
+
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+    70% {
+      transform: scale(2.8);
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* hover shimmer */
+  .dev-badge-corner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      120deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.25),
+      transparent 70%
+    );
+    opacity: 0;
+  }
+
+  .dev-badge-corner:hover::before {
+    opacity: 1;
+    animation: shimmer 1.2s linear;
+  }
+
+  @keyframes shimmer {
+    from {
+      transform: translateX(-120%);
+    }
+    to {
+      transform: translateX(120%);
+    }
+  }
+
+  /* mobile */
+  @media (max-width: 640px) {
+    .dev-badge-corner {
+      top: 14px;
+      right: 14px;
+      font-size: 12px;
+      padding: 6px 12px;
+    }
+  }
+
   .profile-picture {
     position: relative;
     width: 100%;
@@ -321,25 +411,116 @@
     }
   }
 
-  .custom-shape-divider-bottom {
+  .background-symbols {
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
     overflow: hidden;
-    line-height: 0;
-    z-index: -2;
   }
 
-  .custom-shape-divider-bottom svg {
-    position: relative;
-    display: block;
-    width: calc(100% + 1.3px);
-    height: 60px;
+  .cream {
+    color: rgba(95, 153, 223, 0.25);
   }
 
-  .custom-shape-divider-bottom .shape-fill {
-    fill: #1e293b;
+  .symbol {
+    position: absolute;
+    font-family: "Outfit", monospace;
+    font-weight: 700;
+    font-size: 15rem;
+    line-height: 1;
+    user-select: none;
+    filter: none;
+    animation: float 6s ease-in-out infinite;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  @media (max-width: 1024px) {
+    .symbol {
+      font-size: 10rem;
+    }
+
+    .top-right {
+      top: 15rem;
+    }
+
+    .bottom-left,
+    .bottom-right {
+      bottom: 40rem;
+      left: auto;
+      right: auto;
+    }
+
+    .bottom-left {
+      left: 10rem;
+    }
+
+    .bottom-right {
+      right: 10rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .symbol {
+      font-size: 6rem;
+    }
+
+    .top-left {
+      top: 1rem;
+      left: 1rem;
+    }
+
+    .top-right {
+      top: 10rem;
+      right: 1rem;
+    }
+
+    .bottom-left {
+      bottom: 20rem;
+      left: 2rem;
+    }
+
+    .bottom-right {
+      bottom: 10rem;
+      right: 2rem;
+    }
+  }
+
+  .top-left {
+    top: 2rem;
+    left: 2rem;
+  }
+
+  .top-right {
+    top: 25rem;
+    right: 2rem;
+  }
+
+  .bottom-left {
+    bottom: 62rem;
+    left: 30rem;
+  }
+
+  .bottom-right {
+    bottom: 62rem;
+    right: 30rem;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
   }
 
   @keyframes blink {

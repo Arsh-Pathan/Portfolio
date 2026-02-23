@@ -1,0 +1,279 @@
+---
+
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 — Page Not Found | Arsh Pathan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Outfit", sans-serif;
+        background: #0a0f1c;
+        color: #e8edf5;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Floating blobs */
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .blob-1 {
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(
+          circle,
+          rgba(59, 130, 246, 0.1),
+          transparent 70%
+        );
+        top: 10%;
+        left: 20%;
+        animation: blob-drift 8s ease-in-out infinite alternate;
+      }
+
+      .blob-2 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(6, 182, 212, 0.08),
+          transparent 70%
+        );
+        bottom: 10%;
+        right: 15%;
+        animation: blob-drift 10s ease-in-out infinite alternate-reverse;
+      }
+
+      @keyframes blob-drift {
+        0% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(30px, -30px);
+        }
+      }
+
+      .container {
+        text-align: center;
+        position: relative;
+        z-index: 10;
+      }
+
+      .error-code {
+        font-size: clamp(8rem, 20vw, 14rem);
+        font-weight: 900;
+        line-height: 1;
+        background: linear-gradient(135deg, #3b82f6, #06b6d4, #818cf8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        background-size: 200% 200%;
+        animation: gradient-move 6s ease infinite;
+        margin-bottom: 1rem;
+        position: relative;
+      }
+
+      .error-code::after {
+        content: "404";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 4px;
+        font-size: inherit;
+        font-weight: inherit;
+        background: linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 0.15),
+          rgba(6, 182, 212, 0.1)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: blur(15px);
+        z-index: -1;
+      }
+
+      @keyframes gradient-move {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      .error-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #e8edf5;
+        margin-bottom: 1rem;
+      }
+
+      .error-desc {
+        color: #7a8ba8;
+        font-size: 1.05rem;
+        max-width: 400px;
+        margin: 0 auto 2.5rem;
+        line-height: 1.6;
+      }
+
+      .home-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.85rem 2.2rem;
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+        border-radius: 0.75rem;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+      }
+
+      .home-btn:hover {
+        transform: translateY(-3px);
+        box-shadow:
+          0 8px 30px rgba(59, 130, 246, 0.5),
+          0 0 60px rgba(59, 130, 246, 0.15);
+      }
+
+      .home-btn svg {
+        transition: transform 0.3s;
+      }
+
+      .home-btn:hover svg {
+        transform: translateX(-3px);
+      }
+
+      /* Floating symbols */
+      .floating-symbols {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 5;
+        overflow: hidden;
+      }
+
+      .fsym {
+        position: absolute;
+        font-family: "Outfit", monospace;
+        font-weight: 700;
+        color: rgba(59, 130, 246, 0.08);
+        animation: float-sym 6s ease-in-out infinite;
+      }
+
+      @keyframes float-sym {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-15px) rotate(5deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="floating-symbols">
+      <span
+        class="fsym"
+        style="font-size: 8rem; top: 10%; left: 5%; animation-delay: 0s;"
+        >{}
+        <span
+          class="fsym"
+          style="font-size: 6rem; top: 15%; right: 10%; animation-delay: 1s;"
+        ></span></span
+      >
+      <span
+        class="fsym"
+        style="font-size: 4rem; bottom: 20%; left: 15%; animation-delay: 2s;"
+        >/</span
+      >
+      <span
+        class="fsym"
+        style="font-size: 5rem; bottom: 25%; right: 20%; animation-delay: 0.5s;"
+        >&lt;</span
+      >
+      <span
+        class="fsym"
+        style="font-size: 3rem; top: 40%; left: 25%; animation-delay: 1.5s;"
+        >&gt;</span
+      >
+      <span
+        class="fsym"
+        style="font-size: 7rem; top: 60%; right: 5%; animation-delay: 3s;"
+        >()</span
+      >
+    </div>
+
+    <div class="container">
+      <div class="error-code" id="error-code">404</div>
+      <h1 class="error-title" id="error-title">Page Not Found</h1>
+      <p class="error-desc" id="error-desc">
+        The page you're looking for doesn't exist or has been moved to another
+        dimension.
+      </p>
+      <a href="/" class="home-btn" id="home-btn">
+        <svg
+          width="20"
+          height="20"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Go Home
+      </a>
+    </div>
+
+    <script>
+      // Simple entrance animation using CSS
+      const elements = ["error-code", "error-title", "error-desc", "home-btn"];
+      elements.forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.style.opacity = "0";
+          el.style.transform = "translateY(30px)";
+          el.style.transition = `opacity 0.8s ease ${i * 0.15}s, transform 0.8s ease ${i * 0.15}s`;
+          requestAnimationFrame(() => {
+            el.style.opacity = "1";
+            el.style.transform = "translateY(0)";
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

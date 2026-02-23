@@ -1,235 +1,246 @@
 ---
-// Certificates Section
 const certificates = [
-    {
-        title: "Outlook Certificate",
-        issuer: "Bootcamp Program",
-        description:
-            "Completed comprehensive bootcamp in Agentic AI and Generative AI",
-        date: "2024",
-        icon: "🏆",
-    },
+  {
+    title: "Outlook Certificate",
+    issuer: "Bootcamp Program",
+    description:
+      "Completed comprehensive bootcamp in Agentic AI and Generative AI",
+    date: "2024",
+    icon: "🏆",
+  },
 ];
 ---
 
-<section id="certificates" class="section relative">
-    <div class="container relative z-10">
-        <h2 class="section-title">Certificates & Achievements</h2>
+<section
+  id="certificates"
+  class="section certificates-section relative overflow-hidden"
+>
+  <div class="container relative z-10">
+    <div class="text-center mb-16">
+      <div class="section-label justify-center flex">Recognition</div>
+      <h2 class="section-title">
+        Certificates & <span class="gradient-text">Achievements</span>
+      </h2>
+    </div>
 
-        <div class="certificates-grid">
-            {
-                certificates.map((cert, index) => (
-                    <div class="certificate-card glass" data-cert={index}>
-                        <div class="cert-decoration" />
+    <div class="certificates-grid">
+      {
+        certificates.map((cert, index) => (
+          <div class="certificate-card glass" data-cert={index}>
+            <div class="cert-glow-line" />
 
-                        <div class="cert-icon">
-                            <span class="text-6xl">{cert.icon}</span>
-                        </div>
-
-                        <div class="cert-content">
-                            <h3 class="text-3xl font-bold mb-3 gradient-text">
-                                {cert.title}
-                            </h3>
-                            <p class="text-xl text-accent-cyan mb-2">
-                                {cert.issuer}
-                            </p>
-                            <p class="text-gray-300 mb-4">{cert.description}</p>
-                            <p class="text-gray-400">{cert.date}</p>
-                        </div>
-
-                        <button class="view-cert-btn btn btn-primary mt-6">
-                            View Certificate
-                        </button>
-
-                        <div class="cert-shine" />
-                    </div>
-                ))
-            }
-
-            <!-- Placeholder for more certificates -->
-            <div class="certificate-placeholder glass">
-                <div class="placeholder-icon">
-                    <span class="text-6xl">📜</span>
-                </div>
-                <p class="text-xl text-gray-400 mt-4">
-                    More achievements coming soon...
-                </p>
+            <div class="cert-icon-wrap">
+              <span class="text-5xl">{cert.icon}</span>
             </div>
-        </div>
-    </div>
 
-    <!-- Curved Divider Bottom -->
-    <div class="custom-shape-divider-bottom">
-        <svg
-            data-name="Layer 1"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1200 120"
-            preserveAspectRatio="none"
-        >
-            <path
-                d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-                class="shape-fill"></path>
-        </svg>
+            <div class="cert-body">
+              <h3 class="cert-title">{cert.title}</h3>
+              <p class="cert-issuer">{cert.issuer}</p>
+              <p class="cert-desc">{cert.description}</p>
+              <span class="cert-date">{cert.date}</span>
+            </div>
+
+            <button class="view-cert-btn btn btn-outline mt-6">
+              View Certificate
+            </button>
+
+            <div class="cert-shine" />
+          </div>
+        ))
+      }
+
+      <div class="placeholder-card glass">
+        <div class="placeholder-icon">
+          <span class="text-5xl opacity-40">📜</span>
+        </div>
+        <p class="text-gray-500 mt-4 font-medium">
+          More achievements coming soon...
+        </p>
+      </div>
     </div>
+  </div>
 </section>
 
 <script>
-    import { gsap } from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-    gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger);
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const certCards = document.querySelectorAll(
-            ".certificate-card, .certificate-placeholder",
-        );
-
-        certCards.forEach((card, index) => {
-            gsap.from(card, {
-                scrollTrigger: {
-                    trigger: card,
-                    start: "top 80%",
-                    toggleActions: "play none none reverse",
-                },
-                scale: 0.8,
-                opacity: 0,
-                rotateY: 180,
-                duration: 1,
-                delay: index * 0.2,
-                ease: "back.out(1.7)",
-            });
-        });
-
-        // View certificate button interaction
-        const viewButtons = document.querySelectorAll(".view-cert-btn");
-        viewButtons.forEach((btn) => {
-            btn.addEventListener("click", () => {
-                // Add your certificate modal/view logic here
-                gsap.to(btn, {
-                    scale: 0.9,
-                    duration: 0.1,
-                    yoyo: true,
-                    repeat: 1,
-                });
-            });
-        });
+  document.addEventListener("DOMContentLoaded", () => {
+    gsap.from(".certificates-section .section-label", {
+      scrollTrigger: { trigger: ".certificates-section", start: "top 80%" },
+      y: 30,
+      opacity: 0,
+      filter: "blur(8px)",
+      duration: 0.8,
+      ease: "power3.out",
     });
+
+    gsap.from(".certificates-section .section-title", {
+      scrollTrigger: { trigger: ".certificates-section", start: "top 80%" },
+      y: 40,
+      opacity: 0,
+      filter: "blur(10px)",
+      duration: 1,
+      delay: 0.15,
+      ease: "power3.out",
+    });
+
+    const cards = document.querySelectorAll(
+      ".certificate-card, .placeholder-card",
+    );
+    cards.forEach((card, index) => {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: "top 85%",
+          toggleActions: "play none none reverse",
+        },
+        scale: 0.85,
+        opacity: 0,
+        rotateY: 15,
+        filter: "blur(6px)",
+        duration: 0.9,
+        delay: index * 0.15,
+        ease: "power3.out",
+      });
+    });
+
+    document.querySelectorAll(".view-cert-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        gsap.to(btn, { scale: 0.92, duration: 0.1, yoyo: true, repeat: 1 });
+      });
+    });
+  });
 </script>
 
 <style>
+  .certificates-section {
+    background: #0a0f1c;
+    padding: 8rem 0;
+  }
+
+  .certificates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .certificate-card,
+  .placeholder-card {
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .certificate-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow:
+      0 30px 60px rgba(0, 0, 0, 0.4),
+      0 0 50px rgba(59, 130, 246, 0.1);
+  }
+
+  .cert-glow-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #06b6d4, #818cf8, #3b82f6);
+    background-size: 300% 100%;
+    animation: glow-line-shift 4s linear infinite;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+  }
+
+  @keyframes glow-line-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 300% 50%;
+    }
+  }
+
+  .cert-icon-wrap {
+    margin: 1.5rem 0;
+    filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.3));
+  }
+
+  .cert-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #60a5fa, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .cert-issuer {
+    font-size: 1rem;
+    color: #06b6d4;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .cert-desc {
+    color: #7a8ba8;
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+    font-size: 0.9rem;
+  }
+
+  .cert-date {
+    color: #5a6d8a;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .cert-shine {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent,
+      rgba(59, 130, 246, 0.05),
+      transparent
+    );
+    transform: rotate(45deg);
+    animation: cert-shine 5s infinite;
+    pointer-events: none;
+  }
+
+  @keyframes cert-shine {
+    0% {
+      transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    100% {
+      transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
+  }
+
+  .placeholder-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 350px;
+    border: 2px dashed rgba(59, 130, 246, 0.1);
+    background: transparent;
+  }
+
+  @media (max-width: 768px) {
     .certificates-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        gap: 3rem;
-        max-width: 1200px;
-        margin: 0 auto;
+      grid-template-columns: 1fr;
     }
-
-    .certificate-card,
-    .certificate-placeholder {
-        padding: 3rem;
-        position: relative;
-        overflow: hidden;
-        transition: all 0.3s ease;
-        text-align: center;
-    }
-
-    .certificate-card:hover {
-        transform: translateY(-10px) scale(1.02);
-        box-shadow: 0 30px 60px rgba(0, 212, 255, 0.3);
-    }
-
-    .cert-decoration {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 10px;
-        background: linear-gradient(90deg, #00d4ff, #9d4edd, #00d4ff);
-        background-size: 200% 100%;
-        animation: gradient-move 3s linear infinite;
-    }
-
-    @keyframes gradient-move {
-        0% {
-            background-position: 0% 50%;
-        }
-        100% {
-            background-position: 200% 50%;
-        }
-    }
-
-    .cert-icon {
-        margin: 2rem 0;
-        filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.5));
-    }
-
-    .cert-shine {
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(
-            45deg,
-            transparent,
-            rgba(255, 255, 255, 0.1),
-            transparent
-        );
-        transform: rotate(45deg);
-        animation: shine 3s infinite;
-    }
-
-    @keyframes shine {
-        0% {
-            transform: translateX(-100%) translateY(-100%) rotate(45deg);
-        }
-        100% {
-            transform: translateX(100%) translateY(100%) rotate(45deg);
-        }
-    }
-
-    .certificate-placeholder {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 400px;
-        border: 2px dashed rgba(255, 255, 255, 0.2);
-        opacity: 0.6;
-    }
-
-    .placeholder-icon {
-        opacity: 0.5;
-    }
-
-    @media (max-width: 768px) {
-        .certificates-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    /* Custom Shape Divider */
-    .custom-shape-divider-bottom {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        overflow: hidden;
-        line-height: 0;
-        transform: rotate(180deg);
-        z-index: -2;
-    }
-
-    .custom-shape-divider-bottom svg {
-        position: relative;
-        display: block;
-        width: calc(100% + 1.3px);
-        height: 60px;
-    }
-
-    .custom-shape-divider-bottom .shape-fill {
-        fill: #1e293b; /* Match Interests section background */
-        opacity: 1;
-    }
+  }
 </style>

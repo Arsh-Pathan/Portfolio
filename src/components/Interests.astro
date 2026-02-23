@@ -1,283 +1,290 @@
 ---
 const interests = [
-    {
-        id: "coding",
-        title: "Agentic AI",
-        type: "code",
-        content: `class Agent:
-    def __init__(self):
-        self.mind = "🧠"
-        self.autonomy = True
-    
-    def think(self, context):
-        plan = self.analyze(context)
-        return self.execute(plan)`,
-        language: "python",
-        x: 10, y: 10, width: 400, height: 250
-    },
-    {
-        id: "quantum",
-        title: "Quantum Computing",
-        type: "math",
-        content: `|ψ⟩ = α|0⟩ + β|1⟩`,
-        subContent: `H|0⟩ = (|0⟩ + |1⟩)/√2`,
-        x: 50, y: 5, width: 300, height: 200
-    },
-    {
-        id: "web",
-        title: "Modern Web",
-        type: "browser",
-        content: "<div class='future'>\n  <h1>Hello World</h1>\n</div>",
-        x: 5, y: 50, width: 350, height: 220
-    },
-    {
-        id: "hpc",
-        title: "HPC Performance",
-        type: "terminal",
-        content: `> mpirun -np 4 ./solver
-[0] Rank 0: Initializing...
-[1] Rank 1: Ready
-[2] Rank 2: Ready
-[3] Rank 3: Ready
-> Benchmark: 98.5 TFLOPS`,
-        x: 45, y: 45, width: 450, height: 200
-    },
-    {
-        id: "iot",
-        title: "IoT Sensor Data",
-        type: "graph",
-        content: "Sensor Stream",
-        x: 75, y: 20, width: 250, height: 180
-    }
+  {
+    id: "coding",
+    title: "Agentic AI",
+    type: "code",
+    content: `class Agent:\n    def __init__(self):\n        self.mind = "🧠"\n        self.autonomy = True\n    \n    def think(self, context):\n        plan = self.analyze(context)\n        return self.execute(plan)`,
+    language: "python",
+  },
+  {
+    id: "quantum",
+    title: "Quantum Computing",
+    type: "math",
+    content: `|ψ⟩ = α|0⟩ + β|1⟩`,
+    subContent: `H|0⟩ = (|0⟩ + |1⟩)/√2`,
+  },
+  {
+    id: "web",
+    title: "Modern Web",
+    type: "browser",
+    content: "<div class='future'>\n  <h1>Hello World</h1>\n</div>",
+  },
+  {
+    id: "hpc",
+    title: "HPC Performance",
+    type: "terminal",
+    content: `> mpirun -np 4 ./solver\n[0] Rank 0: Initializing...\n[1] Rank 1: Ready\n[2] Rank 2: Ready\n[3] Rank 3: Ready\n> Benchmark: 98.5 TFLOPS`,
+  },
+  {
+    id: "iot",
+    title: "IoT Sensor Data",
+    type: "graph",
+    content: "Sensor Stream",
+  },
 ];
 ---
 
-<section id="interests" class="section interests-section relative overflow-hidden min-h-screen">
-    <div class="container relative z-10 h-full">
-        <h2 class="section-title text-white mb-12">Areas of Interest</h2>
+<section
+  id="interests"
+  class="section interests-section relative overflow-hidden"
+>
+  <div class="container relative z-10">
+    <div class="text-center mb-16">
+      <div class="section-label justify-center flex">Passions</div>
+      <h2 class="section-title">
+        Areas of <span class="gradient-text">Interest</span>
+      </h2>
+    </div>
 
-        <div class="desktop-container relative w-full h-[800px] perspective-1000">
-            
-            {interests.map((item, index) => (
-                <div 
-                    class={`window-pane absolute glass-window ${item.type}-window`}
-                    style={`left: ${item.x}%; top: ${item.y}%; width: ${item.width}px; height: ${item.height}px; z-index: ${index + 1};`}
-                    data-speed={Math.random() * 0.5 + 0.5}
-                >
-                    <!-- Window Header -->
-                    <div class="window-header flex items-center justify-between px-4 py-2 bg-white/10 border-b border-white/5 rounded-t-xl backdrop-blur-md">
-                        <div class="flex gap-2">
-                            <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
-                            <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
-                        </div>
-                        <span class="text-xs font-mono text-white/70">{item.title}</span>
-                        <div class="w-8"></div> <!-- Spacer for center alignment -->
-                    </div>
-
-                    <!-- Window Content -->
-                    <div class="window-content p-4 h-[calc(100%-36px)] overflow-hidden relative">
-                        {item.type === 'code' && (
-                            <pre class="font-mono text-sm text-green-400 leading-relaxed">
-                                <code>{item.content}</code>
-                            </pre>
-                        )}
-
-                        {item.type === 'math' && (
-                            <div class="flex flex-col items-center justify-center h-full text-white">
-                                <div class="text-3xl font-serif italic mb-4">{item.content}</div>
-                                <div class="text-xl font-serif text-white/70">{item.subContent}</div>
-                            </div>
-                        )}
-
-                        {item.type === 'browser' && (
-                            <div class="bg-white/90 h-full rounded-md p-4 text-gray-800 font-sans">
-                                <div class="border-b border-gray-200 pb-2 mb-2 text-xs text-gray-500 flex gap-2">
-                                    <span class="bg-gray-200 px-2 rounded">localhost:3000</span>
-                                </div>
-                                <pre class="text-xs text-purple-600 font-bold">{item.content}</pre>
-                            </div>
-                        )}
-
-                        {item.type === 'terminal' && (
-                            <div class="font-mono text-xs text-gray-300">
-                                {item.content.split('\n').map(line => (
-                                    <div class="mb-1">
-                                        <span class="text-green-500 mr-2">{line.startsWith('>') ? '$' : ''}</span>
-                                        {line}
-                                    </div>
-                                ))}
-                                <div class="animate-pulse inline-block w-2 h-4 bg-gray-400 align-middle ml-1"></div>
-                            </div>
-                        )}
-
-                        {item.type === 'graph' && (
-                            <div class="flex items-end justify-between h-full gap-1 px-2 pb-2">
-                                {[40, 70, 55, 85, 60, 90, 75].map(h => (
-                                    <div 
-                                        class="w-full bg-accent-cyan/60 rounded-t-sm transition-all duration-1000"
-                                        style={`height: ${h}%`}
-                                    ></div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                    
-                    <!-- Glow Effect -->
-                    <div class="absolute inset-0 rounded-xl pointer-events-none border border-white/10 shadow-2xl"></div>
+    <div class="interests-grid">
+      {
+        interests.map((item, index) => (
+          <div
+            class={`interest-window glass ${item.type}-window`}
+            data-speed={Math.random() * 0.5 + 0.5}
+          >
+            <div class="win-header">
+              <div class="win-dots">
+                <span class="dot dot-red" />
+                <span class="dot dot-yellow" />
+                <span class="dot dot-green" />
+              </div>
+              <span class="win-title">{item.title}</span>
+              <div class="w-8" />
+            </div>
+            <div class="win-body">
+              {item.type === "code" && (
+                <pre class="font-mono text-sm text-green-400 leading-relaxed whitespace-pre-wrap">
+                  <code>{item.content}</code>
+                </pre>
+              )}
+              {item.type === "math" && (
+                <div class="flex flex-col items-center justify-center h-full text-white gap-4">
+                  <div class="text-2xl font-serif italic">{item.content}</div>
+                  <div class="text-lg font-serif text-white/50">
+                    {item.subContent}
+                  </div>
                 </div>
-            ))}
-
-        </div>
+              )}
+              {item.type === "browser" && (
+                <div class="bg-white/5 h-full rounded-md p-4">
+                  <div class="border-b border-white/10 pb-2 mb-3 text-xs text-gray-500 flex gap-2">
+                    <span class="bg-white/10 px-2 py-0.5 rounded text-gray-400">
+                      localhost:3000
+                    </span>
+                  </div>
+                  <pre class="text-xs text-purple-400 font-mono">
+                    {item.content}
+                  </pre>
+                </div>
+              )}
+              {item.type === "terminal" && (
+                <div class="font-mono text-xs text-gray-300">
+                  {item.content.split("\n").map((line: string) => (
+                    <div class="mb-1">
+                      <span class="text-blue-400 mr-1">
+                        {line.startsWith(">") ? "$" : " "}
+                      </span>
+                      {line}
+                    </div>
+                  ))}
+                  <div class="inline-block w-2 h-4 bg-blue-400/60 animate-pulse align-middle ml-1" />
+                </div>
+              )}
+              {item.type === "graph" && (
+                <div class="flex items-end justify-between h-full gap-1 px-2 pb-2">
+                  {[40, 70, 55, 85, 60, 90, 75].map((h: number) => (
+                    <div
+                      class="w-full rounded-t-sm transition-all duration-1000"
+                      style={`height: ${h}%; background: linear-gradient(180deg, #3b82f6, rgba(59,130,246,0.2));`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        ))
+      }
     </div>
-
-    <!-- Curved Divider Bottom -->
-    <div class="custom-shape-divider-bottom">
-        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="shape-fill"></path>
-        </svg>
-    </div>
+  </div>
 </section>
 
 <script>
-    import { gsap } from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
-    import Draggable from "gsap/Draggable";
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-    gsap.registerPlugin(ScrollTrigger, Draggable);
+  gsap.registerPlugin(ScrollTrigger);
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const windows = document.querySelectorAll(".window-pane");
-        
-        // Initial Float Animation
-        windows.forEach((win, index) => {
-            // Random float movement
-            gsap.to(win, {
-                y: `+=${Math.random() * 20 - 10}`,
-                x: `+=${Math.random() * 10 - 5}`,
-                rotation: Math.random() * 2 - 1,
-                duration: 3 + Math.random() * 2,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut",
-                delay: index * 0.2
-            });
-
-            // Make draggable
-            Draggable.create(win, {
-                type: "x,y",
-                bounds: ".desktop-container",
-                inertia: true,
-                onDragStart: function() {
-                    gsap.to(this.target, { scale: 1.02, zIndex: 100, duration: 0.2 });
-                },
-                onDragEnd: function() {
-                    gsap.to(this.target, { scale: 1, zIndex: index + 1, duration: 0.2 });
-                }
-            });
-        });
-
-        // Parallax on Mouse Move
-        const container = document.querySelector(".desktop-container");
-        if (container) {
-            container.addEventListener("mousemove", (e) => {
-                const mouseX = (e as MouseEvent).clientX / window.innerWidth - 0.5;
-                const mouseY = (e as MouseEvent).clientY / window.innerHeight - 0.5;
-
-                windows.forEach((win) => {
-                    const speed = parseFloat((win as HTMLElement).dataset.speed || "1");
-                    gsap.to(win, {
-                        x: mouseX * 30 * speed,
-                        y: mouseY * 30 * speed,
-                        rotationY: mouseX * 10,
-                        rotationX: -mouseY * 10,
-                        duration: 1,
-                        ease: "power2.out"
-                    });
-                });
-            });
-        }
+  document.addEventListener("DOMContentLoaded", () => {
+    gsap.from(".interests-section .section-label", {
+      scrollTrigger: { trigger: ".interests-section", start: "top 80%" },
+      y: 30,
+      opacity: 0,
+      filter: "blur(8px)",
+      duration: 0.8,
+      ease: "power3.out",
     });
+
+    gsap.from(".interests-section .section-title", {
+      scrollTrigger: { trigger: ".interests-section", start: "top 80%" },
+      y: 40,
+      opacity: 0,
+      filter: "blur(10px)",
+      duration: 1,
+      delay: 0.15,
+      ease: "power3.out",
+    });
+
+    const windows = document.querySelectorAll(".interest-window");
+
+    windows.forEach((win, index) => {
+      // Scroll reveal with stagger
+      gsap.from(win, {
+        scrollTrigger: {
+          trigger: win,
+          start: "top 90%",
+          toggleActions: "play none none reverse",
+        },
+        y: 50,
+        opacity: 0,
+        scale: 0.95,
+        filter: "blur(6px)",
+        duration: 0.8,
+        delay: index * 0.1,
+        ease: "power3.out",
+      });
+
+      // Gentle floating
+      gsap.to(win, {
+        y: `+=${Math.random() * 12 - 6}`,
+        duration: 3 + Math.random() * 2,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: index * 0.3,
+      });
+
+      // Hover glow
+      win.addEventListener("mouseenter", () => {
+        gsap.to(win, { scale: 1.03, duration: 0.3, ease: "power2.out" });
+      });
+      win.addEventListener("mouseleave", () => {
+        gsap.to(win, { scale: 1, duration: 0.3, ease: "power2.out" });
+      });
+    });
+
+    // Parallax on mouse move (desktop)
+    const container = document.querySelector(".interests-grid");
+    if (container && window.innerWidth > 768) {
+      document.addEventListener("mousemove", (e) => {
+        const mx = (e.clientX / window.innerWidth - 0.5) * 2;
+        const my = (e.clientY / window.innerHeight - 0.5) * 2;
+
+        windows.forEach((win) => {
+          const speed = parseFloat((win as HTMLElement).dataset.speed || "1");
+          gsap.to(win, {
+            x: mx * 15 * speed,
+            y: my * 15 * speed,
+            rotationY: mx * 3,
+            rotationX: -my * 3,
+            duration: 1.2,
+            ease: "power2.out",
+          });
+        });
+      });
+    }
+  });
 </script>
 
 <style>
+  .interests-section {
+    background: linear-gradient(180deg, #0a0f1c, #0d1427);
+    padding: 8rem 0;
+  }
+
+  .interests-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    perspective: 1000px;
+  }
+
+  .interest-window {
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+    will-change: transform;
+  }
+
+  .interest-window:hover {
+    box-shadow:
+      0 25px 50px rgba(0, 0, 0, 0.4),
+      0 0 40px rgba(59, 130, 246, 0.08);
+  }
+
+  .win-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 1.5rem 1.5rem 0 0;
+  }
+
+  .win-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .dot-red {
+    background: rgba(239, 68, 68, 0.7);
+  }
+  .dot-yellow {
+    background: rgba(245, 158, 11, 0.7);
+  }
+  .dot-green {
+    background: rgba(34, 197, 94, 0.7);
+  }
+
+  .win-title {
+    font-size: 0.75rem;
+    font-family: "JetBrains Mono", monospace;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.03em;
+  }
+
+  .win-body {
+    padding: 1.25rem;
+    min-height: 180px;
+  }
+
+  @media (max-width: 768px) {
     .interests-section {
-        /* Background handled by pseudo-element */
-        color: white;
+      padding: 5rem 0;
     }
 
-    .interests-section::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background-color: #1e293b; /* Dark Slate */
-        z-index: -2;
+    .interests-grid {
+      grid-template-columns: 1fr;
     }
-
-    .interests-section .section-title {
-        color: white !important;
-    }
-    
-    .interests-section .section-title::after {
-        background: #d4af37;
-    }
-
-    .glass-window {
-        background: rgba(30, 41, 59, 0.6);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 1rem;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .glass-window:hover {
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-        border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .perspective-1000 {
-        perspective: 1000px;
-    }
-
-    .custom-shape-divider-bottom {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        overflow: hidden;
-        line-height: 0;
-        z-index: -2;
-    }
-
-    .custom-shape-divider-bottom svg {
-        position: relative;
-        display: block;
-        width: calc(100% + 1.3px);
-        height: 60px;
-    }
-
-    .custom-shape-divider-bottom .shape-fill {
-        fill: #FDFBF7; /* Match global body background */
-        opacity: 1;
-    }
-
-    @media (max-width: 768px) {
-        .desktop-container {
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            padding-bottom: 4rem;
-        }
-
-        .window-pane {
-            position: relative !important;
-            left: auto !important;
-            top: auto !important;
-            width: 100% !important;
-            height: 250px !important;
-            transform: none !important;
-        }
-    }
+  }
 </style>

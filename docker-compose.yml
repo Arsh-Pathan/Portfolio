@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  portfolio:
+    container_name: portfolio_site
+    build: .
+    restart: unless-stopped
+
+    ports:
+      - "127.0.0.1:3001:3000"

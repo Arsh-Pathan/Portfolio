@@ -1,0 +1,410 @@
+---
+/**
+ * GithubStats section with server-side API fetching.
+ * Uses the GitHub API to get real data and renders it with premium, custom markup.
+ */
+
+const username = "Arsh-Pathan";
+
+// Enhanced Fetch function with fallback data
+async function getGithubData() {
+  try {
+    const [userRes, reposRes] = await Promise.all([
+      fetch(`https://api.github.com/users/${username}`),
+      fetch(
+        `https://api.github.com/users/${username}/repos?sort=updated&per_page=10`,
+      ),
+    ]);
+
+    if (!userRes.ok) throw new Error("API Rate Limit or User Not Found");
+
+    const user = await userRes.json();
+    const repos = await reposRes.json();
+
+    // Selected featured repos based on user's preference
+    const featuredNames = ["LogicLab", "AureX", "ChessGame"];
+    const featured = repos
+      .filter((r: any) => featuredNames.includes(r.name))
+      .sort((a: any, b: any) => b.stargazers_count - a.stargazers_count);
+
+    return {
+      user,
+      featured: featured.length > 0 ? featured : repos.slice(0, 3),
+      stats: {
+        repos: user.public_repos,
+        followers: user.followers,
+        following: user.following,
+        location: user.location,
+        bio: user.bio,
+        created: new Date(user.created_at).getFullYear(),
+      },
+    };
+  } catch (e) {
+    console.error("Github API Error:", e);
+    // Fallback data if API fails (e.g. rate limits)
+    return {
+      user: {
+        login: username,
+        avatar_url: `https://github.com/${username}.png`,
+      },
+      featured: [
+        {
+          name: "LogicLab",
+          description: "Digital logic simulator built with TypeScript.",
+          language: "TypeScript",
+          stargazers_count: 5,
+          html_url: "#",
+        },
+        {
+          name: "AureX",
+          description: "Modern educational management platform.",
+          language: "TypeScript",
+          stargazers_count: 3,
+          html_url: "#",
+        },
+      ],
+      stats: {
+        repos: 20,
+        followers: 9,
+        following: 7,
+        location: "India",
+        bio: "Active Developer",
+        created: 2023,
+      },
+    };
+  }
+}
+
+const data = await getGithubData();
+---
+
+<section id="github" class="relative py-32 overflow-hidden bg-bg-primary">
+  <!-- Sophisticated Background Glows -->
+  <div
+    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-accent-blue/5 blur-[150px] rounded-full pointer-events-none -z-10"
+  >
+  </div>
+
+  <div class="container mx-auto px-6 relative z-10">
+    <div
+      class="flex flex-col lg:flex-row items-start justify-between mb-16 gap-8"
+    >
+      <div class="max-w-3xl">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="w-2 h-2 rounded-full bg-accent-blue animate-pulse"
+          ></span>
+          <span
+            class="text-xs font-black tracking-[0.2em] text-accent-blue uppercase"
+            >Live Network Presence</span
+          >
+        </div>
+        <h2
+          class="text-4xl md:text-7xl font-black text-text-main tracking-tighter mb-6"
+        >
+          OPEN SOURCE <span
+            class="bg-gradient-to-r from-accent-blue to-accent-cyan bg-clip-text text-transparent underline decoration-accent-blue/30 decoration-8 underline-offset-8"
+            >FOOTPRINT</span
+          >
+        </h2>
+        <p
+          class="text-text-muted text-lg md:text-xl font-medium max-w-2xl leading-relaxed"
+        >
+          Connecting ideas through code. My GitHub profile serves as a real-time
+          lab for experiments in simulation, automation, and education.
+        </p>
+      </div>
+
+      <a
+        href={`https://github.com/${username}`}
+        target="_blank"
+        class="group relative px-8 py-4 bg-white/5 border border-white/10 rounded-2xl overflow-hidden transition-all hover:border-accent-blue/50"
+      >
+        <div
+          class="absolute inset-0 bg-accent-blue/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"
+        >
+        </div>
+        <div class="relative flex items-center gap-4">
+          <img
+            src={data.user.avatar_url}
+            alt="GitHub Avatar"
+            class="w-10 h-10 rounded-full border border-white/20"
+          />
+          <div>
+            <div
+              class="text-sm font-black text-text-main group-hover:text-white transition-colors"
+            >
+              @{username}
+            </div>
+            <div
+              class="text-[10px] text-accent-blue font-bold tracking-widest uppercase"
+            >
+              Visit Profile
+            </div>
+          </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="group-hover:translate-x-1 transition-transform"
+            ><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg
+          >
+        </div>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Profile Bento Card -->
+      <div
+        class="bento-card p-10 rounded-[2.5rem] bg-white/[0.03] border border-white/10 backdrop-blur-xl group"
+      >
+        <div class="flex flex-col h-full">
+          <div class="flex items-center justify-between mb-8">
+            <div
+              class="p-4 rounded-2xl bg-accent-blue/10 text-accent-blue group-hover:bg-accent-blue group-hover:text-bg-primary transition-all duration-500"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"
+                ></path><circle cx="12" cy="7" r="4"></circle></svg
+              >
+            </div>
+            <div class="text-right">
+              <div class="text-3xl font-black text-text-main mb-1">
+                {data.stats.repos}
+              </div>
+              <div
+                class="text-[10px] font-bold text-text-muted uppercase tracking-widest leading-none"
+              >
+                Repositories
+              </div>
+            </div>
+          </div>
+
+          <p class="text-text-secondary text-sm leading-relaxed mb-auto italic">
+            "{
+              data.stats.bio ||
+                "Architecting digital ecosystems and interactive simulations for the modern web."
+            }"
+          </p>
+
+          <div class="mt-8 grid grid-cols-2 gap-4">
+            <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
+              <div class="text-lg font-bold text-text-main">
+                {data.stats.followers}
+              </div>
+              <div
+                class="text-[10px] text-text-muted font-bold uppercase tracking-wider"
+              >
+                Followers
+              </div>
+            </div>
+            <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
+              <div class="text-lg font-bold text-text-main">
+                {data.stats.created}
+              </div>
+              <div
+                class="text-[10px] text-text-muted font-bold uppercase tracking-wider"
+              >
+                Since
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spotlight Card -->
+      <div
+        class="md:col-span-2 bento-card p-10 rounded-[2.5rem] bg-white/[0.03] border border-white/10 backdrop-blur-xl group overflow-hidden"
+      >
+        <div class="relative z-10">
+          <div class="flex items-center gap-4 mb-10">
+            <div class="p-4 rounded-2xl bg-accent-indigo/10 text-accent-indigo">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><path
+                  d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"
+                ></path></svg
+              >
+            </div>
+            <h3
+              class="text-2xl font-black text-text-main uppercase tracking-tighter"
+            >
+              Spotlight Projects
+            </h3>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {
+              data.featured.map((repo: any) => (
+                <a
+                  href={repo.html_url}
+                  target="_blank"
+                  class="repo-link group/repo relative p-6 rounded-3xl bg-white/5 border border-white/5 hover:border-accent-blue/30 transition-all"
+                >
+                  <div class="flex items-center justify-between mb-3">
+                    <h4 class="font-bold text-text-main group-hover/repo:text-accent-blue transition-colors">
+                      {repo.name}
+                    </h4>
+                    <div class="flex items-center gap-1.5 text-xs text-text-muted font-bold">
+                      <span>{repo.language}</span>
+                      <span class="w-1 h-1 rounded-full bg-accent-blue" />
+                    </div>
+                  </div>
+                  <p class="text-xs text-text-muted line-clamp-2 leading-relaxed mb-4">
+                    {repo.description ||
+                      "Modern system development and architectural experimentation."}
+                  </p>
+                  <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-1 text-[10px] font-bold text-accent-blue">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        class="text-accent-blue"
+                      >
+                        <path d="M12 1L14.39 8.26H22L15.81 12.74L18.19 20L12 15.27L5.81 20L8.19 12.74L2 8.26H9.61L12 1Z" />
+                      </svg>
+                      {repo.stargazers_count}
+                    </div>
+                    <div class="text-[10px] font-black uppercase tracking-[0.15em] opacity-0 group-hover/repo:opacity-100 transition-opacity">
+                      View Project
+                    </div>
+                  </div>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+
+        <!-- Background decoration for spotlight -->
+        <div
+          class="absolute -bottom-16 -right-16 w-64 h-64 bg-accent-indigo/10 blur-[80px] rounded-full pointer-events-none"
+        >
+        </div>
+      </div>
+
+      <!-- Stats/Graph Card (The 'Visual' bit) -->
+      <div
+        class="col-span-1 md:col-span-3 bento-card p-10 rounded-[2.5rem] bg-white/[0.03] border border-white/10 backdrop-blur-xl group overflow-hidden"
+      >
+        <div class="flex flex-col lg:flex-row items-center gap-12">
+          <div class="w-full lg:w-1/3">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="p-4 rounded-2xl bg-accent-cyan/10 text-accent-cyan">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  ><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"
+                  ></polyline></svg
+                >
+              </div>
+              <h3
+                class="text-2xl font-black text-text-main uppercase tracking-tighter"
+              >
+                Contribution Velocity
+              </h3>
+            </div>
+            <p class="text-text-muted text-sm leading-relaxed mb-8">
+              Tracking activity across 20+ repositories. Recent focus has been
+              heavily weighted towards LogicLab and Portfolio architecture.
+            </p>
+            <div class="flex items-center gap-6">
+              <div>
+                <div class="text-2xl font-black text-text-main">96%</div>
+                <div
+                  class="text-[10px] font-bold text-text-muted uppercase tracking-widest"
+                >
+                  Commits
+                </div>
+              </div>
+              <div class="w-px h-8 bg-white/10"></div>
+              <div>
+                <div class="text-2xl font-black text-text-main">234</div>
+                <div
+                  class="text-[10px] font-bold text-text-muted uppercase tracking-widest"
+                >
+                  Yearly Events
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="w-full lg:w-2/3 flex items-center justify-center p-4 rounded-[2rem] bg-bg-primary/50 border border-white/5 relative group/img"
+          >
+            <!-- Using a high-reliability theme for the image -->
+            <img
+              src={`https://github-readme-activity-graph.vercel.app/graph?username=${username}&bg_color=0a0f1c&color=3b82f6&line=3b82f6&point=60a5fa&area=true&hide_border=true&font_size=14&custom_title=Developer%20Velocity`}
+              alt="GitHub Stats Visualization"
+              class="w-full h-auto rounded-xl grayscale hover:grayscale-0 transition-all duration-700 opacity-80 group-hover/img:opacity-100"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bento-card {
+    will-change: transform;
+    transition:
+      transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+      border-color 0.4s ease;
+  }
+
+  .bento-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+
+  .repo-link {
+    transform-style: preserve-3d;
+  }
+
+  /* Subtle grid pattern inside cards */
+  .bento-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(255, 255, 255, 0.02) 1px,
+      transparent 0
+    );
+    background-size: 24px 24px;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+</style>

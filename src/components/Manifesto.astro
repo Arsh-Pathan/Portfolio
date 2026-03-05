@@ -1,0 +1,354 @@
+---
+// Manifesto Preloader Sequence
+const lines = [
+  {
+    chapter: "I",
+    headline: "A Developer.",
+    sub: "Who sees the world as a system waiting to be optimized.",
+  },
+  {
+    chapter: "II",
+    headline: "A Builder.",
+    sub: "Every project starts with a blank canvas and ends with someone's life made easier.",
+  },
+  {
+    chapter: "III",
+    headline: "A Thinker.",
+    sub: "I don't just write code — I architect solutions at scale.",
+  },
+  {
+    chapter: "IV",
+    headline: "A Designer.",
+    sub: "Because beautiful interfaces are promises made to the user.",
+  },
+  {
+    chapter: "V",
+    headline: "A Learner.",
+    sub: "Every error message is a teacher I never asked for but always needed.",
+  },
+  {
+    chapter: "VI",
+    headline: "A Problem-Solver.",
+    sub: "I live for the moment when a complex problem finally breaks into clarity.",
+  },
+  {
+    chapter: "VII",
+    headline: "A Creator.",
+    sub: "I turn caffeine and late-night focus into products that actually matter.",
+  },
+  {
+    chapter: "VIII",
+    headline: "A Dreamer.",
+    sub: "Who believes that technology, in the right hands, can change what is possible.",
+  },
+  {
+    chapter: "IX",
+    headline: "An Engineer.",
+    sub: "Precision in every line. Purpose behind every decision.",
+  },
+  {
+    chapter: "X",
+    headline: "Arsh — Sky.",
+    sub: "My name means Sky. And that has always been my only limit.",
+  },
+  {
+    chapter: "XI",
+    headline: "Arsh Pathan.",
+    sub: "Developer. Creator. Engineer. Human.",
+  },
+];
+
+// Floating words
+const ambientWords = [
+  "git commit -m 'refactor'",
+  "O(n log n)",
+  "const future = build()",
+  "async / await",
+  "404 → 200",
+  "npm run dream",
+  "docker compose up --world",
+  "CTRL+Z won't help you here",
+  "kernel panic? restart.",
+  "let purpose = 'create'",
+];
+---
+
+<div
+  id="manifesto-loader"
+  class="fixed inset-0 z-[9999] bg-[#060a14] overflow-hidden flex flex-col justify-center items-center pointer-events-none"
+>
+  <!-- Interactive Video Background Layer -->
+  <div class="absolute inset-0 z-0">
+    <video
+      id="loader-video"
+      class="w-full h-full object-cover filter brightness-50 scale-105"
+      src="/videos/intro.mp4"
+      autoplay
+      muted
+      loop
+      playsinline></video>
+  </div>
+
+  <!-- Noise / Grain / Vignette Overlay -->
+  <div
+    class="absolute inset-0 z-10 bg-gradient-to-t from-[#060a14] via-transparent to-[#060a14] opacity-80 mix-blend-multiply"
+  >
+  </div>
+
+  <!-- Ambient Words Background Layer -->
+  <div
+    class="absolute inset-0 z-20 pointer-events-none overflow-hidden opacity-50"
+  >
+    {
+      ambientWords.map((word, i) => (
+        <span
+          class="ambient-word absolute text-[10px] md:text-sm font-mono text-blue-300 drop-shadow-md whitespace-nowrap"
+          style={`
+          left:${8 + ((i * 37) % 80)}%;
+          top:${10 + ((i * 29) % 80)}%;
+          opacity:${0.1 + (i % 3) * 0.1};
+        `}
+        >
+          {word}
+        </span>
+      ))
+    }
+  </div>
+
+  <!-- Content Layer -->
+  <div
+    class="relative z-30 flex flex-col items-center justify-center text-center w-full px-4 mt-8"
+  >
+    <div
+      class="h-[120px] md:h-[200px] flex items-center justify-center relative w-full"
+    >
+      {
+        lines.map((step, i) => (
+          <div class="manifesto-text absolute flex flex-col items-center text-white opacity-0 opacity-0-init">
+            <span class="text-xs md:text-sm font-bold tracking-[0.4em] text-blue-400 mb-2 md:mb-4 uppercase drop-shadow-lg">
+              Chapter {step.chapter}
+            </span>
+            <h2 class="text-4xl md:text-7xl font-black tracking-tight leading-none mb-3 md:mb-6 custom-text-shadow">
+              {step.headline}
+            </h2>
+            <p class="text-sm md:text-xl text-blue-100 max-w-2xl font-light tracking-wide opacity-80 drop-shadow-md">
+              {step.sub}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Big Progress Percentage Layer -->
+  <div
+    class="absolute bottom-8 right-8 z-30 font-black text-6xl md:text-9xl tracking-tighter text-white opacity-20 pointer-events-none"
+    style="font-family: Outfit, sans-serif;"
+  >
+    <span id="loader-percent">0</span>%
+  </div>
+
+  <!-- Progress Bar at bottom -->
+  <div class="absolute bottom-0 left-0 w-full h-1 bg-white/10 z-30">
+    <div id="loader-progress-bar" class="h-full bg-blue-500 w-0"></div>
+  </div>
+</div>
+
+<script>
+  import { gsap } from "gsap";
+
+  const initLoader = () => {
+    const loader = document.getElementById("manifesto-loader");
+    if (!loader) return;
+
+    // Check session storage so it only plays once per session
+    const hasPlayed = sessionStorage.getItem("manifestoPlayed");
+    if (hasPlayed) {
+      loader.style.display = "none";
+      window.dispatchEvent(new Event("manifestoComplete"));
+      return; // Return immediately if played before
+    }
+
+    // Lock scroll during loader
+    document.body.style.overflow = "hidden";
+
+    const video = document.getElementById("loader-video");
+    const texts = document.querySelectorAll(".manifesto-text");
+    const percentEl = document.getElementById("loader-percent");
+    const progressBar = document.getElementById("loader-progress-bar");
+
+    if (!texts.length) {
+      loader.style.display = "none";
+      window.dispatchEvent(new Event("manifestoComplete"));
+      return;
+    }
+
+    const totalSteps = texts.length;
+    // We'll give each statement roughly 0.4s. The entire sequence will be ~4-5 seconds.
+    const stepDuration = 0.4;
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        // Unlock scroll and reveal site
+        document.body.style.overflow = "";
+
+        // Mark as played
+        sessionStorage.setItem("manifestoPlayed", "true");
+
+        // The grand reveal: slide the loader UP
+        gsap.to(loader, {
+          yPercent: -100,
+          duration: 1.2,
+          ease: "expo.inOut",
+          onStart: () => {
+            // Give website elements a hint to start their intro
+            window.dispatchEvent(new Event("manifestoComplete"));
+          },
+          onComplete: () => {
+            loader.style.display = "none";
+          },
+        });
+      },
+    });
+
+    // Make ambient words drift slowly independently
+    gsap.to(".ambient-word", {
+      x: () => Math.random() * 60 - 30,
+      y: () => Math.random() * 60 - 30,
+      rotation: () => Math.random() * 10 - 5,
+      duration: 4,
+      ease: "sine.inOut",
+      yoyo: true,
+      repeat: -1,
+      stagger: 0.1,
+    });
+
+    // Make the background video very dynamic (pulsing/zooming slightly to the exact beat of chapters)
+    const videoTl = gsap.timeline();
+
+    // Animate percentage text and progress bar synchronously
+    const progressObj = { value: 0 };
+    tl.to(
+      progressObj,
+      {
+        value: 100,
+        duration: totalSteps * stepDuration,
+        ease: "power1.inOut",
+        onUpdate: () => {
+          if (percentEl)
+            percentEl.textContent = Math.round(progressObj.value).toString();
+          if (progressBar) progressBar.style.width = progressObj.value + "%";
+        },
+      },
+      0,
+    );
+
+    texts.forEach((text, i) => {
+      const isLast = i === totalSteps - 1;
+      const start = i * stepDuration;
+
+      // Make the video punch/zoom forward every chapter
+      if (video) {
+        videoTl.fromTo(
+          video,
+          { scale: 1.15, filter: "brightness(0.65) blur(4px)" },
+          {
+            scale: 1.05,
+            filter: "brightness(0.4) blur(0px)",
+            duration: stepDuration * 0.8,
+            ease: "power2.out",
+          },
+          start,
+        );
+      }
+
+      // Text sequence
+      tl.set(text, { opacity: 1 }, start);
+      tl.fromTo(
+        text,
+        { y: 40, scale: 0.85, filter: "blur(10px)", opacity: 0 },
+        {
+          y: 0,
+          scale: 1,
+          filter: "blur(0px)",
+          opacity: 1,
+          duration: 0.25,
+          ease: "power3.out",
+        },
+        start,
+      );
+
+      if (!isLast) {
+        tl.to(
+          text,
+          {
+            opacity: 0,
+            y: -30,
+            scale: 1.05,
+            filter: "blur(10px)",
+            duration: 0.2,
+            ease: "power2.in",
+          },
+          start + stepDuration,
+        );
+      } else {
+        // Last step holds perfectly before the whole loader lifts up
+        tl.to(
+          text,
+          {
+            scale: 1.05,
+            filter: "blur(0px)",
+            duration: 1.6,
+            ease: "power1.inOut",
+          },
+          start,
+        );
+        if (video) {
+          videoTl.to(
+            video,
+            { scale: 1.2, duration: 2, ease: "power2.inOut" },
+            start,
+          );
+        }
+        // We add a tiny delay at the end before it triggers onComplete
+        tl.to({}, { duration: 0.8 });
+      }
+    });
+
+    // Add interactivity - mouse movement adds parallax to the text and video
+    if (video) {
+      document.addEventListener("mousemove", (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 30;
+        const y = (e.clientY / window.innerHeight - 0.5) * 30;
+        gsap.to(video, {
+          x: x,
+          y: y,
+          duration: 1.5,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+        gsap.to(texts, {
+          x: x * -0.5,
+          y: y * -0.5,
+          duration: 1.5,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+      });
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", initLoader);
+</script>
+
+<style>
+  .custom-text-shadow {
+    text-shadow:
+      0 10px 40px rgba(0, 0, 0, 0.9),
+      0 0 80px rgba(59, 130, 246, 0.4);
+  }
+
+  .opacity-0-init {
+    opacity: 0;
+  }
+</style>

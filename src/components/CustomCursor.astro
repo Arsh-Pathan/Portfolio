@@ -1,0 +1,218 @@
+---
+// Custom cursor with magnetic hover effects, blend modes, and morphing
+---
+
+<div id="cursor-outer" class="cursor-outer"></div>
+<div id="cursor-inner" class="cursor-inner"></div>
+<div id="cursor-label" class="cursor-label"></div>
+
+<script>
+  import { gsap } from "gsap";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const outer = document.getElementById("cursor-outer");
+    const inner = document.getElementById("cursor-inner");
+    const label = document.getElementById("cursor-label");
+    if (!outer || !inner || !label) return;
+
+    let mouseX = 0,
+      mouseY = 0;
+    let outerX = 0,
+      outerY = 0;
+    let isHovering = false;
+
+    document.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      gsap.to(inner, {
+        x: mouseX,
+        y: mouseY,
+        duration: 0.1,
+        ease: "power2.out",
+      });
+    });
+
+    // Smooth follow for outer cursor
+    const follow = () => {
+      outerX += (mouseX - outerX) * 0.12;
+      outerY += (mouseY - outerY) * 0.12;
+      outer.style.transform = `translate(${outerX}px, ${outerY}px) translate(-50%, -50%)`;
+      requestAnimationFrame(follow);
+    };
+    follow();
+
+    // Magnetic hover effects
+    const magneticElements = document.querySelectorAll(
+      ".btn, .social-btn, .footer-social, .scroll-top-btn, a[href], button, .project-card, .skill-card, .gallery-item, .certificate-card, .nav-link",
+    );
+
+    magneticElements.forEach((el) => {
+      el.addEventListener("mouseenter", () => {
+        isHovering = true;
+        gsap.to(outer, {
+          width: 60,
+          height: 60,
+          borderColor: "rgba(96, 165, 250, 0.6)",
+          backgroundColor: "rgba(96, 165, 250, 0.05)",
+          duration: 0.4,
+          ease: "power3.out",
+        });
+        gsap.to(inner, {
+          scale: 0,
+          duration: 0.3,
+        });
+      });
+
+      el.addEventListener("mouseleave", () => {
+        isHovering = false;
+        gsap.to(outer, {
+          width: 40,
+          height: 40,
+          borderColor: "rgba(96, 165, 250, 0.3)",
+          backgroundColor: "transparent",
+          duration: 0.4,
+          ease: "power3.out",
+        });
+        gsap.to(inner, {
+          scale: 1,
+          duration: 0.3,
+        });
+      });
+    });
+
+    // Magnetic effect on buttons
+    document
+      .querySelectorAll(".btn, .social-btn, .footer-social")
+      .forEach((btn) => {
+        const el = btn as HTMLElement;
+        btn.addEventListener("mousemove", (e: any) => {
+          const rect = el.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          gsap.to(el, {
+            x: x * 0.3,
+            y: y * 0.3,
+            duration: 0.4,
+            ease: "power2.out",
+          });
+        });
+
+        btn.addEventListener("mouseleave", () => {
+          gsap.to(el, {
+            x: 0,
+            y: 0,
+            duration: 0.7,
+            ease: "elastic.out(1, 0.3)",
+          });
+        });
+      });
+
+    // Project card hover label
+    document.querySelectorAll(".project-card").forEach((card) => {
+      card.addEventListener("mouseenter", () => {
+        label.textContent = "VIEW";
+        gsap.to(label, { opacity: 1, scale: 1, duration: 0.3 });
+        gsap.to(outer, {
+          width: 90,
+          height: 90,
+          backgroundColor: "rgba(59, 130, 246, 0.08)",
+          borderColor: "rgba(59, 130, 246, 0.4)",
+          duration: 0.4,
+        });
+      });
+      card.addEventListener("mouseleave", () => {
+        gsap.to(label, { opacity: 0, scale: 0.5, duration: 0.2 });
+        gsap.to(outer, {
+          width: 40,
+          height: 40,
+          backgroundColor: "transparent",
+          borderColor: "rgba(96, 165, 250, 0.3)",
+          duration: 0.4,
+        });
+      });
+    });
+
+    // Hide cursor on touch devices
+    if ("ontouchstart" in window) {
+      outer.style.display = "none";
+      inner.style.display = "none";
+      label.style.display = "none";
+    }
+
+    // Click effect
+    document.addEventListener("mousedown", () => {
+      gsap.to(outer, { scale: 0.8, duration: 0.15, ease: "power2.out" });
+      gsap.to(inner, { scale: 1.5, duration: 0.15, ease: "power2.out" });
+    });
+
+    document.addEventListener("mouseup", () => {
+      gsap.to(outer, { scale: 1, duration: 0.4, ease: "elastic.out(1, 0.3)" });
+      gsap.to(inner, { scale: 1, duration: 0.4, ease: "elastic.out(1, 0.3)" });
+    });
+  });
+</script>
+
+<style>
+  .cursor-outer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    border: 1.5px solid rgba(96, 165, 250, 0.3);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: difference;
+    transition: background-color 0.3s;
+    will-change: transform;
+  }
+
+  .cursor-inner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    background: #60a5fa;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(96, 165, 250, 0.6);
+    will-change: transform;
+  }
+
+  .cursor-label {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.3em;
+    color: #60a5fa;
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  @media (max-width: 768px) {
+    .cursor-outer,
+    .cursor-inner,
+    .cursor-label {
+      display: none !important;
+    }
+  }
+
+  @media (pointer: coarse) {
+    .cursor-outer,
+    .cursor-inner,
+    .cursor-label {
+      display: none !important;
+    }
+  }
+</style>

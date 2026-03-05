@@ -1,0 +1,172 @@
+---
+// Gallery images — add your own files to public/gallery/
+const photos = [
+  { src: "/gallery/photo1.png", alt: "Moment 1", span: "tall" },
+  { src: "/gallery/photo2.png", alt: "Moment 2", span: "wide" },
+  { src: "/gallery/photo3.png", alt: "Moment 3", span: "normal" },
+  { src: "/gallery/photo4.png", alt: "Moment 4", span: "normal" },
+  { src: "/gallery/photo5.png", alt: "Moment 5", span: "wide" },
+  { src: "/gallery/photo6.png", alt: "Moment 6", span: "tall" },
+  { src: "/gallery/photo7.png", alt: "Moment 7", span: "wide" },
+  { src: "/gallery/photo8.png", alt: "Moment 8", span: "normal" },
+  { src: "/gallery/photo9.png", alt: "Moment 9", span: "normal" },
+  { src: "/gallery/photo10.png", alt: "Moment 10", span: "wide" },
+];
+---
+
+<section id="gallery" class="gallery-section relative py-32 overflow-hidden">
+  <!-- Section header -->
+  <div class="container text-center mb-20">
+    <div class="section-label justify-center flex">Moments</div>
+    <h2 class="section-title">
+      Behind the <span class="gradient-text">Code</span>
+    </h2>
+    <p class="text-text-muted max-w-xl mx-auto -mt-4">
+      A glimpse into the world beyond the terminal.
+    </p>
+  </div>
+
+  <!-- Bento Grid -->
+  <div class="gallery-grid mx-auto px-6" style="max-width: 1300px;">
+    {photos.map((photo, i) => (
+      <div
+        class={`gallery-item gallery-${photo.span}`}
+        data-index={i}
+        style={`--delay: ${i * 0.07}s`}
+      >
+        <div class="gallery-inner">
+          <img
+            src={photo.src}
+            alt={photo.alt}
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+          <!-- Overlay -->
+          <div class="gallery-overlay" />
+          <!-- Number tag -->
+          <span class="gallery-tag">0{i + 1}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const items = document.querySelectorAll(".gallery-item");
+
+    items.forEach((item, i) => {
+      // Alternating reveal directions
+      const fromX = i % 3 === 0 ? -60 : i % 3 === 1 ? 0 : 60;
+      const fromY = i % 3 === 1 ? 60 : 0;
+
+      gsap.fromTo(
+        item,
+        {
+          opacity: 0,
+          x: fromX,
+          y: fromY,
+          scale: 0.88,
+          rotateZ: i % 2 === 0 ? -1.5 : 1.5,
+          filter: "blur(8px)",
+        },
+        {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          scale: 1,
+          rotateZ: 0,
+          filter: "blur(0px)",
+          duration: 1.1,
+          ease: "expo.out",
+          scrollTrigger: {
+            trigger: item,
+            start: "top 88%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    });
+  });
+</script>
+
+<style>
+  .gallery-section {
+    background: linear-gradient(to bottom, #0a0f1c, #060a14);
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 220px;
+    gap: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 180px;
+    }
+    .gallery-wide { grid-column: span 2; }
+    .gallery-tall { grid-row: span 1; }
+  }
+
+  .gallery-item {
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    will-change: transform, opacity, filter;
+  }
+
+  .gallery-tall { grid-row: span 2; }
+  .gallery-wide { grid-column: span 2; }
+  .gallery-normal { grid-column: span 1; grid-row: span 1; }
+
+  .gallery-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gallery-inner img {
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .gallery-item:hover .gallery-inner img {
+    transform: scale(1.08);
+  }
+
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(6,10,20,0.6) 0%, transparent 50%);
+    opacity: 0.6;
+    transition: opacity 0.4s ease;
+  }
+
+  .gallery-item:hover .gallery-overlay {
+    opacity: 0.8;
+  }
+
+  .gallery-tag {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.4);
+    font-family: monospace;
+    transition: color 0.3s ease;
+  }
+
+  .gallery-item:hover .gallery-tag {
+    color: rgba(96, 165, 250, 0.8);
+  }
+</style>

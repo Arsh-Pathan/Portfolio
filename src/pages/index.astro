@@ -5,6 +5,8 @@ import Hero from "../components/Hero.astro";
 import Skills from "../components/Skills.astro";
 import GithubStats from "../components/GithubStats.astro";
 import Projects from "../components/Projects.astro";
+import Gallery from "../components/Gallery.astro";
+import Manifesto from "../components/Manifesto.astro";
 import Certificates from "../components/Certificates.astro";
 import Contact from "../components/Contact.astro";
 import Footer from "../components/Footer.astro";
@@ -21,18 +23,38 @@ import Footer from "../components/Footer.astro";
     />
     <title>Portfolio - Arsh Pathan</title>
   </head>
-  <body class="bg-bg-primary text-text-main antialiased">
+  <body class="bg-bg-primary text-text-main antialiased overflow-x-hidden">
     <Background />
+    <Manifesto />
 
-    <main>
+    <main id="main-content" class="relative z-10">
       <Hero />
       <Skills />
       <GithubStats />
       <Projects />
+      <Gallery />
       <Certificates />
       <Contact />
     </main>
 
     <Footer />
+
+    <style is:global>
+      /* Pin spacers inserted by GSAP must be dark to prevent flash */
+      .pin-spacer {
+        background-color: #060a14 !important;
+      }
+
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Hide scrollbar for IE, Edge and Firefox */
+      * {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
   </body>
 </html>

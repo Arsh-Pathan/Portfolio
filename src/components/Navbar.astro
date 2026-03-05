@@ -1,0 +1,413 @@
+---
+const navLinks = [
+  { label: "Home", href: "#home" },
+  { label: "Skills", href: "#skills" },
+  { label: "GitHub", href: "#github" },
+  { label: "Projects", href: "#projects" },
+  { label: "Gallery", href: "#gallery" },
+  { label: "Contact", href: "#contact" },
+];
+---
+
+<nav id="main-nav" class="main-nav">
+  <div class="nav-inner">
+    <a href="#home" class="nav-brand group">
+      <span class="nav-brand-icon">AP</span>
+      <span class="nav-brand-text"
+        >Arsh<span class="gradient-text">.</span></span
+      >
+    </a>
+
+    <div class="nav-links-desktop" id="nav-links-desktop">
+      {
+        navLinks.map((link, i) => (
+          <a
+            href={link.href}
+            class="nav-link"
+            data-index={i}
+            style={`--delay: ${i * 0.05}s`}
+          >
+            <span class="nav-link-text">{link.label}</span>
+            <span class="nav-link-dot" />
+          </a>
+        ))
+      }
+    </div>
+
+    <button id="nav-hamburger" class="nav-hamburger" aria-label="Toggle menu">
+      <span class="hamburger-line line-1"></span>
+      <span class="hamburger-line line-2"></span>
+      <span class="hamburger-line line-3"></span>
+    </button>
+  </div>
+
+  <!-- Scroll progress indicator -->
+  <div class="nav-progress-track">
+    <div id="nav-progress-bar" class="nav-progress-bar"></div>
+  </div>
+</nav>
+
+<!-- Mobile menu overlay -->
+<div id="mobile-menu" class="mobile-menu">
+  <div class="mobile-menu-inner">
+    {
+      navLinks.map((link, i) => (
+        <a href={link.href} class="mobile-link" style={`--delay: ${i * 0.08}s`}>
+          <span class="mobile-link-num">0{i + 1}</span>
+          <span class="mobile-link-text">{link.label}</span>
+        </a>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const nav = document.getElementById("main-nav");
+    const progressBar = document.getElementById("nav-progress-bar");
+    const hamburger = document.getElementById("nav-hamburger");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    if (!nav || !progressBar) return;
+
+    // Scroll progress bar
+    window.addEventListener("scroll", () => {
+      const scrollTop = window.scrollY;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      progressBar.style.width = `${scrollPercent}%`;
+
+      // Show/hide nav based on scroll
+      if (scrollTop > 100) {
+        nav.classList.add("nav-visible");
+      } else {
+        nav.classList.remove("nav-visible");
+      }
+    });
+
+    // Active section highlighting
+    const sections = document.querySelectorAll("section[id]");
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const targetId = `#${entry.target.id}`;
+            navLinks.forEach((link) => {
+              link.classList.remove("active");
+              if (link.getAttribute("href") === targetId) {
+                link.classList.add("active");
+              }
+            });
+          }
+        });
+      },
+      { threshold: 0.3, rootMargin: "-20% 0px -20% 0px" },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    // Mobile menu toggle
+    let menuOpen = false;
+
+    hamburger?.addEventListener("click", () => {
+      menuOpen = !menuOpen;
+      hamburger.classList.toggle("open", menuOpen);
+
+      if (menuOpen) {
+        mobileMenu?.classList.add("open");
+        document.body.style.overflow = "hidden";
+
+        gsap.fromTo(
+          ".mobile-link",
+          { y: 60, opacity: 0, rotateX: -15 },
+          {
+            y: 0,
+            opacity: 1,
+            rotateX: 0,
+            duration: 0.6,
+            stagger: 0.07,
+            ease: "power3.out",
+            delay: 0.2,
+          },
+        );
+      } else {
+        gsap.to(".mobile-link", {
+          y: -30,
+          opacity: 0,
+          duration: 0.3,
+          stagger: 0.03,
+          onComplete: () => {
+            mobileMenu?.classList.remove("open");
+            document.body.style.overflow = "";
+          },
+        });
+      }
+    });
+
+    // Close menu on link click
+    document.querySelectorAll(".mobile-link").forEach((link) => {
+      link.addEventListener("click", () => {
+        menuOpen = false;
+        hamburger?.classList.remove("open");
+        gsap.to(".mobile-link", {
+          y: -30,
+          opacity: 0,
+          duration: 0.3,
+          stagger: 0.03,
+          onComplete: () => {
+            mobileMenu?.classList.remove("open");
+            document.body.style.overflow = "";
+          },
+        });
+      });
+    });
+
+    // Initial hide nav animation
+    gsap.set(nav, { yPercent: -100 });
+
+    // After manifesto completes, reveal nav
+    window.addEventListener("manifestoComplete", () => {
+      gsap.to(nav, {
+        yPercent: 0,
+        duration: 1,
+        ease: "power3.out",
+        delay: 0.5,
+      });
+    });
+
+    // Fallback: if manifesto already played
+    if (sessionStorage.getItem("manifestoPlayed")) {
+      gsap.set(nav, { yPercent: 0 });
+    }
+  });
+</script>
+
+<style>
+  .main-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 0 2rem;
+    background: rgba(6, 10, 20, 0.4);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(59, 130, 246, 0.06);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .main-nav.nav-visible {
+    background: rgba(6, 10, 20, 0.85);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+  }
+
+  .nav-brand-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 900;
+    color: white;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    transition: transform 0.3s ease;
+  }
+
+  .nav-brand:hover .nav-brand-icon {
+    transform: rotate(-8deg) scale(1.1);
+  }
+
+  .nav-brand-text {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: white;
+    font-family: "Outfit", sans-serif;
+  }
+
+  .nav-links-desktop {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .nav-link {
+    position: relative;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #7a8ba8;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: #e8edf5;
+  }
+
+  .nav-link-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #3b82f6;
+    transform: scale(0);
+    transition: transform 0.3s ease;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+  }
+
+  .nav-link.active .nav-link-dot,
+  .nav-link:hover .nav-link-dot {
+    transform: scale(1);
+  }
+
+  .nav-progress-track {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(59, 130, 246, 0.06);
+  }
+
+  .nav-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #3b82f6, #06b6d4, #818cf8);
+    transition: width 0.1s linear;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  }
+
+  /* Hamburger */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 1001;
+  }
+
+  .hamburger-line {
+    width: 24px;
+    height: 2px;
+    background: #e8edf5;
+    border-radius: 2px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: center;
+  }
+
+  .nav-hamburger.open .line-1 {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  .nav-hamburger.open .line-2 {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  .nav-hamburger.open .line-3 {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  /* Mobile menu */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(6, 10, 20, 0.98);
+    backdrop-filter: blur(30px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s ease;
+  }
+
+  .mobile-menu.open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-menu-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .mobile-link {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    text-decoration: none;
+    opacity: 0;
+  }
+
+  .mobile-link-num {
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: #3b82f6;
+    letter-spacing: 0.1em;
+    font-family: "JetBrains Mono", monospace;
+  }
+
+  .mobile-link-text {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #e8edf5;
+    letter-spacing: -0.02em;
+    transition: color 0.3s ease;
+  }
+
+  .mobile-link:hover .mobile-link-text {
+    color: #60a5fa;
+  }
+
+  @media (max-width: 768px) {
+    .nav-links-desktop {
+      display: none;
+    }
+    .nav-hamburger {
+      display: flex;
+    }
+    .nav-inner {
+      height: 60px;
+    }
+    .main-nav {
+      padding: 0 1rem;
+    }
+  }
+</style>

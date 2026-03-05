@@ -1,0 +1,148 @@
+---
+// Scroll-driven text reveal animations for section headings
+// This component auto-initializes text splitting and scroll animations
+---
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // Split section titles into characters for stagger animation
+    document
+      .querySelectorAll(".section-title, .gh-section-title")
+      .forEach((title) => {
+        const el = title as HTMLElement;
+        if (el.getAttribute("data-split")) return; // avoid double split
+        el.setAttribute("data-split", "true");
+
+        // Get the inner HTML and process text nodes into spans
+        const children = Array.from(el.childNodes);
+        el.innerHTML = "";
+
+        children.forEach((child) => {
+          if (child.nodeType === Node.TEXT_NODE) {
+            const text = child.textContent || "";
+            text.split("").forEach((char) => {
+              const span = document.createElement("span");
+              span.className = "split-char";
+              span.style.display = "inline-block";
+              span.style.willChange = "transform, opacity";
+              if (char === " ") {
+                span.innerHTML = "&nbsp;";
+              } else {
+                span.textContent = char;
+              }
+              el.appendChild(span);
+            });
+          } else if (child.nodeType === Node.ELEMENT_NODE) {
+            // Keep existing child elements (like <span class="gradient-text">)
+            const childEl = child as HTMLElement;
+            const text = childEl.textContent || "";
+            childEl.textContent = "";
+            text.split("").forEach((char) => {
+              const span = document.createElement("span");
+              span.className = "split-char";
+              span.style.display = "inline-block";
+              span.style.willChange = "transform, opacity";
+              if (char === " ") {
+                span.innerHTML = "&nbsp;";
+              } else {
+                span.textContent = char;
+              }
+              childEl.appendChild(span);
+            });
+            el.appendChild(childEl);
+          }
+        });
+
+        // Animate on scroll
+        const chars = el.querySelectorAll(".split-char");
+        gsap.fromTo(
+          chars,
+          {
+            y: 80,
+            opacity: 0,
+            rotateX: -60,
+            filter: "blur(8px)",
+          },
+          {
+            y: 0,
+            opacity: 1,
+            rotateX: 0,
+            filter: "blur(0px)",
+            duration: 0.8,
+            stagger: 0.02,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          },
+        );
+      });
+
+    // Animate section labels
+    document.querySelectorAll(".section-label").forEach((label) => {
+      gsap.fromTo(
+        label,
+        { y: 30, opacity: 0, filter: "blur(6px)" },
+        {
+          y: 0,
+          opacity: 1,
+          filter: "blur(0px)",
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: label,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        },
+      );
+    });
+
+    // Animate section underlines (::after pseudo-elements simulated)
+    document.querySelectorAll(".section-title").forEach((title) => {
+      gsap.fromTo(
+        title,
+        {},
+        {
+          scrollTrigger: {
+            trigger: title,
+            start: "top 85%",
+            toggleActions: "play none none none",
+            onEnter: () => {
+              // The title ::after is CSS animated, we just need the trigger
+              (title as HTMLElement).classList.add("revealed");
+            },
+          },
+        },
+      );
+    });
+  });
+</script>
+
+<style is:global>
+  .section-title {
+    perspective: 800px;
+    overflow: hidden;
+  }
+
+  .section-title .split-char {
+    transform-origin: bottom center;
+  }
+
+  .section-title::after {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s;
+  }
+
+  .section-title.revealed::after {
+    transform: scaleX(1);
+  }
+</style>

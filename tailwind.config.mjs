@@ -3,7 +3,7 @@ export default {
     theme: {
         extend: {
             colors: {
-                'bg-primary': '#0a0f1c',
+                'bg-primary': '#000000ff',
                 'bg-secondary': '#0d1427',
                 'bg-card': '#111a2e',
                 'bg-elevated': '#162040',

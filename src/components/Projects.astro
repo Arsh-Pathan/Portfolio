@@ -421,10 +421,67 @@ const extendedRow2 = [...row2, ...row2, ...row2];
         0,
       );
 
+      // Velocity-based skew for premium kinetic feel
+      let lastScrollY = window.scrollY;
+      let skewTimeout: any;
+
+      window.addEventListener("scroll", () => {
+        const velocity = window.scrollY - lastScrollY;
+        const skewAmount = Math.min(Math.max(velocity * 0.08, -3), 3);
+
+        gsap.to([row1, row2], {
+          skewY: skewAmount,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+
+        clearTimeout(skewTimeout);
+        skewTimeout = setTimeout(() => {
+          gsap.to([row1, row2], {
+            skewY: 0,
+            duration: 0.8,
+            ease: "elastic.out(1, 0.3)",
+          });
+        }, 100);
+
+        lastScrollY = window.scrollY;
+      });
+
       window.addEventListener("load", () => {
         ScrollTrigger.refresh();
       });
     }
+
+    // 3D tilt on project card hover
+    document.querySelectorAll(".project-card").forEach((card) => {
+      const el = card as HTMLElement;
+      card.addEventListener("mousemove", (e: any) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = (y - centerY) / 20;
+        const rotateY = (centerX - x) / 20;
+
+        gsap.to(card, {
+          rotateX: rotateX,
+          rotateY: rotateY,
+          duration: 0.4,
+          ease: "power2.out",
+          transformPerspective: 800,
+        });
+      });
+
+      card.addEventListener("mouseleave", () => {
+        gsap.to(card, {
+          rotateX: 0,
+          rotateY: 0,
+          duration: 0.6,
+          ease: "elastic.out(1, 0.3)",
+        });
+      });
+    });
 
     // Modal logic (remains mostly same but updated selectors)
     const modal = document.getElementById("project-modal");

@@ -10,6 +10,10 @@ import Manifesto from "../components/Manifesto.astro";
 import Certificates from "../components/Certificates.astro";
 import Contact from "../components/Contact.astro";
 import Footer from "../components/Footer.astro";
+import CustomCursor from "../components/CustomCursor.astro";
+import SmoothScroll from "../components/SmoothScroll.astro";
+import NoiseOverlay from "../components/NoiseOverlay.astro";
+import TextReveal from "../components/TextReveal.astro";
 ---
 
 <html lang="en" class="scroll-smooth">
@@ -21,11 +25,22 @@ import Footer from "../components/Footer.astro";
       name="description"
       content="Arsh Pathan — Developer, Creator, and Tech Enthusiast. Explore my portfolio of projects, skills, and achievements."
     />
-    <title>Portfolio - Arsh Pathan</title>
+    <meta name="theme-color" content="#060a14" />
+    <meta property="og:title" content="Arsh Pathan — Portfolio" />
+    <meta
+      property="og:description"
+      content="Developer, Creator, and Tech Enthusiast. Explore my portfolio of projects, skills, and achievements."
+    />
+    <meta property="og:type" content="website" />
+    <title>Arsh Pathan — Developer & Creator</title>
   </head>
   <body class="bg-bg-primary text-text-main antialiased overflow-x-hidden">
     <Background />
+    <NoiseOverlay />
+    <CustomCursor />
     <Manifesto />
+    <SmoothScroll />
+    <TextReveal />
 
     <main id="main-content" class="relative z-10">
       <Hero />
@@ -54,6 +69,20 @@ import Footer from "../components/Footer.astro";
       * {
         -ms-overflow-style: none;
         scrollbar-width: none;
+        cursor: none;
+      }
+
+      /* Restore cursor on mobile / touch devices */
+      @media (pointer: coarse) {
+        * {
+          cursor: auto;
+        }
+      }
+
+      @media (max-width: 768px) {
+        * {
+          cursor: auto;
+        }
       }
     </style>
   </body>

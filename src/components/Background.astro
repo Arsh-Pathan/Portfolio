@@ -12,9 +12,9 @@
   if (canvas) {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
-      75,
+      80,
       window.innerWidth / window.innerHeight,
-      1,
+      50,
       2000,
     );
 
@@ -27,260 +27,82 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // === PARTICLE SYSTEM ===
-    const particleCount = 4000;
-    const positions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
-    const sizes = new Float32Array(particleCount);
-    const velocities = new Float32Array(particleCount * 3);
+    const starsGeometry = new THREE.BufferGeometry();
+    const starsMaterial = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 3,
+      sizeAttenuation: true,
+      transparent: true,
+      opacity: 0.8,
+      vertexColors: true,
+    });
 
-    const palette = [
-      new THREE.Color(0x3b82f6), // blue
-      new THREE.Color(0x06b6d4), // cyan
-      new THREE.Color(0x818cf8), // indigo
-      new THREE.Color(0x60a5fa), // light blue
-      new THREE.Color(0xffffff), // white
-    ];
+    const starsCount = 3000;
+    const positions = new Float32Array(starsCount * 3);
+    const colors = new Float32Array(starsCount * 3);
 
-    for (let i = 0; i < particleCount; i++) {
-      const i3 = i * 3;
+    for (let i = 0; i < starsCount * 3; i += 3) {
+      positions[i] = (Math.random() - 0.5) * 2000;
+      positions[i + 1] = (Math.random() - 0.5) * 2000;
+      positions[i + 2] = (Math.random() - 0.5) * 2000;
 
-      // Spread in a sphere
-      const radius = 600 + Math.random() * 800;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-
-      positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-      positions[i3 + 2] = radius * Math.cos(phi);
+      const palette = [
+        { r: 0.56, g: 0.64, b: 0.56 },
+        { r: 0.36, g: 0.69, b: 0.89 },
+        { r: 1, g: 1, b: 1 },
+      ];
 
       const color = palette[Math.floor(Math.random() * palette.length)];
-      colors[i3] = color.r;
-      colors[i3 + 1] = color.g;
-      colors[i3 + 2] = color.b;
-
-      sizes[i] = Math.random() * 3 + 0.5;
-
-      velocities[i3] = (Math.random() - 0.5) * 0.02;
-      velocities[i3 + 1] = (Math.random() - 0.5) * 0.02;
-      velocities[i3 + 2] = (Math.random() - 0.5) * 0.02;
+      colors[i] = color.r;
+      colors[i + 1] = color.g;
+      colors[i + 2] = color.b;
     }
 
-    const particleGeometry = new THREE.BufferGeometry();
-    particleGeometry.setAttribute(
+    starsGeometry.setAttribute(
       "position",
       new THREE.BufferAttribute(positions, 3),
     );
-    particleGeometry.setAttribute(
-      "color",
-      new THREE.BufferAttribute(colors, 3),
-    );
-    particleGeometry.setAttribute("size", new THREE.BufferAttribute(sizes, 1));
+    starsGeometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
-    // Custom shader material for premium particles
-    const particleMaterial = new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: { value: 0 },
-        uMouse: { value: new THREE.Vector2(0, 0) },
-        uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
-      },
-      vertexShader: `
-        attribute float size;
-        attribute vec3 color;
-        varying vec3 vColor;
-        varying float vAlpha;
-        uniform float uTime;
-        uniform vec2 uMouse;
-        uniform float uPixelRatio;
-
-        // Simple noise function
-        float hash(vec3 p) {
-          p = fract(p * 0.3183099 + 0.1);
-          p *= 17.0;
-          return fract(p.x * p.y * p.z * (p.x + p.y + p.z));
-        }
-
-        void main() {
-          vColor = color;
-
-          vec3 pos = position;
-
-          // Gentle organic movement
-          float noise = sin(pos.x * 0.005 + uTime * 0.3) *
-                        cos(pos.y * 0.005 + uTime * 0.2) *
-                        sin(pos.z * 0.005 + uTime * 0.25);
-
-          pos += normalize(pos) * noise * 15.0;
-
-          // Mouse influence (repulsion)
-          vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-          float dist = length(mvPosition.xy - uMouse * 200.0);
-          float influence = smoothstep(300.0, 0.0, dist);
-          pos += normalize(pos) * influence * 30.0;
-
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-
-          // Size attenuation with twinkle
-          float twinkle = sin(uTime * 2.0 + hash(position) * 6.28) * 0.5 + 0.5;
-          gl_PointSize = size * uPixelRatio * (300.0 / -mvPosition.z) * (0.6 + twinkle * 0.4);
-
-          // Distance-based alpha
-          vAlpha = smoothstep(1500.0, 200.0, -mvPosition.z) * (0.4 + twinkle * 0.6);
-        }
-      `,
-      fragmentShader: `
-        varying vec3 vColor;
-        varying float vAlpha;
-
-        void main() {
-          // Soft circle with glow
-          float dist = length(gl_PointCoord - vec2(0.5));
-          if (dist > 0.5) discard;
-
-          float alpha = 1.0 - smoothstep(0.0, 0.5, dist);
-          alpha *= vAlpha;
-
-          // Add glow
-          float glow = exp(-dist * 4.0) * 0.5;
-
-          gl_FragColor = vec4(vColor, alpha + glow);
-        }
-      `,
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-    });
-
-    const particles = new THREE.Points(particleGeometry, particleMaterial);
-    scene.add(particles);
-
-    // === NEBULA / AURORA MESHES ===
-    const nebulaGeometry = new THREE.PlaneGeometry(2000, 2000, 1, 1);
-    const nebulaMaterial = new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: { value: 0 },
-      },
-      vertexShader: `
-        varying vec2 vUv;
-        void main() {
-          vUv = uv;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        uniform float uTime;
-        varying vec2 vUv;
-
-        float hash21(vec2 p) {
-          return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
-        }
-
-        float noise(vec2 p) {
-          vec2 i = floor(p);
-          vec2 f = fract(p);
-          f = f * f * (3.0 - 2.0 * f);
-          float a = hash21(i);
-          float b = hash21(i + vec2(1.0, 0.0));
-          float c = hash21(i + vec2(0.0, 1.0));
-          float d = hash21(i + vec2(1.0, 1.0));
-          return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
-        }
-
-        float fbm(vec2 p) {
-          float sum = 0.0;
-          float amp = 0.5;
-          for(int i = 0; i < 5; i++) {
-            sum += noise(p) * amp;
-            p *= 2.0;
-            amp *= 0.5;
-          }
-          return sum;
-        }
-
-        void main() {
-          vec2 uv = vUv;
-          float t = uTime * 0.08;
-
-          // Aurora-like flowing bands
-          float n1 = fbm(uv * 3.0 + vec2(t * 0.5, t * 0.3));
-          float n2 = fbm(uv * 2.0 + vec2(-t * 0.4, t * 0.6) + n1 * 0.5);
-
-          // Blue-cyan-indigo color palette
-          vec3 col1 = vec3(0.231, 0.510, 0.965); // blue
-          vec3 col2 = vec3(0.024, 0.714, 0.831); // cyan
-          vec3 col3 = vec3(0.506, 0.549, 0.973); // indigo
-
-          vec3 color = mix(col1, col2, n1);
-          color = mix(color, col3, n2 * 0.5);
-
-          // Soft edges
-          float edge = smoothstep(0.0, 0.3, uv.x) * smoothstep(1.0, 0.7, uv.x) *
-                       smoothstep(0.0, 0.3, uv.y) * smoothstep(1.0, 0.7, uv.y);
-
-          float alpha = n2 * edge * 0.04;
-
-          gl_FragColor = vec4(color, alpha);
-        }
-      `,
-      transparent: true,
-      depthWrite: false,
-      side: THREE.DoubleSide,
-    });
-
-    const nebula = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
-    nebula.position.z = -500;
-    scene.add(nebula);
+    const stars = new THREE.Points(starsGeometry, starsMaterial);
+    scene.add(stars);
 
     camera.position.z = 500;
 
-    // === INTERACTION ===
     let mouseX = 0;
     let mouseY = 0;
-    let targetMouseX = 0;
-    let targetMouseY = 0;
-    let scrollProgress = 0;
+
+    let targetZ = 500;
+    let currentZ = 500;
+
+    const MIN_Z = 120;
+    const MAX_Z = 1200;
+    const SCROLL_SPEED = 0.6;
 
     document.addEventListener("mousemove", (event) => {
-      targetMouseX = (event.clientX / window.innerWidth) * 2 - 1;
-      targetMouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+      mouseX = (event.clientX / window.innerWidth) * 4 - 1;
+      mouseY = -(event.clientY / window.innerHeight) * 4 + 1;
     });
 
-    window.addEventListener("scroll", () => {
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      scrollProgress = window.scrollY / docHeight;
+    window.addEventListener("wheel", (event) => {
+      targetZ += event.deltaY * SCROLL_SPEED;
+      targetZ = Math.max(MIN_Z, Math.min(MAX_Z, targetZ));
     });
-
-    // === ANIMATION LOOP ===
-    const clock = new THREE.Clock();
 
     function animate() {
       requestAnimationFrame(animate);
 
-      const elapsedTime = clock.getElapsedTime();
+      currentZ += (targetZ - currentZ) * 0.05;
+      camera.position.z = currentZ;
 
-      // Smooth mouse follow
-      mouseX += (targetMouseX - mouseX) * 0.05;
-      mouseY += (targetMouseY - mouseY) * 0.05;
-
-      // Update uniforms
-      particleMaterial.uniforms.uTime.value = elapsedTime;
-      particleMaterial.uniforms.uMouse.value.set(mouseX, mouseY);
-      nebulaMaterial.uniforms.uTime.value = elapsedTime;
-
-      // Camera parallax
-      camera.position.x += (mouseX * 60 - camera.position.x) * 0.03;
-      camera.position.y += (mouseY * 40 - camera.position.y) * 0.03;
-
-      // Scroll-driven zoom
-      const targetZ = 500 - scrollProgress * 200;
-      camera.position.z += (targetZ - camera.position.z) * 0.03;
-
+      camera.position.x += (mouseX * 50 - camera.position.x) * 0.05;
+      camera.position.y += (mouseY * 50 - camera.position.y) * 0.05;
       camera.lookAt(scene.position);
 
-      // Slow rotation
-      particles.rotation.y = elapsedTime * 0.03;
-      particles.rotation.x = elapsedTime * 0.015;
+      const speedFactor = (500 - currentZ) * 0.000002;
+
+      stars.rotation.y += 0.0004 + speedFactor;
+      stars.rotation.x += 0.00025 + speedFactor * 0.5;
 
       renderer.render(scene, camera);
     }
@@ -289,10 +111,6 @@
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-      particleMaterial.uniforms.uPixelRatio.value = Math.min(
-        window.devicePixelRatio,
-        2,
-      );
     });
 
     animate();

@@ -10,7 +10,7 @@
 
   if (canvas) {
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x000000, 0.0007);
+    // Removed Fog to keep pure black/white visibility throughout the journey
 
     const camera = new THREE.PerspectiveCamera(
       75,
@@ -24,155 +24,221 @@
       alpha: true,
       antialias: true,
     });
-
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    const tunnelWidth = 2200;
-    const tunnelHeight = 2200;
-    const tunnelLength = 7000; 
+    // ----------------------------------------------------
+    // TEXTURE GENERATORS (No more square boxes)
+    // ----------------------------------------------------
+    const createCircleTexture = (glow = false) => {
+       const texCanvas = document.createElement('canvas');
+       texCanvas.width = 64;
+       texCanvas.height = 64;
+       const ctx = texCanvas.getContext('2d');
+       if(glow) {
+           const gradient = ctx!.createRadialGradient(32, 32, 0, 32, 32, 32);
+           gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+           gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+           ctx!.fillStyle = gradient;
+           ctx!.fillRect(0, 0, 64, 64);
+       } else {
+           ctx!.beginPath();
+           ctx!.arc(32, 32, 30, 0, 2 * Math.PI);
+           ctx!.fillStyle = 'white';
+           ctx!.fill();
+       }
+       return new THREE.CanvasTexture(texCanvas);
+    };
+    
+    const circleTex = createCircleTexture(false);
+    const glowTex = createCircleTexture(true);
 
     // ----------------------------------------------------
-    // 1. NEURAL NETWORK TUNNEL
+    // ZONE 1: FLOATING NEURAL NETWORKS
     // ----------------------------------------------------
-    const particleCount = 900; // Increased density
-    const maxDistance = 280;
-    const maxDistanceSq = maxDistance * maxDistance;
-
-    const particles = new THREE.BufferGeometry();
-    const particlePositions = new Float32Array(particleCount * 3);
-    const particleVelocities = [];
-
-    for (let i = 0; i < particleCount; i++) {
-      particlePositions[i * 3] = (Math.random() - 0.5) * tunnelWidth;
-      particlePositions[i * 3 + 1] = (Math.random() - 0.5) * tunnelHeight;
-      particlePositions[i * 3 + 2] = 1500 - Math.random() * tunnelLength;
-
-      particleVelocities.push({
-        x: (Math.random() - 0.5) * 1.2,
-        y: (Math.random() - 0.5) * 1.2,
-        z: (Math.random() - 0.5) * 1.2,
-      });
+    const clusters: THREE.Group[] = [];
+    function createCluster(x: number, y: number, z: number) {
+       const count = 120;
+       const geo = new THREE.BufferGeometry();
+       const pos = new Float32Array(count * 3);
+       for(let i=0; i<count*3; i+=3) {
+          pos[i] = (Math.random()-0.5)*500;
+          pos[i+1] = (Math.random()-0.5)*500;
+          pos[i+2] = (Math.random()-0.5)*500;
+       }
+       geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+       
+       const mat = new THREE.PointsMaterial({ 
+           map: circleTex, 
+           size: 5, 
+           color: 0xffffff, 
+           transparent: true, 
+           opacity: 0.15, 
+           depthWrite: false 
+       });
+       const pts = new THREE.Points(geo, mat);
+       
+       // Pre-calculate lines for cluster
+       const lPos = [];
+       for(let i=0; i<count; i++) {
+           for(let j=i+1; j<count; j++) {
+               const dx = pos[i*3] - pos[j*3];
+               const dy = pos[i*3+1] - pos[j*3+1];
+               const dz = pos[i*3+2] - pos[j*3+2];
+               if(dx*dx + dy*dy + dz*dz < 150*150) {
+                   lPos.push(pos[i*3], pos[i*3+1], pos[i*3+2], pos[j*3], pos[j*3+1], pos[j*3+2]);
+               }
+           }
+       }
+       const lGeo = new THREE.BufferGeometry();
+       lGeo.setAttribute('position', new THREE.Float32BufferAttribute(lPos, 3));
+       const lMat = new THREE.LineBasicMaterial({ 
+           color: 0xffffff, 
+           transparent: true, 
+           opacity: 0.05, 
+           depthWrite: false 
+       });
+       const lines = new THREE.LineSegments(lGeo, lMat);
+       
+       const group = new THREE.Group();
+       group.add(pts);
+       group.add(lines);
+       group.position.set(x, y, z);
+       scene.add(group);
+       clusters.push(group);
     }
-
-    particles.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
-
-    const pMaterial = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 4,
-      transparent: true,
-      opacity: 0.8,
-      blending: THREE.AdditiveBlending,
-    });
-
-    const particleSystem = new THREE.Points(particles, pMaterial);
-    scene.add(particleSystem);
-
-    const maxLines = 20000;
-    const linePositions = new Float32Array(maxLines * 6);
-    const lineColors = new Float32Array(maxLines * 6);
-
-    const linesGeometry = new THREE.BufferGeometry();
-    linesGeometry.setAttribute("position", new THREE.BufferAttribute(linePositions, 3));
-    linesGeometry.setAttribute("color", new THREE.BufferAttribute(lineColors, 3));
-    linesGeometry.setDrawRange(0, 0);
-
-    const lineMaterial = new THREE.LineBasicMaterial({
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.5,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false
-    });
-
-    const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
-    scene.add(linesMesh);
+    
+    // Positioned in the early scroll zone
+    createCluster(200, 100, 800);
+    createCluster(-300, -100, 400);
+    createCluster(100, 250, 0);
 
     // ----------------------------------------------------
-    // 2. AMBIENT DUST (Fill emptiness)
+    // ZONE 2: NANOPARTICLE WORMS (Microscopic Creatures)
     // ----------------------------------------------------
-    const dustCount = 4000;
+    const worms: any[] = [];
+    function createWorm(baseZ: number) {
+        const spineLength = 60;
+        const particlesPerSegment = 10;
+        const totalParticles = spineLength * particlesPerSegment;
+        
+        const geo = new THREE.BufferGeometry();
+        const pos = new Float32Array(totalParticles * 3);
+        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        
+        const mat = new THREE.PointsMaterial({ 
+            map: glowTex, 
+            size: 10, 
+            color: 0xffffff, 
+            transparent: true, 
+            opacity: 0.25, 
+            depthWrite: false, 
+            blending: THREE.AdditiveBlending 
+        });
+        const pts = new THREE.Points(geo, mat);
+        scene.add(pts);
+        
+        worms.push({
+           pts,
+           baseZ,
+           timeOffset: Math.random() * 100,
+           update: function(t: number) {
+               const positions = this.pts.geometry.attributes.position.array;
+               const tt = t + this.timeOffset;
+               
+               for(let s=0; s<spineLength; s++) {
+                   const st = tt - s * 0.03; // Time delay for trailing segments
+                   
+                   // Core spine movement (Lissajous curves)
+                   const cx = Math.sin(st * 1.2) * 400;
+                   const cy = Math.cos(st * 0.9) * 300;
+                   const cz = this.baseZ + Math.sin(st * 0.5) * 600;
+                   
+                   // Particles orbiting the spine at this segment
+                   for(let p=0; p<particlesPerSegment; p++) {
+                       const idx = (s * particlesPerSegment + p) * 3;
+                       const angle = (p / particlesPerSegment) * Math.PI * 2 + st * 3;
+                       // Radius breathes/pulsates
+                       const radius = 25 + Math.sin(st * 5 + p) * 15; 
+                       
+                       positions[idx] = cx + Math.cos(angle) * radius;
+                       positions[idx+1] = cy + Math.sin(angle) * radius;
+                       positions[idx+2] = cz + Math.cos(angle * 0.5) * radius;
+                   }
+               }
+               this.pts.geometry.attributes.position.needsUpdate = true;
+           }
+        });
+    }
+    
+    // Positioned in the middle scroll zone
+    createWorm(-800);
+    createWorm(-1600);
+
+    // ----------------------------------------------------
+    // ZONE 3: MACRO STRUCTURES (Bigger Things)
+    // ----------------------------------------------------
+    const macros: THREE.Group[] = [];
+    function createMacro(x: number, y: number, z: number, radius: number) {
+       const geo = new THREE.IcosahedronGeometry(radius, 2);
+       
+       // Edges for wireframe look
+       const edges = new THREE.EdgesGeometry(geo);
+       const lMat = new THREE.LineBasicMaterial({ 
+           color: 0xffffff, 
+           transparent: true, 
+           opacity: 0.04, 
+           depthWrite: false 
+       });
+       const mesh = new THREE.LineSegments(edges, lMat);
+       
+       // Points at vertices
+       const pMat = new THREE.PointsMaterial({ 
+           map: glowTex, 
+           size: 15, 
+           color: 0xffffff, 
+           transparent: true, 
+           opacity: 0.1, 
+           depthWrite: false 
+       });
+       const pts = new THREE.Points(geo, pMat);
+       
+       const group = new THREE.Group();
+       group.add(mesh);
+       group.add(pts);
+       group.position.set(x, y, z);
+       scene.add(group);
+       macros.push(group);
+    }
+    
+    // Positioned in the deep scroll zone
+    createMacro(-300, 200, -2800, 400);
+    createMacro(400, -100, -3800, 500);
+    createMacro(0, 0, -4800, 600);
+
+    // ----------------------------------------------------
+    // AMBIENT DUST
+    // ----------------------------------------------------
+    const dustCount = 3000;
     const dustGeo = new THREE.BufferGeometry();
     const dustPos = new Float32Array(dustCount * 3);
     for(let i=0; i<dustCount*3; i+=3) {
-       dustPos[i] = (Math.random() - 0.5) * tunnelWidth * 1.5;
-       dustPos[i+1] = (Math.random() - 0.5) * tunnelHeight * 1.5;
-       dustPos[i+2] = 1500 - Math.random() * tunnelLength;
+       dustPos[i] = (Math.random() - 0.5) * 2500;
+       dustPos[i+1] = (Math.random() - 0.5) * 2500;
+       dustPos[i+2] = 1200 - Math.random() * 6500; // Span entire journey
     }
     dustGeo.setAttribute("position", new THREE.BufferAttribute(dustPos, 3));
     const dustMat = new THREE.PointsMaterial({
+       map: circleTex,
        color: 0xffffff,
-       size: 1.5,
+       size: 2,
        transparent: true,
-       opacity: 0.3,
+       opacity: 0.08, // Very subtle
+       depthWrite: false,
        blending: THREE.AdditiveBlending
     });
     const dustSystem = new THREE.Points(dustGeo, dustMat);
     scene.add(dustSystem);
-
-    // ----------------------------------------------------
-    // 3. THICK NANOWORM (3 Interwoven Strands)
-    // ----------------------------------------------------
-    const wormLength = 150;
-    const strands = 3;
-    const wormGeometry = new THREE.BufferGeometry();
-    const wormPositions = new Float32Array(wormLength * strands * 3);
-    
-    for(let i=0; i<wormLength * strands * 3; i++) {
-        wormPositions[i] = 0;
-    }
-    
-    wormGeometry.setAttribute('position', new THREE.BufferAttribute(wormPositions, 3));
-    
-    const wormMaterial = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 8,
-      transparent: true,
-      opacity: 0.9,
-      blending: THREE.AdditiveBlending
-    });
-    
-    const worm = new THREE.Points(wormGeometry, wormMaterial);
-    scene.add(worm);
-
-    // ----------------------------------------------------
-    // 4. LARGE GLOWING ORBS
-    // ----------------------------------------------------
-    // Simple glowing sprite simulation via large points
-    const orbCount = 15;
-    const orbGeo = new THREE.BufferGeometry();
-    const orbPos = new Float32Array(orbCount * 3);
-    for(let i=0; i<orbCount*3; i+=3) {
-       orbPos[i] = (Math.random() - 0.5) * tunnelWidth;
-       orbPos[i+1] = (Math.random() - 0.5) * tunnelHeight;
-       orbPos[i+2] = 1500 - Math.random() * tunnelLength;
-    }
-    orbGeo.setAttribute("position", new THREE.BufferAttribute(orbPos, 3));
-    
-    const createOrbTexture = () => {
-       const canvas = document.createElement('canvas');
-       canvas.width = 128;
-       canvas.height = 128;
-       const ctx = canvas.getContext('2d');
-       const gradient = ctx!.createRadialGradient(64, 64, 0, 64, 64, 64);
-       gradient.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
-       gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-       ctx!.fillStyle = gradient;
-       ctx!.fillRect(0, 0, 128, 128);
-       return new THREE.CanvasTexture(canvas);
-    };
-
-    const orbMat = new THREE.PointsMaterial({
-       color: 0xffffff,
-       size: 600,
-       map: createOrbTexture(),
-       transparent: true,
-       opacity: 0.15,
-       blending: THREE.AdditiveBlending,
-       depthWrite: false
-    });
-    const orbSystem = new THREE.Points(orbGeo, orbMat);
-    scene.add(orbSystem);
 
     // ----------------------------------------------------
     // INTERACTIVITY & ANIMATION
@@ -207,104 +273,22 @@
       requestAnimationFrame(animate);
       time += 0.015;
 
-      // Update Network Particles
-      const positions = particleSystem.geometry.attributes.position.array as Float32Array;
-      for (let i = 0; i < particleCount; i++) {
-        positions[i * 3] += particleVelocities[i].x;
-        positions[i * 3 + 1] += particleVelocities[i].y;
-        positions[i * 3 + 2] += particleVelocities[i].z;
-
-        if (Math.abs(positions[i * 3]) > tunnelWidth / 2) particleVelocities[i].x *= -1;
-        if (Math.abs(positions[i * 3 + 1]) > tunnelHeight / 2) particleVelocities[i].y *= -1;
-        
-        if (positions[i * 3 + 2] > 1500) positions[i * 3 + 2] = -5500;
-        if (positions[i * 3 + 2] < -5500) positions[i * 3 + 2] = 1500;
-      }
-      particleSystem.geometry.attributes.position.needsUpdate = true;
-
-      // Update Ambient Dust
-      const dPos = dustSystem.geometry.attributes.position.array as Float32Array;
-      for(let i=0; i<dustCount; i++) {
-         dPos[i*3] += Math.sin(time + i) * 0.5; // Slight drift
-         dPos[i*3+1] += Math.cos(time + i) * 0.5;
-         
-         if (dPos[i * 3 + 2] > 1500) dPos[i * 3 + 2] = -5500;
-      }
-      dustSystem.geometry.attributes.position.needsUpdate = true;
+      // Rotate Neural Clusters
+      clusters.forEach((cluster, i) => {
+          cluster.rotation.x = time * 0.1 * (i % 2 === 0 ? 1 : -1);
+          cluster.rotation.y = time * 0.15;
+      });
       
-      // Update Orbs
-      const oPos = orbSystem.geometry.attributes.position.array as Float32Array;
-      for(let i=0; i<orbCount; i++) {
-         oPos[i*3+2] += 1.5; // Drift towards camera
-         if (oPos[i * 3 + 2] > 1500) oPos[i * 3 + 2] = -5500;
-      }
-      orbSystem.geometry.attributes.position.needsUpdate = true;
-
-      // Rebuild Neural Connections
-      let vertexCount = 0;
-      let colorCount = 0;
-
-      for (let i = 0; i < particleCount; i++) {
-        for (let j = i + 1; j < particleCount; j++) {
-          const dx = positions[i * 3] - positions[j * 3];
-          const dy = positions[i * 3 + 1] - positions[j * 3 + 1];
-          const dz = positions[i * 3 + 2] - positions[j * 3 + 2];
-          const distSq = dx * dx + dy * dy + dz * dz;
-
-          if (distSq < maxDistanceSq) {
-            linePositions[vertexCount++] = positions[i * 3];
-            linePositions[vertexCount++] = positions[i * 3 + 1];
-            linePositions[vertexCount++] = positions[i * 3 + 2];
-
-            linePositions[vertexCount++] = positions[j * 3];
-            linePositions[vertexCount++] = positions[j * 3 + 1];
-            linePositions[vertexCount++] = positions[j * 3 + 2];
-
-            const alpha = 1.0 - Math.sqrt(distSq) / maxDistance;
-            const intensity = alpha * 0.9; 
-
-            lineColors[colorCount++] = intensity;
-            lineColors[colorCount++] = intensity;
-            lineColors[colorCount++] = intensity;
-
-            lineColors[colorCount++] = intensity;
-            lineColors[colorCount++] = intensity;
-            lineColors[colorCount++] = intensity;
-
-            if (vertexCount >= maxLines * 6) break;
-          }
-        }
-        if (vertexCount >= maxLines * 6) break;
-      }
-
-      linesMesh.geometry.setDrawRange(0, vertexCount / 3);
-      linesMesh.geometry.attributes.position.needsUpdate = true;
-      linesMesh.geometry.attributes.color.needsUpdate = true;
+      // Update Nanoparticle Worms
+      worms.forEach(w => w.update(time));
       
-      // Update Thick Nanoworm (3 Strands)
-      const wPositions = worm.geometry.attributes.position.array as Float32Array;
-      const currentCameraZ = camera.position.z;
-      
-      for(let s=0; s<strands; s++) {
-         const offset = s * wormLength * 3;
-         
-         // Shift strand back
-         for(let i = wormLength - 1; i > 0; i--) {
-            wPositions[offset + i*3] = wPositions[offset + (i-1)*3];
-            wPositions[offset + i*3+1] = wPositions[offset + (i-1)*3+1];
-            wPositions[offset + i*3+2] = wPositions[offset + (i-1)*3+2];
-         }
-         
-         // Lissajous with phase offset for each strand
-         const phase = s * ((Math.PI * 2) / strands);
-         
-         wPositions[offset] = Math.sin(time * 1.2 + phase) * 600 + Math.cos(time * 0.5) * 300;
-         wPositions[offset + 1] = Math.cos(time * 1.5 + phase) * 500 + Math.sin(time * 0.7) * 300;
-         wPositions[offset + 2] = currentCameraZ - 400 - Math.sin(time * 0.8) * 1000;
-      }
-      worm.geometry.attributes.position.needsUpdate = true;
+      // Rotate Macro Structures
+      macros.forEach((macro, i) => {
+          macro.rotation.x = time * 0.05;
+          macro.rotation.y = time * 0.08 * (i % 2 === 0 ? 1 : -1);
+      });
 
-      // Update Camera
+      // Update Camera (Microscopic Journey)
       const startZ = 1200;
       const endZ = -4500;
       const targetZ = startZ + (endZ - startZ) * scrollPercent;

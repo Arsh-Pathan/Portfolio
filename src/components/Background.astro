@@ -268,6 +268,21 @@
     });
 
     let time = 0;
+    
+    // Helper to get point on the 3D winding path
+    function getPathPoint(progress: number) {
+       const z = 1200 - progress * 5700;
+       const rads = progress * Math.PI * 2;
+       // Sweeping curves for twists and turns
+       const x = Math.sin(rads * 1.5) * 1000;
+       const y = Math.cos(rads * 1.2) * 800;
+       return new THREE.Vector3(x, y, z);
+    }
+    
+    // We need to keep track of where the camera is currently looking to smooth it
+    const currentLookTarget = new THREE.Vector3(0, 0, 0);
+    // Initialize look target ahead of start
+    currentLookTarget.copy(getPathPoint(0.05));
 
     function animate() {
       requestAnimationFrame(animate);
@@ -288,16 +303,25 @@
           macro.rotation.y = time * 0.08 * (i % 2 === 0 ? 1 : -1);
       });
 
-      // Update Camera (Microscopic Journey)
-      const startZ = 1200;
-      const endZ = -4500;
-      const targetZ = startZ + (endZ - startZ) * scrollPercent;
+      // Update Camera (Curvy Video Game Journey)
       
-      camera.position.z += (targetZ - camera.position.z) * 0.08;
-      camera.position.x += (mouseX - camera.position.x) * 0.05;
-      camera.position.y += (-mouseY - camera.position.y) * 0.05;
+      // Calculate where we should be on the path
+      const targetPos = getPathPoint(scrollPercent);
+      // Add mouse parallax
+      targetPos.x += mouseX;
+      targetPos.y += -mouseY;
       
-      camera.lookAt(scene.position.x, scene.position.y, targetZ - 1000); 
+      // Smoothly move camera towards the target position
+      camera.position.lerp(targetPos, 0.05);
+      
+      // Calculate where we should look (slightly ahead on the path)
+      // This makes the camera bank and turn into the curves
+      const lookAheadPercent = Math.min(1.0, scrollPercent + 0.08);
+      const targetLookPos = getPathPoint(lookAheadPercent);
+      
+      // Smoothly interpolate the look target for buttery smooth turns
+      currentLookTarget.lerp(targetLookPos, 0.05);
+      camera.lookAt(currentLookTarget);
 
       renderer.render(scene, camera);
     }

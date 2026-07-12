@@ -75,23 +75,11 @@ import BigText from "../components/BigText.astro";
         });
 
         // Motion Blur on Scroll
-        const mainContent = document.querySelector('main');
-        const footerContent = document.querySelector('footer');
-        
-        // Select all direct children of main except the github section
-        // because CSS filters break position: fixed which GSAP pinning relies on.
+        const bgCanvas = document.getElementById('background');
         const blurTargets = [];
-        if (mainContent) {
-            Array.from(mainContent.children).forEach(child => {
-                if (child.id !== 'github-journey' && child.tagName !== 'SCRIPT') {
-                    child.style.willChange = 'filter';
-                    blurTargets.push(child);
-                }
-            });
-        }
-        if (footerContent) {
-            footerContent.style.willChange = 'filter';
-            blurTargets.push(footerContent);
+        if (bgCanvas) {
+            bgCanvas.style.willChange = 'filter';
+            blurTargets.push(bgCanvas);
         }
 
         let scrollTimeout;

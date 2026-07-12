@@ -75,13 +75,23 @@ import BigText from "../components/BigText.astro";
         });
 
         // Motion Blur on Scroll
+        const mainContent = document.querySelector('main');
+        const footerContent = document.querySelector('footer');
+        
         // Select all direct children of main except the math section
         // because CSS filters break position: fixed which GSAP pinning relies on.
         const blurTargets = [];
-        const bgCanvas = document.getElementById('background');
-        if (bgCanvas) {
-            bgCanvas.style.willChange = 'filter';
-            blurTargets.push(bgCanvas);
+        if (mainContent) {
+            Array.from(mainContent.children).forEach(child => {
+                if (child.id !== 'math-journey' && child.tagName !== 'SCRIPT') {
+                    child.style.willChange = 'filter';
+                    blurTargets.push(child);
+                }
+            });
+        }
+        if (footerContent) {
+            footerContent.style.willChange = 'filter';
+            blurTargets.push(footerContent);
         }
 
         let scrollTimeout;
@@ -92,8 +102,8 @@ import BigText from "../components/BigText.astro";
             const velocity = Math.abs(currentScroll - lastScroll);
             lastScroll = currentScroll;
             
-            // Map velocity to blur amount (tweak multipliers for intensity)
-            const blurValue = Math.min(velocity * 0.08, 12);
+            // Map velocity to blur amount (light intensity)
+            const blurValue = Math.min(velocity * 0.03, 5);
             
             blurTargets.forEach(target => {
                 target.style.filter = `blur(${blurValue}px)`;

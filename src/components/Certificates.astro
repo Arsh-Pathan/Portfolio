@@ -10,7 +10,7 @@ const certificates = [
     issuer: "Singularity",
     description: "Awarded 3rd Place in the VibeState'25 competition for outstanding performance and hard work.",
     date: "Feb 2025",
-    icon: "🥉",
+    icon: "",
     url: "#"
   },
   {
@@ -18,7 +18,7 @@ const certificates = [
     issuer: "Outskill",
     description: "Successfully completed an intensive program on Generative AI Engineering and Agentic AI systems.",
     date: "2025",
-    icon: "🤖",
+    icon: "",
     url: "#"
   },
   {
@@ -26,7 +26,7 @@ const certificates = [
     issuer: "Unstop",
     description: "Participated in VibeState '25 organized by Guru Gobind Singh Indraprastha University (GGSIPU), Delhi.",
     date: "Feb 2025",
-    icon: "🤝",
+    icon: "",
     url: "#"
   }
 ];
@@ -47,7 +47,7 @@ const certificates = [
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {certificates.map((cert) => (
-        <a href={cert.url} target="_blank" class="group block relative p-8 bg-[#0d1427]/40 hover:bg-[#111a30]/80 rounded-[24px] border border-white/5 hover:border-white/20 transition-all duration-500 overflow-hidden flex flex-col h-full">
+        <a href={cert.url} target="_blank" class="group block relative p-8 bg-[#111111]/40 hover:bg-[#1f1f1f]/80 rounded-[24px] border border-white/5 hover:border-white/20 transition-all duration-500 overflow-hidden flex flex-col h-full">
           <div class="mb-8 w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-500">
             {cert.icon}
           </div>

@@ -98,17 +98,17 @@ const data = await getGithubData();
 
 const getLangColor = (lang: string) => {
   const colors: Record<string, string> = {
-    TypeScript: "#3178c6",
-    JavaScript: "#f1e05a",
-    Astro: "#ff5a03",
-    Python: "#3572A5",
-    Java: "#b07219",
-    HTML: "#e34c26",
-    CSS: "#563d7c",
-    Vue: "#41b883",
-    Go: "#00ADD8",
+    TypeScript: "#ffffff",
+    JavaScript: "#e5e5e5",
+    Astro: "#cccccc",
+    Python: "#b3b3b3",
+    Java: "#999999",
+    HTML: "#808080",
+    CSS: "#666666",
+    Vue: "#4d4d4d",
+    Go: "#333333",
     C: "#555555",
-    "C++": "#f34b7d",
+    "C++": "#a3a3a3",
   };
   return colors[lang] || "#8b949e";
 };

@@ -16,7 +16,7 @@ html {
 
 body {
     font-family: 'Outfit', sans-serif;
-    background: #0a0f1c;
+    background: #111111;
     color: #e8edf5;
     overflow-x: hidden;
     position: relative;
@@ -31,17 +31,17 @@ body.loading {
 }
 
 ::-webkit-scrollbar-track {
-    background: #0a0f1c;
+    background: #111111;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #3b82f6, #06b6d4);
+    background: linear-gradient(180deg, #ffffff, #cccccc);
     border-radius: 4px;
-    border: 2px solid #0a0f1c;
+    border: 2px solid #111111;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #60a5fa, #22d3ee);
+    background: linear-gradient(180deg, #a3a3a3, #dddddd);
 }
 
 .container {
@@ -72,10 +72,10 @@ body.loading {
     display: block;
     width: 80px;
     height: 3px;
-    background: linear-gradient(90deg, #3b82f6, #06b6d4);
+    background: linear-gradient(90deg, #ffffff, #cccccc);
     margin: 1.2rem auto 0;
     border-radius: 2px;
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
 }
 
 .section-label {
@@ -93,19 +93,19 @@ body.loading {
 .section-label::before {
     content: '{';
     font-size: 1.4rem;
-    color: #3b82f6;
+    color: #ffffff;
     font-weight: 300;
 }
 
 .section-label::after {
     content: '}';
     font-size: 1.4rem;
-    color: #3b82f6;
+    color: #ffffff;
     font-weight: 300;
 }
 
 .gradient-text {
-    background: linear-gradient(135deg, #60a5fa, #06b6d4, #818cf8);
+    background: linear-gradient(135deg, #a3a3a3, #cccccc, #d4d4d4);
     background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -122,7 +122,7 @@ body.loading {
     background: rgba(17, 26, 46, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 1.5rem;
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.3),
@@ -130,10 +130,10 @@ body.loading {
 }
 
 .glass:hover {
-    border-color: rgba(59, 130, 246, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
     box-shadow:
         0 16px 48px rgba(0, 0, 0, 0.4),
-        0 0 30px rgba(59, 130, 246, 0.08),
+        0 0 30px rgba(255, 255, 255, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
@@ -155,16 +155,16 @@ body.loading {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: white;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    background: #ffffff;
+    color: #111111;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
 }
 
 .btn-primary:hover {
     transform: translateY(-3px);
     box-shadow:
-        0 8px 30px rgba(59, 130, 246, 0.5),
-        0 0 60px rgba(59, 130, 246, 0.15);
+        0 8px 30px rgba(255, 255, 255, 0.5),
+        0 0 60px rgba(255, 255, 255, 0.15);
 }
 
 .btn-outline {
@@ -187,7 +187,7 @@ body.loading {
 
 .card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 40px rgba(59, 130, 246, 0.08);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 255, 255, 0.08);
 }
 
 #particles-canvas {
@@ -209,7 +209,7 @@ body.loading {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, #0d1427, #111a2e);
+    background: linear-gradient(180deg, #111111, #1a1a1a);
     z-index: -2;
 }
 
@@ -222,8 +222,8 @@ body.loading {
     position: absolute;
     inset: 0;
     background-image:
-        linear-gradient(rgba(59, 130, 246, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59, 130, 246, 0.02) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
     background-size: 80px 80px;
     pointer-events: none;
     z-index: 0;
@@ -233,7 +233,7 @@ body.loading {
     position: fixed;
     inset: 0;
     z-index: 10000;
-    background: #0a0f1c;
+    background: #111111;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -250,7 +250,7 @@ body.loading {
     background: rgba(10, 15, 28, 0.8);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid rgba(59, 130, 246, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 @media (max-width: 768px) {

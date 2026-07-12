@@ -100,40 +100,71 @@
     // ----------------------------------------------------
     // ZONE 1: FLOATING STRUCTURED NEURAL NETWORKS
     // ----------------------------------------------------
-    function createStructuredNN(progress: number, offset: THREE.Vector3) {
+    function createStructuredNN(progress: number, offset: THREE.Vector3, is3D: boolean = false) {
        const center = getPathPoint(progress).add(offset);
        const group = new THREE.Group();
        
-       const layers = [3, 5, 5, 2]; // Input, Hidden 1, Hidden 2, Output
-       const nodeGeo = new THREE.BufferGeometry();
-       let nodeCount = 0;
-       layers.forEach(l => nodeCount += l);
+       const posArray = [];
+       const linePosArray = [];
        
-       const pos = new Float32Array(nodeCount * 3);
-       const layerPositions: THREE.Vector3[][] = [];
-       
-       let idx = 0;
-       const xSpacing = 60;
-       const ySpacing = 30;
-       
-       for(let i=0; i<layers.length; i++) {
-           const nodes = layers[i];
-           const x = (i - layers.length/2) * xSpacing;
-           const currentLayer: THREE.Vector3[] = [];
+       if (!is3D) {
+           // 2D LAYERED STRUCTURE
+           const layers = [3, 5, 5, 2];
+           const layerPositions: THREE.Vector3[][] = [];
+           const xSpacing = 60;
+           const ySpacing = 30;
            
-           for(let j=0; j<nodes; j++) {
-               const y = (j - nodes/2) * ySpacing;
-               pos[idx*3] = x;
-               pos[idx*3+1] = y;
-               pos[idx*3+2] = 0;
-               currentLayer.push(new THREE.Vector3(x, y, 0));
-               idx++;
+           for(let i=0; i<layers.length; i++) {
+               const nodes = layers[i];
+               const x = (i - layers.length/2) * xSpacing;
+               const currentLayer: THREE.Vector3[] = [];
+               
+               for(let j=0; j<nodes; j++) {
+                   const y = (j - nodes/2) * ySpacing;
+                   posArray.push(x, y, 0);
+                   currentLayer.push(new THREE.Vector3(x, y, 0));
+               }
+               layerPositions.push(currentLayer);
            }
-           layerPositions.push(currentLayer);
+           
+           // Connect adjacent layers
+           for(let i=0; i<layers.length-1; i++) {
+               const current = layerPositions[i];
+               const next = layerPositions[i+1];
+               for(let a=0; a<current.length; a++) {
+                   for(let b=0; b<next.length; b++) {
+                       linePosArray.push(current[a].x, current[a].y, current[a].z);
+                       linePosArray.push(next[b].x, next[b].y, next[b].z);
+                   }
+               }
+           }
+       } else {
+           // 3D CLUSTER STRUCTURE
+           const count = 35;
+           for(let i=0; i<count; i++) {
+               posArray.push(
+                   (Math.random() - 0.5) * 160,
+                   (Math.random() - 0.5) * 160,
+                   (Math.random() - 0.5) * 160
+               );
+           }
+           // Connect close nodes
+           for(let i=0; i<count; i++) {
+               for(let j=i+1; j<count; j++) {
+                   const dx = posArray[i*3] - posArray[j*3];
+                   const dy = posArray[i*3+1] - posArray[j*3+1];
+                   const dz = posArray[i*3+2] - posArray[j*3+2];
+                   if (dx*dx + dy*dy + dz*dz < 85*85) {
+                       linePosArray.push(posArray[i*3], posArray[i*3+1], posArray[i*3+2]);
+                       linePosArray.push(posArray[j*3], posArray[j*3+1], posArray[j*3+2]);
+                   }
+               }
+           }
        }
        
-       // Constant Outer Ring
-       nodeGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+       const nodeCount = posArray.length / 3;
+       const pos = new Float32Array(posArray);
+       const nodeGeo = new THREE.BufferGeometry();
        const ringMat = new THREE.PointsMaterial({ 
            map: ringTex, size: 14, color: 0xffffff, transparent: true, opacity: 0.3, depthWrite: false, blending: THREE.AdditiveBlending 
        });
@@ -151,22 +182,11 @@
        const dotMesh = new THREE.Points(dotGeo, dotMat);
        group.add(dotMesh);
        
-       // Lines between layers
-       const linePos = [];
-       for(let i=0; i<layers.length-1; i++) {
-           const current = layerPositions[i];
-           const next = layerPositions[i+1];
-           for(let a=0; a<current.length; a++) {
-               for(let b=0; b<next.length; b++) {
-                   linePos.push(current[a].x, current[a].y, current[a].z);
-                   linePos.push(next[b].x, next[b].y, next[b].z);
-               }
-           }
-       }
-       const lineCount = linePos.length / 6; // 6 floats per line
+       // Lines between layers/nodes
+       const lineCount = linePosArray.length / 6; // 6 floats per line
        const lineColors = new Float32Array(lineCount * 6);
        const lineGeo = new THREE.BufferGeometry();
-       lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePos, 3));
+       lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePosArray, 3));
        lineGeo.setAttribute('color', new THREE.BufferAttribute(lineColors, 3));
        const lineMat = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.8, depthWrite: false, blending: THREE.AdditiveBlending });
        const linesMesh = new THREE.LineSegments(lineGeo, lineMat);
@@ -195,7 +215,11 @@
                lineMat.opacity = 0.8 * fade;
            },
            update: (time: number) => {
-               group.rotation.y += 0.005;
+               // Drift smoothly in 3D space instead of rotating
+               const t = time + timeOffset;
+               group.position.x = center.x + Math.sin(t * 0.4) * 30;
+               group.position.y = center.y + Math.cos(t * 0.3) * 30;
+               group.position.z = center.z + Math.sin(t * 0.2) * 30;
                
                const nColors = dotMesh.geometry.attributes.color.array as Float32Array;
                const lColors = linesMesh.geometry.attributes.color.array as Float32Array;
@@ -242,11 +266,11 @@
        });
     }
     
-    // Placed early on
-    createStructuredNN(0.02, new THREE.Vector3(150, 100, 0));
-    createStructuredNN(0.18, new THREE.Vector3(-200, -100, 0));
-    createStructuredNN(0.3, new THREE.Vector3(100, 150, 0));
-    createStructuredNN(0.5, new THREE.Vector3(-150, -50, 0));
+    // Placed early on - mixture of 2D and 3D!
+    createStructuredNN(0.02, new THREE.Vector3(150, 100, 0), false);
+    createStructuredNN(0.18, new THREE.Vector3(-200, -100, 0), true);
+    createStructuredNN(0.3, new THREE.Vector3(100, 150, 0), false);
+    createStructuredNN(0.5, new THREE.Vector3(-150, -50, 0), true);
 
     // ----------------------------------------------------
     // ZONE 2: NANOPARTICLE WORMS

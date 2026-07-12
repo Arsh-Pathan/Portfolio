@@ -6,45 +6,117 @@
 
 <section id="math-journey" class="relative z-10 bg-transparent min-h-screen w-full overflow-hidden flex items-center">
   
-  <div class="math-scroll-wrapper flex items-center gap-32 px-10 md:px-[10vw] h-full w-max flex-nowrap py-20 md:py-0">
+  <div class="math-scroll-wrapper flex items-center gap-16 md:gap-32 px-10 md:px-[10vw] h-full w-max flex-nowrap py-20 md:py-0">
     
     <!-- Title Area (First Slide) -->
     <div class="w-full md:w-[80vw] md:max-w-4xl flex-shrink-0 flex flex-col justify-center">
       <div class="flex items-center gap-3 mb-6">
         <div class="h-[1px] w-12 bg-white/50"></div>
-        <span class="text-xs font-bold tracking-widest text-white/80 uppercase">Core Principles</span>
+        <span class="text-xs font-bold tracking-widest text-white/80 uppercase">AI Reasoning</span>
       </div>
       <h2 class="text-6xl md:text-9xl font-black uppercase tracking-tighter leading-none mb-8" id="math-title">
-        <div class="overflow-hidden"><span class="block title-line translate-y-full text-white/10">INTELLIGENT</span></div>
-        <div class="overflow-hidden"><span class="block title-line translate-y-full text-white/40">SYSTEMS</span></div>
+        <div class="overflow-hidden"><span class="block title-line translate-y-full text-white/10">POLICY</span></div>
+        <div class="overflow-hidden"><span class="block title-line translate-y-full text-white/40">OPTIMIZATION</span></div>
       </h2>
       <p class="text-white/60 text-lg md:text-xl max-w-lg leading-relaxed font-medium">
-        At the heart of autonomous agents lies the mathematics of reinforcement learning. Scroll horizontally to explore the Bellman Equation that drives Q-Learning.
+        The Group Relative Policy Optimization (GRPO) algorithm loss function. Scroll horizontally to explore the mathematics powering modern reasoning models.
       </p>
     </div>
 
     <!-- The Massive Formula -->
     <div class="flex-shrink-0 flex items-center">
-       <div class="math-formula flex items-center text-[5rem] md:text-[12rem] font-serif italic text-white whitespace-nowrap tracking-tight">
-          <span class="drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Q(s, a)</span>
-          <span class="text-white/50 text-[3rem] md:text-[8rem] mx-8 md:mx-16 font-sans">&#8592;</span>
-          <span class="drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Q(s, a)</span>
-          <span class="text-white/50 mx-8 md:mx-16 font-sans">+</span>
-          <span class="text-[#cccccc] drop-shadow-[0_0_40px_rgba(255,255,255,0.4)]">&alpha;</span>
-          <span class="text-white/30 mx-4 font-sans">[</span>
-          <span class="drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">R(s, a)</span>
-          <span class="text-white/50 mx-8 md:mx-16 font-sans">+</span>
-          <span class="text-[#cccccc] drop-shadow-[0_0_40px_rgba(255,255,255,0.4)]">&gamma;</span>
+       <div class="math-formula flex items-center text-[4rem] md:text-[10rem] font-serif italic text-white whitespace-nowrap tracking-tight">
           
-          <div class="flex flex-col items-center justify-center translate-y-4 md:translate-y-12 mx-8 md:mx-12 font-sans">
-            <span class="leading-none text-[3rem] md:text-[7rem] font-bold">max</span>
-            <span class="text-white/60 leading-none text-[1.5rem] md:text-[3rem] italic">a'</span>
+          <!-- L_GRPO (θ) = -->
+          <div class="flex items-center mr-8 md:mr-16">
+            <span class="drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">L</span>
+            <span class="text-[1.5rem] md:text-[3rem] translate-y-6 md:translate-y-12 -ml-2 font-sans mr-4 font-bold text-white/70 tracking-widest">GRPO</span>
+            <span class="font-sans">(</span>&theta;<span class="font-sans">)</span>
+            <span class="text-white/50 mx-6 font-sans">=</span>
+            <span class="text-white/50 font-sans -mr-4">-</span>
+          </div>
+
+          <!-- 1/G \sum_{i=1}^G -->
+          <div class="flex items-center gap-6 mr-8 md:mr-16">
+            <div class="flex flex-col items-center justify-center font-sans">
+              <div class="text-[2rem] md:text-[5rem] leading-none mb-2">1</div>
+              <div class="w-full h-1 md:h-2 bg-white/50 rounded-full"></div>
+              <div class="text-[2rem] md:text-[5rem] leading-none mt-2 font-serif italic text-white/80">G</div>
+            </div>
+            
+            <div class="flex flex-col items-center justify-center translate-y-2 md:translate-y-4 mx-4">
+              <span class="text-[1rem] md:text-[2rem] leading-none text-white/60 mb-2 font-serif italic">G</span>
+              <span class="text-[5rem] md:text-[12rem] leading-none font-sans text-white/80">&sum;</span>
+              <span class="text-[1rem] md:text-[2rem] leading-none text-white/60 mt-1 font-sans">i=1</span>
+            </div>
+          </div>
+
+          <!-- 1/|o_i| \sum_{t=1}^{|o_i|} -->
+          <div class="flex items-center gap-6 mr-8 md:mr-16">
+            <div class="flex flex-col items-center justify-center font-sans">
+              <div class="text-[2rem] md:text-[5rem] leading-none mb-2">1</div>
+              <div class="w-full h-1 md:h-2 bg-white/50 rounded-full"></div>
+              <div class="text-[2rem] md:text-[5rem] leading-none mt-2 font-sans flex items-center">|o<span class="text-[1rem] md:text-[2.5rem] translate-y-3 md:translate-y-6 font-serif italic">i</span>|</div>
+            </div>
+            
+            <div class="flex flex-col items-center justify-center translate-y-2 md:translate-y-4 mx-4">
+              <span class="text-[1rem] md:text-[2rem] leading-none text-white/60 mb-2 font-sans flex items-center">|o<span class="text-[0.8rem] md:text-[1.5rem] translate-y-2 font-serif italic">i</span>|</span>
+              <span class="text-[5rem] md:text-[12rem] leading-none font-sans text-white/80">&sum;</span>
+              <span class="text-[1rem] md:text-[2rem] leading-none text-white/60 mt-1 font-sans">t=1</span>
+            </div>
           </div>
           
-          <span class="drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Q(s', a')</span>
+          <!-- [ -->
+          <span class="text-white/30 mx-4 md:mx-8 text-[6rem] md:text-[16rem] font-sans font-light translate-y-2 md:translate-y-4">[</span>
+          
+          <!-- Fraction inside -->
+          <div class="flex flex-col items-center justify-center mx-6 md:mx-10">
+            <div class="flex items-center text-[3rem] md:text-[7rem]">
+               <span class="font-sans">&pi;</span><span class="text-[1rem] md:text-[2.5rem] translate-y-4 md:translate-y-10">&theta;</span>
+               <span class="font-sans mx-2">(</span>o<span class="text-[1rem] md:text-[2.5rem] translate-y-4 md:translate-y-10 font-sans">i,t</span>
+               <span class="font-sans mx-4 text-white/40">|</span>
+               q, o<span class="text-[1rem] md:text-[2.5rem] translate-y-4 md:translate-y-10 font-sans text-white/80">i,&lt;t</span><span class="font-sans mx-2">)</span>
+            </div>
+            <div class="w-full h-1 md:h-2 bg-white/50 rounded-full my-6"></div>
+            <div class="flex items-center text-[3rem] md:text-[7rem] text-white/70">
+               <span class="font-sans text-white/40">[</span>
+               <span class="font-sans">&pi;</span><span class="text-[1rem] md:text-[2.5rem] translate-y-4 md:translate-y-10">&theta;</span>
+               <span class="font-sans mx-2">(</span>o<span class="text-[1rem] md:text-[2.5rem] translate-y-4 md:translate-y-10 font-sans">i,t</span>
+               <span class="font-sans mx-4 text-white/30">|</span>
+               q, o<span class="text-[1rem] md:text-[2.5rem] translate-y-4 md:translate-y-10 font-sans text-white/60">i,&lt;t</span><span class="font-sans mx-2">)</span>
+               <span class="font-sans text-white/40">]</span>
+               <span class="text-[1rem] md:text-[2.5rem] translate-y-4 md:translate-y-10 font-sans font-bold tracking-widest ml-4">no grad</span>
+            </div>
+          </div>
+          
+          <!-- A_hat_i,t -->
+          <div class="flex items-center mx-6 md:mx-10">
+            <div class="flex flex-col items-center justify-center">
+              <span class="text-[3rem] md:text-[7rem] leading-none translate-y-4 md:translate-y-10 font-sans text-white/60">^</span>
+              <span class="text-[4rem] md:text-[10rem] leading-none font-sans drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">A</span>
+            </div>
+            <span class="text-[1.5rem] md:text-[3.5rem] translate-y-8 md:translate-y-16 font-sans text-white/80">i,t</span>
+          </div>
+
+          <!-- - beta D_KL [...] -->
           <span class="text-white/50 mx-8 md:mx-16 font-sans">-</span>
-          <span class="drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Q(s, a)</span>
-          <span class="text-white/30 mx-4 font-sans">]</span>
+          <span class="text-[4rem] md:text-[10rem] font-sans">&beta;</span>
+          
+          <div class="flex items-center mx-6 md:mx-10">
+             <span class="font-sans mr-2 text-[4rem] md:text-[10rem]">D</span>
+             <span class="text-[1.5rem] md:text-[3.5rem] translate-y-6 md:translate-y-14 font-sans font-bold tracking-widest text-white/60">KL</span>
+          </div>
+          
+          <span class="text-white/30 mx-2 md:mx-6 text-[5rem] md:text-[12rem] font-sans font-light translate-y-1 md:translate-y-2">[</span>
+          
+          <div class="flex items-center mx-4 md:mx-8">
+             <span class="font-sans text-[3.5rem] md:text-[8rem]">&pi;</span><span class="text-[1.5rem] md:text-[3rem] translate-y-6 md:translate-y-12">&theta;</span>
+             <span class="text-white/40 font-sans mx-8 md:mx-12">||</span>
+             <span class="font-sans text-[3.5rem] md:text-[8rem]">&pi;</span><span class="text-[1.5rem] md:text-[3rem] translate-y-6 md:translate-y-12 font-sans font-bold text-white/60 tracking-widest">ref</span>
+          </div>
+          
+          <span class="text-white/30 mx-2 md:mx-6 text-[5rem] md:text-[12rem] font-sans font-light translate-y-1 md:translate-y-2">]</span>
+          <span class="text-white/30 mx-4 md:mx-8 text-[6rem] md:text-[16rem] font-sans font-light translate-y-2 md:translate-y-4">]</span>
        </div>
     </div>
     

@@ -177,23 +177,23 @@
        const nodeGeo = new THREE.BufferGeometry();
        nodeGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
        
-       // Constant Outer Node (Solid Circle, Dim Gray)
-       const outerMat = new THREE.PointsMaterial({ 
-           map: circleTex, size: 16, color: 0x666666, transparent: true, opacity: 0.3, depthWrite: false, blending: THREE.AdditiveBlending 
+       // Inner Dot (Fainter, Constant)
+       const innerMat = new THREE.PointsMaterial({ 
+           map: circleTex, size: 6, color: 0x666666, transparent: true, opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending 
        });
-       const outerMesh = new THREE.Points(nodeGeo, outerMat);
-       group.add(outerMesh);
+       const innerMesh = new THREE.Points(nodeGeo, innerMat);
+       group.add(innerMesh);
        
-       // Flashing Inner Dot (Solid Circle, Bright)
+       // Outer Node (Brighter, Flashing rapidly)
        const nodeColors = new Float32Array(nodeCount * 3);
-       const dotGeo = new THREE.BufferGeometry();
-       dotGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-       dotGeo.setAttribute('color', new THREE.BufferAttribute(nodeColors, 3));
-       const dotMat = new THREE.PointsMaterial({ 
-           map: circleTex, size: 6, vertexColors: true, transparent: true, opacity: 1.0, depthWrite: false, blending: THREE.AdditiveBlending 
+       const outerGeo = new THREE.BufferGeometry();
+       outerGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+       outerGeo.setAttribute('color', new THREE.BufferAttribute(nodeColors, 3));
+       const outerMat = new THREE.PointsMaterial({ 
+           map: circleTex, size: 16, vertexColors: true, transparent: true, opacity: 1.0, depthWrite: false, blending: THREE.AdditiveBlending 
        });
-       const dotMesh = new THREE.Points(dotGeo, dotMat);
-       group.add(dotMesh);
+       const outerMesh = new THREE.Points(outerGeo, outerMat);
+       group.add(outerMesh);
        
        // Lines between layers/nodes
        const lineCount = linePosArray.length / 6; // 6 floats per line
@@ -225,8 +225,8 @@
                if (dist < 2000) {
                    fade = 1.0 - Math.max(0, (dist - 400) / 1600);
                }
-               outerMat.opacity = 0.3 * fade;
-               dotMat.opacity = 1.0 * fade;
+               innerMat.opacity = 0.5 * fade;
+               outerMat.opacity = 1.0 * fade;
                lineMat.opacity = 0.8 * fade;
            },
            update: (time: number) => {
@@ -236,27 +236,27 @@
                group.position.y = center.y + Math.cos(t * 0.3) * 30;
                group.position.z = center.z + Math.sin(t * 0.2) * 30;
                
-               const nColors = dotMesh.geometry.attributes.color.array as Float32Array;
+               const nColors = outerMesh.geometry.attributes.color.array as Float32Array;
                const lColors = linesMesh.geometry.attributes.color.array as Float32Array;
                
-               // Randomly fire a node (Slower: ~50% chance per frame instead of 2 guaranteed)
-               if (Math.random() < 0.5) {
+               // Rapidly fire random nodes (High probability)
+               if (Math.random() < 0.8) {
                    const rNode = Math.floor(Math.random() * nodeCount);
                    nodeActivations[rNode] = 1.0;
                }
                
-               // Randomly fire a weight (Slower: ~80% chance per frame instead of 3 guaranteed)
-               if (Math.random() < 0.8) {
+               // Rapidly fire random weights
+               for(let i=0; i<2; i++) {
                    const rLine = Math.floor(Math.random() * lineCount);
                    lineActivations[rLine] = 1.0;
                }
                
                // Decay and apply colors for Nodes (Neurons)
                for(let i=0; i<nodeCount; i++) {
-                   // Slower decay for a smoother, longer blink
-                   nodeActivations[i] = Math.max(0, nodeActivations[i] - 0.05); 
-                   // 0.2 (dim gray) to 1.0 (bright white dot)
-                   const v = 0.2 + nodeActivations[i] * 0.8; 
+                   // Fast decay for rapid blink
+                   nodeActivations[i] = Math.max(0, nodeActivations[i] - 0.15); 
+                   // 0.3 (visible gray) to 1.0 (bright white)
+                   const v = 0.3 + nodeActivations[i] * 0.7; 
                    nColors[i*3] = v;
                    nColors[i*3+1] = v;
                    nColors[i*3+2] = v;
@@ -264,10 +264,10 @@
                
                // Decay and apply colors for Lines (Weights)
                for(let i=0; i<lineCount; i++) {
-                   // Slower decay
-                   lineActivations[i] = Math.max(0, lineActivations[i] - 0.04); 
-                   // 0.1 (dark gray) to 0.7 (bright white)
-                   const v = 0.1 + lineActivations[i] * 0.6; 
+                   // Fast decay
+                   lineActivations[i] = Math.max(0, lineActivations[i] - 0.20); 
+                   // 0.2 (gray) to 1.0 (bright white)
+                   const v = 0.2 + lineActivations[i] * 0.8; 
                    // Two vertices per line segment
                    lColors[i*6] = v;
                    lColors[i*6+1] = v;
@@ -277,7 +277,7 @@
                    lColors[i*6+5] = v;
                }
                
-               dotMesh.geometry.attributes.color.needsUpdate = true;
+               outerMesh.geometry.attributes.color.needsUpdate = true;
                linesMesh.geometry.attributes.color.needsUpdate = true;
            }
        });

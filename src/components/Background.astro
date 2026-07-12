@@ -118,16 +118,17 @@
            layerPositions.push(currentLayer);
        }
        
+       const nodeColors = new Float32Array(nodeCount * 3);
        nodeGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+       nodeGeo.setAttribute('color', new THREE.BufferAttribute(nodeColors, 3));
        const nodeMat = new THREE.PointsMaterial({ 
-           map: circleTex, size: 8, color: 0xffffff, transparent: true, opacity: 0.8, depthWrite: false 
+           map: glowTex, size: 12, vertexColors: true, transparent: true, opacity: 0.9, depthWrite: false, blending: THREE.AdditiveBlending 
        });
        const nodesMesh = new THREE.Points(nodeGeo, nodeMat);
        group.add(nodesMesh);
        
        // Lines between layers
        const linePos = [];
-       const connections: {start: THREE.Vector3, end: THREE.Vector3}[] = [];
        for(let i=0; i<layers.length-1; i++) {
            const current = layerPositions[i];
            const next = layerPositions[i+1];
@@ -135,28 +136,21 @@
                for(let b=0; b<next.length; b++) {
                    linePos.push(current[a].x, current[a].y, current[a].z);
                    linePos.push(next[b].x, next[b].y, next[b].z);
-                   connections.push({start: current[a], end: next[b]});
                }
            }
        }
+       const lineCount = linePos.length / 6; // 6 floats per line
+       const lineColors = new Float32Array(lineCount * 6);
        const lineGeo = new THREE.BufferGeometry();
        lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePos, 3));
-       const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.15, depthWrite: false });
-       group.add(new THREE.LineSegments(lineGeo, lineMat));
+       lineGeo.setAttribute('color', new THREE.BufferAttribute(lineColors, 3));
+       const lineMat = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.8, depthWrite: false, blending: THREE.AdditiveBlending });
+       const linesMesh = new THREE.LineSegments(lineGeo, lineMat);
+       group.add(linesMesh);
        
-       // Compute signals (electrons)
-       const signalsCount = 5;
-       const sigGeo = new THREE.BufferGeometry();
-       const sigPos = new Float32Array(signalsCount * 3);
-       sigGeo.setAttribute('position', new THREE.BufferAttribute(sigPos, 3));
-       const sigMat = new THREE.PointsMaterial({ map: glowTex, size: 12, color: 0xffffff, transparent: true, opacity: 1, depthWrite: false, blending: THREE.AdditiveBlending });
-       const signalsMesh = new THREE.Points(sigGeo, sigMat);
-       group.add(signalsMesh);
-       
-       const signalsData = Array(signalsCount).fill(0).map(() => ({
-           conn: connections[Math.floor(Math.random() * connections.length)],
-           progress: Math.random()
-       }));
+       // State for rapid flashing computations
+       const nodeActivations = new Float32Array(nodeCount);
+       const lineActivations = new Float32Array(lineCount);
        
        group.position.copy(center);
        // Orient them somewhat randomly but clearly 2D planes
@@ -172,26 +166,53 @@
                if (dist < 2000) {
                    fade = 1.0 - Math.max(0, (dist - 400) / 1600);
                }
-               nodeMat.opacity = 0.8 * fade;
-               lineMat.opacity = 0.15 * fade;
-               sigMat.opacity = 1.0 * fade;
+               nodeMat.opacity = 0.9 * fade;
+               lineMat.opacity = 0.8 * fade;
            },
            update: (time: number) => {
                group.rotation.y += 0.005;
                
-               // Animate compute signals along connections
-               for(let i=0; i<signalsCount; i++) {
-                   const sd = signalsData[i];
-                   sd.progress += 0.02;
-                   if(sd.progress >= 1) {
-                       sd.progress = 0;
-                       sd.conn = connections[Math.floor(Math.random() * connections.length)];
-                   }
-                   sigPos[i*3] = sd.conn.start.x + (sd.conn.end.x - sd.conn.start.x) * sd.progress;
-                   sigPos[i*3+1] = sd.conn.start.y + (sd.conn.end.y - sd.conn.start.y) * sd.progress;
-                   sigPos[i*3+2] = sd.conn.start.z + (sd.conn.end.z - sd.conn.start.z) * sd.progress;
+               const nColors = nodesMesh.geometry.attributes.color.array as Float32Array;
+               const lColors = linesMesh.geometry.attributes.color.array as Float32Array;
+               
+               // Rapidly fire random nodes
+               for(let i=0; i<2; i++) {
+                   const rNode = Math.floor(Math.random() * nodeCount);
+                   nodeActivations[rNode] = 1.0;
                }
-               signalsMesh.geometry.attributes.position.needsUpdate = true;
+               
+               // Rapidly fire random weights (lines)
+               for(let i=0; i<3; i++) {
+                   const rLine = Math.floor(Math.random() * lineCount);
+                   lineActivations[rLine] = 1.0;
+               }
+               
+               // Decay and apply colors for Nodes (Neurons)
+               for(let i=0; i<nodeCount; i++) {
+                   nodeActivations[i] = Math.max(0, nodeActivations[i] - 0.15); 
+                   // Gray (inactive) to bright white (active)
+                   const v = 0.2 + nodeActivations[i] * 0.8; 
+                   nColors[i*3] = v;
+                   nColors[i*3+1] = v;
+                   nColors[i*3+2] = v;
+               }
+               
+               // Decay and apply colors for Lines (Weights)
+               for(let i=0; i<lineCount; i++) {
+                   lineActivations[i] = Math.max(0, lineActivations[i] - 0.2); 
+                   // Dark gray (inactive) to bright white (active)
+                   const v = 0.05 + lineActivations[i] * 0.7; 
+                   // Two vertices per line segment
+                   lColors[i*6] = v;
+                   lColors[i*6+1] = v;
+                   lColors[i*6+2] = v;
+                   lColors[i*6+3] = v;
+                   lColors[i*6+4] = v;
+                   lColors[i*6+5] = v;
+               }
+               
+               nodesMesh.geometry.attributes.color.needsUpdate = true;
+               linesMesh.geometry.attributes.color.needsUpdate = true;
            }
        });
     }

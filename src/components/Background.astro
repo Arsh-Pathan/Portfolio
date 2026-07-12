@@ -52,16 +52,16 @@
     
     const createMathTexture = (text: string) => {
        const texCanvas = document.createElement('canvas');
-       texCanvas.width = 128;
+       texCanvas.width = 512; // Wider to fit equations
        texCanvas.height = 128;
        const ctx = texCanvas.getContext('2d');
        ctx!.fillStyle = 'rgba(255, 255, 255, 0)';
-       ctx!.fillRect(0, 0, 128, 128);
-       ctx!.font = 'bold 80px serif';
+       ctx!.fillRect(0, 0, 512, 128);
+       ctx!.font = 'bold 48px serif';
        ctx!.fillStyle = 'rgba(255, 255, 255, 0.8)';
        ctx!.textAlign = 'center';
        ctx!.textBaseline = 'middle';
-       ctx!.fillText(text, 64, 64);
+       ctx!.fillText(text, 256, 64);
        return new THREE.CanvasTexture(texCanvas);
     };
     
@@ -441,15 +441,25 @@
     createSingularity(0.96, new THREE.Vector3(0, -300, 0));
 
     // ----------------------------------------------------
-    // FLOATING MATH SYMBOLS (Integrals, Sigma, etc.)
+    // FLOATING MATH EQUATIONS
     // ----------------------------------------------------
-    const mathSymbols = ["∫", "∑", "∂", "∇", "λ", "θ", "μ", "π", "∞"];
-    mathSymbols.forEach((sym, index) => {
-       const tex = createMathTexture(sym);
+    const equations = [
+        "E = mc²", 
+        "F = ma", 
+        "∇ × E = -∂B/∂t", 
+        "iℏ ∂ψ/∂t = Hψ", 
+        "e^(iπ) + 1 = 0", 
+        "a² + b² = c²", 
+        "ΔS ≥ 0",
+        "P(A|B) = P(B|A)P(A)/P(B)"
+    ];
+    
+    equations.forEach((eq, index) => {
+       const tex = createMathTexture(eq);
        const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: 0.4, depthWrite: false, blending: THREE.AdditiveBlending });
        
-       // Create multiple instances of each symbol
-       for(let i=0; i<15; i++) {
+       // Create multiple instances of each equation
+       for(let i=0; i<10; i++) {
            const sprite = new THREE.Sprite(mat);
            // Randomly place along the entire path
            const prog = Math.random();
@@ -459,8 +469,9 @@
                pt.y + (Math.random() - 0.5) * 2000,
                pt.z + (Math.random() - 0.5) * 1000
            );
-           const scale = 20 + Math.random() * 30;
-           sprite.scale.set(scale, scale, 1);
+           // Scale X by 4 to match the 512x128 aspect ratio
+           const scale = 15 + Math.random() * 20;
+           sprite.scale.set(scale * 4, scale, 1);
            scene.add(sprite);
            
            updatables.push((time: number) => {

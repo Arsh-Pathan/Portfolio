@@ -1,0 +1,84 @@
+---
+const placeholders = [
+  { id: 1, title: "Model Training", span: "md:col-span-2 md:row-span-2" },
+  { id: 2, title: "Architecture", span: "md:col-span-1 md:row-span-1" },
+  { id: 3, title: "CSky Team", span: "md:col-span-1 md:row-span-1" },
+  { id: 4, title: "Data Centers", span: "md:col-span-1 md:row-span-2" },
+  { id: 5, title: "Deployment", span: "md:col-span-1 md:row-span-1" },
+  { id: 6, title: "Awards", span: "md:col-span-2 md:row-span-1" },
+];
+---
+
+<section id="gallery" class="py-32 relative z-10 bg-transparent">
+  <div class="container mx-auto px-6 max-w-7xl">
+    
+    <div class="mb-20">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="h-[1px] w-8 bg-white/50"></div>
+        <span class="text-xs font-semibold tracking-widest text-white/80 uppercase">Visuals</span>
+      </div>
+      <h2 class="text-4xl md:text-5xl font-medium text-white tracking-tight">
+        Life & <span class="text-white/40">Work</span>
+      </h2>
+      <p class="text-white/50 mt-4 max-w-lg">Frames from my professional journey. Images will be populated soon.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 auto-rows-[250px] gap-6">
+      {placeholders.map((item) => (
+        <div class={`gallery-item relative rounded-3xl overflow-hidden group border border-white/10 ${item.span}`}>
+          <!-- Parallax Image Container -->
+          <div class="absolute inset-[-15%] w-[130%] h-[130%] parallax-img bg-white/5 flex items-center justify-center">
+             <!-- Placeholder gradient, replace with actual <img> tag later -->
+             <div class="w-full h-full bg-gradient-to-br from-white/5 to-white/[0.01]"></div>
+             
+             <!-- Temporary icon since no real image is provided yet -->
+             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="absolute text-white/20"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+          </div>
+          
+          <!-- Overlay -->
+          <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+            <span class="text-white font-bold text-lg translate-y-4 group-hover:translate-y-0 transition-transform duration-500">{item.title}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+    
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // Reveal animation
+    gsap.from(".gallery-item", {
+      scrollTrigger: {
+        trigger: "#gallery",
+        start: "top 75%",
+      },
+      y: 100,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.1,
+      ease: "power3.out"
+    });
+
+    // Parallax effect on images
+    const images = document.querySelectorAll('.parallax-img');
+    images.forEach((img) => {
+      gsap.to(img, {
+        yPercent: 20, // Moves the image slightly downwards as you scroll down
+        ease: "none",
+        scrollTrigger: {
+          trigger: img.parentElement, // Trigger based on the parent container
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true
+        }
+      });
+    });
+  });
+</script>

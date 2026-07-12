@@ -1,241 +1,81 @@
 ---
 /**
- * Skills section with a premium Bento Grid layout and an interactive tool marquee.
- * Matches the 'Electric' brand theme.
+ * Professional, founder-tier Skills section focused on AI/ML and Leadership.
  */
-
-const skillCategories = [
+const categories = [
   {
-    title: "Frontend Development",
-    description:
-      "Crafting immersive user experiences with high-performance frameworks and cinematic animations.",
-    skills: ["React", "Astro", "TypeScript", "Next.js", "GSAP"],
-    icon: "monitor",
-    color: "from-blue-500/20 to-cyan-500/20",
-    border: "group-hover:border-cyan-500/50",
+    title: "Generative AI & LLMs",
+    description: "Designing and deploying advanced Agentic AI systems, prompt engineering, and integrating large language models.",
+    items: ["LangChain", "OpenAI API", "Agentic Systems", "RAG architectures", "Hugging Face"],
+    icon: "brain",
   },
   {
-    title: "Backend & Systems",
-    description:
-      "Architecting scalable server-side logic and robust database infrastructures.",
-    skills: ["Node.js", "Python", "PostgreSQL", "MongoDB", "Go"],
-    icon: "database",
-    color: "from-indigo-500/20 to-purple-500/20",
-    border: "group-hover:border-indigo-500/50",
+    title: "Machine Learning Core",
+    description: "Building, training, and fine-tuning neural networks for computer vision, NLP, and predictive analytics.",
+    items: ["PyTorch", "TensorFlow", "Scikit-learn", "Pandas", "Model Optimization"],
+    icon: "network",
   },
   {
-    title: "Creative Technology",
-    description:
-      "Pushing the boundaries of the web with 3D graphics, shaders, and interactive art.",
-    skills: ["Three.js", "WebGL", "GLSL", "Canvas API", "Shaders"],
-    icon: "sparkles",
-    color: "from-amber-500/20 to-orange-500/20",
-    border: "group-hover:border-amber-500/50",
+    title: "Scalable Infrastructure",
+    description: "Architecting robust backend systems capable of handling high-throughput ML inferences and real-time data.",
+    items: ["Python", "C++", "Go", "AWS", "Docker", "Kubernetes"],
+    icon: "server",
   },
   {
-    title: "DevOps & Cloud",
-    description:
-      "Streamlining deployment pipelines and managing cloud-native environments.",
-    skills: ["Docker", "Kubernetes", "AWS", "CI/CD", "Linux"],
-    icon: "cloud",
-    color: "from-emerald-500/20 to-teal-500/20",
-    border: "group-hover:border-emerald-500/50",
-  },
-];
-
-const tools = [
-  "javascript",
-  "typescript",
-  "react",
-  "astro",
-  "nodejs",
-  "mongodb",
-  "postgresql",
-  "docker",
-  "python",
-  "git",
-  "threejs",
-  "html5",
-  "css3",
-  "figma",
-  "tailwind",
-  "linux",
-  "aws",
-  "nextjs",
+    title: "Leadership & Product",
+    description: "Driving technical vision from zero to one. Leading engineering teams to deliver impactful software at CSky Developments.",
+    items: ["Founder @ CSky", "System Design", "Product Strategy", "Open Source", "Team Leadership"],
+    icon: "crown",
+  }
 ];
 ---
 
-<section
-  id="skills"
-  class="skills-section relative py-32 overflow-hidden bg-bg-primary"
->
-  <!-- Ambient Background Elements -->
-  <div
-    class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-accent-blue/10 blur-[120px] rounded-full pointer-events-none opacity-50"
-  >
-  </div>
-  <div
-    class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent-indigo/10 blur-[120px] rounded-full pointer-events-none opacity-50"
-  >
-  </div>
-
-  <div class="container mx-auto px-6 relative z-10">
-    <div class="text-center mb-24">
-      <h2
-        class="text-4xl md:text-7xl font-black mb-6 text-text-main tracking-tighter"
-      >
-        TECHNICAL <span
-          class="bg-gradient-to-r from-accent-blue via-accent-cyan to-accent-electric bg-clip-text text-transparent"
-          >ECOSYSTEM</span
-        >
+<section id="skills" class="py-32 relative z-10 bg-transparent">
+  <div class="container mx-auto px-6 max-w-7xl">
+    
+    <div class="mb-20">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="h-[1px] w-8 bg-white/50"></div>
+        <span class="text-xs font-semibold tracking-widest text-white/80 uppercase">Core Competencies</span>
+      </div>
+      <h2 class="text-4xl md:text-5xl font-medium text-white tracking-tight max-w-3xl leading-tight skill-heading">
+        Bridging the gap between <span class="text-white/40">artificial intelligence</span> and scalable products.
       </h2>
-      <p
-        class="text-text-muted max-w-2xl mx-auto text-lg md:text-xl font-medium"
-      >
-        A multifaceted approach to modern engineering, blending performance with
-        creative interaction.
-      </p>
     </div>
 
-    <div
-      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-32"
-      id="skills-grid"
-    >
-      {
-        skillCategories.map((cat, i) => (
-          <div
-            class={`skill-card group relative p-8 rounded-3xl bg-white/[0.03] border border-white/10 backdrop-blur-xl transition-all duration-500 hover:-translate-y-2`}
-            data-index={i}
-          >
-            <div
-              class={`absolute inset-0 bg-gradient-to-br ${cat.color} opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl -z-10`}
-            />
-
-            <div class="mb-6 w-12 h-12 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 text-accent-electric group-hover:scale-110 group-hover:bg-accent-electric group-hover:text-bg-primary transition-all duration-500">
-              {cat.icon === "monitor" && (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <rect width="20" height="14" x="2" y="3" rx="2" />
-                  <line x1="8" x2="16" y1="21" y2="21" />
-                  <line x1="12" x2="12" y1="17" y2="21" />
-                </svg>
-              )}
-              {cat.icon === "database" && (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <ellipse cx="12" cy="5" rx="9" ry="3" />
-                  <path d="M3 5V19A9 3 0 0 0 21 19V5" />
-                  <path d="M3 12A9 3 0 0 0 21 12" />
-                </svg>
-              )}
-              {cat.icon === "sparkles" && (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-                  <path d="M5 3v4" />
-                  <path d="M19 17v4" />
-                  <path d="M3 5h4" />
-                  <path d="M17 19h4" />
-                </svg>
-              )}
-              {cat.icon === "cloud" && (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M17.5 19c.5 0 1-.5 1-1a2.73 2.73 0 0 0-2-2.5 5.5 5.5 0 0 0-10.5 0 2.73 2.73 0 0 0-2 2.5c0 .5.5 1 1 1h12.5Z" />
-                </svg>
-              )}
-            </div>
-
-            <h3 class="text-xl font-bold text-text-main mb-3 group-hover:text-accent-electric transition-colors">
-              {cat.title}
-            </h3>
-            <p class="text-text-muted text-sm leading-relaxed mb-6">
-              {cat.description}
-            </p>
-
-            <div class="flex flex-wrap gap-2">
-              {cat.skills.map((skill) => (
-                <span class="text-[10px] font-bold px-2 py-1 rounded-md bg-white/5 border border-white/10 text-text-secondary uppercase tracking-widest group-hover:border-white/20 transition-all">
-                  {skill}
-                </span>
-              ))}
-            </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {categories.map((cat, i) => (
+        <div class="skill-card group relative p-8 md:p-10 bg-[#0d1427]/40 hover:bg-[#111a30]/80 rounded-[24px] border border-white/5 hover:border-white/20 transition-all duration-500 overflow-hidden backdrop-blur-md flex flex-col h-full opacity-0 translate-y-10">
+          
+          <div class="absolute -top-24 -right-24 w-48 h-48 bg-white/10 blur-[60px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+          
+          <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 text-white/80 group-hover:scale-110 group-hover:bg-white/10 transition-all duration-500">
+            {cat.icon === "brain" && (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path></svg>
+            )}
+            {cat.icon === "network" && (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            )}
+            {cat.icon === "server" && (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+            )}
+            {cat.icon === "crown" && (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"></path></svg>
+            )}
           </div>
-        ))
-      }
-    </div>
 
-    <!-- Infinite Tool Marquee -->
-    <div class="relative w-full">
-      <div
-        class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-bg-primary to-transparent z-10 pointer-events-none"
-      >
-      </div>
-      <div
-        class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-bg-primary to-transparent z-10 pointer-events-none"
-      >
-      </div>
-
-      <div
-        class="marquee-wrapper overflow-hidden py-10 grayscale hover:grayscale-0 transition-all duration-700"
-      >
-        <div class="marquee-content flex gap-12 w-max items-center">
-          {/* Double tools for seamless loop */}
-          {
-            [...tools, ...tools].map((tool, i) => (
-              <div class="tool-item group flex flex-col items-center gap-3 transition-all duration-300 hover:scale-110">
-                <div class="w-16 h-16 md:w-20 md:h-20 p-5 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center transition-all duration-300 group-hover:bg-white/[0.08] group-hover:border-accent-electric/50 group-hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]">
-                  <img
-                    src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${tool}/${tool === "github" ? "original" : tool === "nextjs" ? "original" : tool + "-original.svg"}`}
-                    alt={tool}
-                    class="w-full h-full object-contain filter brightness-90 group-hover:brightness-110 transition-all"
-                    onerror="this.src=`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${this.alt}/${this.alt}-plain.svg`"
-                  />
-                </div>
-                <span class="text-[10px] font-black text-text-muted opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest text-accent-electric">
-                  {tool}
-                </span>
-              </div>
-            ))
-          }
+          <h3 class="text-xl font-medium text-white mb-3">{cat.title}</h3>
+          <p class="text-[#8b949e] text-sm leading-relaxed mb-8 flex-grow">{cat.description}</p>
+          
+          <div class="flex flex-wrap gap-2">
+            {cat.items.map(item => (
+              <span class="px-3 py-1.5 bg-white/[0.03] border border-white/5 rounded-lg text-xs font-medium text-[#c9d1d9] hover:bg-white/10 transition-colors cursor-default">
+                {item}
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   </div>
 </section>
@@ -243,120 +83,49 @@ const tools = [
 <script>
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-
+  
   gsap.registerPlugin(ScrollTrigger);
 
   document.addEventListener("DOMContentLoaded", () => {
-    // 1. Grid Animation
-    gsap.from(".skill-card", {
-      y: 60,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.15,
-      ease: "power4.out",
-      scrollTrigger: {
-        trigger: "#skills-grid",
-        start: "top 85%",
-      },
-    });
-    const marqueeContent = document.querySelector(
-      ".marquee-content",
-    ) as HTMLElement;
-    if (marqueeContent) {
-      const width = marqueeContent.offsetWidth / 2;
-
-      const marquee = gsap.to(marqueeContent, {
-        x: -width,
-        duration: 40,
-        ease: "none",
-        repeat: -1,
-        onReverseComplete: () => {
-          gsap.set(marqueeContent, { x: 0 });
+    // Advanced text reveal for heading
+    const heading = document.querySelector('.skill-heading');
+    if (heading) {
+      // Simple split text simulation for animation
+      const text = heading.innerHTML;
+      // We'll just animate the whole heading with a clipPath reveal
+      gsap.from(heading, {
+        scrollTrigger: {
+          trigger: heading,
+          start: "top 85%",
         },
+        y: 40,
+        opacity: 0,
+        clipPath: "polygon(0 0, 100% 0, 100% 0%, 0% 0%)",
+        duration: 1.2,
+        ease: "power4.out"
       });
-
-      // Adjust speed on hover
-      const wrapper = document.querySelector(".marquee-wrapper");
-      wrapper?.addEventListener("mouseenter", () => {
-        gsap.to(marquee, { timeScale: 0.5, duration: 1 });
-      });
-      wrapper?.addEventListener("mouseleave", () => {
-        gsap.to(marquee, { timeScale: 1, duration: 1 });
-      });
-
-      // Velocity influence (tilt and speed)
-      let lastX = 0;
-      window.addEventListener("mousemove", (e) => {
-        const deltaX = e.clientX - lastX;
-        const weight = Math.min(Math.abs(deltaX) * 0.1, 2);
-        const dir = deltaX > 0 ? -1 : 1;
-
-        // Slightly skew the items based on movement
-        gsap.to(".tool-item", {
-          skewX: dir * weight * 2,
-          duration: 0.5,
-          ease: "power2.out",
-        });
-
-        lastX = e.clientX;
+      gsap.to(heading, {
+        scrollTrigger: {
+          trigger: heading,
+          start: "top 85%",
+        },
+        clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
+        duration: 1.2,
+        ease: "power4.out"
       });
     }
 
-    const cards = document.querySelectorAll(".skill-card");
-    cards.forEach((card) => {
-      card.addEventListener("mousemove", (e: any) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        const rotateX = (y - centerY) / 10;
-        const rotateY = (centerX - x) / 10;
-
-        gsap.to(card, {
-          rotateX: rotateX,
-          rotateY: rotateY,
-          duration: 0.5,
-          ease: "power2.out",
-        });
-      });
-
-      card.addEventListener("mouseleave", () => {
-        gsap.to(card, {
-          rotateX: 0,
-          rotateY: 0,
-          duration: 0.8,
-          ease: "elastic.out(1, 0.3)",
-        });
-      });
+    // Staggered card reveals
+    gsap.to('.skill-card', {
+      scrollTrigger: {
+        trigger: ".grid",
+        start: "top 85%",
+      },
+      y: 0,
+      opacity: 1,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "back.out(1.2)"
     });
   });
 </script>
-
-<style>
-  .skills-section {
-    perspective: 1000px;
-  }
-
-  .skill-card {
-    transform-style: preserve-3d;
-    will-change: transform;
-  }
-
-  .marquee-content {
-    will-change: transform;
-  }
-
-  @keyframes blur-in {
-    from {
-      filter: blur(10px);
-      opacity: 0;
-    }
-    to {
-      filter: blur(0);
-      opacity: 1;
-    }
-  }
-</style>

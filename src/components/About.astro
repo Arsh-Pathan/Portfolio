@@ -1,0 +1,108 @@
+---
+---
+<section id="about" class="py-32 relative z-10 bg-transparent">
+  <div class="container mx-auto px-6 max-w-7xl">
+    
+    <div class="flex flex-col md:flex-row gap-16 md:gap-24 items-center">
+      
+      <div class="w-full md:w-1/2">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="h-[1px] w-12 bg-white/50"></div>
+          <span class="text-xs font-bold tracking-widest text-white/80 uppercase">Philosophy</span>
+        </div>
+        
+        <h2 class="text-5xl md:text-7xl font-bold text-white tracking-tight leading-tight mb-8 about-heading">
+          Building the <br/><span class="text-white/40">intelligence</span><br/>of tomorrow.
+        </h2>
+        
+        <div class="space-y-6 text-white/60 text-lg leading-relaxed about-text">
+          <p>
+            As the Founder of CSky Developments and an AI/ML Engineer, I operate at the intersection of raw data and human experience. My mission is to architect systems that don't just compute, but comprehend and augment human capabilities.
+          </p>
+          <p>
+            I believe that the next era of software isn't just about writing code—it's about training intelligent agents, designing scalable neural networks, and creating digital ecosystems that learn and adapt.
+          </p>
+        </div>
+        
+        <div class="mt-12 flex gap-8 about-stats">
+          <div class="border-l border-white/20 pl-6">
+             <p class="text-4xl font-bold text-white mb-1">5+</p>
+             <p class="text-xs font-bold text-white/40 uppercase tracking-widest">Years Coding</p>
+          </div>
+          <div class="border-l border-white/20 pl-6">
+             <p class="text-4xl font-bold text-white mb-1">10M+</p>
+             <p class="text-xs font-bold text-white/40 uppercase tracking-widest">Data Points Processed</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="w-full md:w-1/2 relative about-visual">
+         <!-- Abstract 3D/Visual representation for About section -->
+         <div class="aspect-square w-full max-w-md mx-auto rounded-full border border-white/10 relative flex items-center justify-center p-8">
+            <div class="absolute inset-0 rounded-full border border-white/5 animate-[spin_20s_linear_infinite]"></div>
+            <div class="absolute inset-4 rounded-full border border-white/5 animate-[spin_15s_linear_infinite_reverse]"></div>
+            <div class="w-full h-full rounded-full bg-gradient-to-tr from-white/5 to-transparent backdrop-blur-3xl flex items-center justify-center relative overflow-hidden">
+               <div class="absolute w-32 h-32 bg-white/20 blur-[50px] rounded-full"></div>
+               <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-white/50 relative z-10"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            </div>
+         </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    gsap.from(".about-heading", {
+      scrollTrigger: {
+        trigger: "#about",
+        start: "top 75%",
+      },
+      y: 50,
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out"
+    });
+    
+    gsap.from(".about-text p", {
+      scrollTrigger: {
+        trigger: "#about",
+        start: "top 65%",
+      },
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power3.out"
+    });
+    
+    gsap.from(".about-stats div", {
+      scrollTrigger: {
+        trigger: ".about-stats",
+        start: "top 85%",
+      },
+      x: -30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power3.out"
+    });
+
+    gsap.from(".about-visual", {
+      scrollTrigger: {
+        trigger: "#about",
+        start: "top 70%",
+      },
+      scale: 0.8,
+      opacity: 0,
+      duration: 1.5,
+      ease: "elastic.out(1, 0.5)"
+    });
+  });
+</script>

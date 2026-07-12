@@ -1,0 +1,74 @@
+---
+const testimonials = [
+  {
+    quote: "Arsh transformed our backend. His deep understanding of scalable systems and ML pipelines allowed us to launch months ahead of schedule.",
+    author: "Sarah J.",
+    role: "CEO, TechFlow",
+  },
+  {
+    quote: "Working with CSky Developments was a game-changer. Arsh's leadership and vision brought clarity to a very complex AI integration project.",
+    author: "David M.",
+    role: "CTO, InnovateAI",
+  },
+  {
+    quote: "A rare mix of a visionary founder and a deeply technical engineer. The models he trained for us perform exceptionally well.",
+    author: "Elena R.",
+    role: "Director of Product, Nexa",
+  }
+];
+---
+
+<section id="testimonials" class="py-32 relative z-10 bg-transparent overflow-hidden">
+  <div class="container mx-auto px-6 max-w-7xl">
+    
+    <div class="mb-20">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="h-[1px] w-8 bg-white/50"></div>
+        <span class="text-xs font-semibold tracking-widest text-white/80 uppercase">Endorsements</span>
+      </div>
+      <h2 class="text-4xl md:text-5xl font-medium text-white tracking-tight">
+        Client <span class="text-white/40">Feedback</span>
+      </h2>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-6">
+      {testimonials.map((test, i) => (
+        <div class={`test-card flex-1 p-10 rounded-3xl bg-white/[0.02] border border-white/5 backdrop-blur-md relative group mt-${i % 2 === 0 ? '0' : '8'}`}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" class="text-white/10 mb-6 group-hover:text-white/20 transition-colors"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"></path></svg>
+          <p class="text-white/70 text-lg leading-relaxed mb-8 font-medium">"{test.quote}"</p>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center font-bold text-white">
+              {test.author.charAt(0)}
+            </div>
+            <div>
+              <h4 class="text-white font-bold">{test.author}</h4>
+              <p class="text-white/40 text-sm">{test.role}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    gsap.from(".test-card", {
+      scrollTrigger: {
+        trigger: "#testimonials",
+        start: "top 80%",
+      },
+      y: 60,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.15,
+      ease: "power2.out"
+    });
+  });
+</script>

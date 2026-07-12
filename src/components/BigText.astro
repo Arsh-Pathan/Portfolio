@@ -1,0 +1,71 @@
+---
+// Humongous text section inspired by award-winning sites like GSAP / Antigravity
+---
+<section id="big-text" class="py-12 relative z-10 bg-transparent overflow-hidden h-[70vh] flex flex-col justify-center">
+  <div class="container mx-auto px-6 max-w-full text-center">
+    
+    <div class="flex items-center justify-center gap-3 mb-10 overflow-hidden">
+      <div class="h-[1px] w-12 bg-white/50"></div>
+      <span class="text-xs font-bold tracking-widest text-white/80 uppercase humongous-subtitle translate-y-full">Ready to Build?</span>
+      <div class="h-[1px] w-12 bg-white/50"></div>
+    </div>
+
+    <!-- Humongous text split into characters for GSAP animation -->
+    <h2 class="humongous-text text-[13vw] leading-[0.85] font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/10 uppercase tracking-tighter flex flex-wrap justify-center overflow-visible">
+       <!-- LINE 1 -->
+       <div class="flex overflow-visible w-full justify-center">
+           <span class="inline-block px-1">C</span>
+           <span class="inline-block px-1">S</span>
+           <span class="inline-block px-1">K</span>
+           <span class="inline-block px-1">Y</span>
+       </div>
+       <!-- LINE 2 -->
+       <div class="flex overflow-visible w-full justify-center">
+           <span class="inline-block px-1">F</span>
+           <span class="inline-block px-1">U</span>
+           <span class="inline-block px-1">T</span>
+           <span class="inline-block px-1">U</span>
+           <span class="inline-block px-1">R</span>
+           <span class="inline-block px-1">E</span>
+       </div>
+    </h2>
+
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener("DOMContentLoaded", () => {
+     // Animate subtitle
+     gsap.to(".humongous-subtitle", {
+       scrollTrigger: {
+         trigger: "#big-text",
+         start: "top 75%",
+       },
+       y: 0,
+       duration: 1,
+       ease: "power4.out"
+     });
+
+     // Animate the huge letters robustly with scrub
+     gsap.from(".humongous-text span", {
+       scrollTrigger: {
+         trigger: "#big-text",
+         start: "top 85%",
+         end: "bottom 30%",
+         scrub: 1.5 // Smooth interpolation connected to scroll
+       },
+       y: "120%",
+       opacity: 0,
+       rotation: 25,
+       scale: 0.8,
+       stagger: 0.03,
+       transformOrigin: "left bottom",
+       ease: "power3.out"
+     });
+  });
+</script>

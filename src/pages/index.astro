@@ -14,6 +14,7 @@ import Services from "../components/Services.astro";
 import Gallery from "../components/Gallery.astro";
 import Testimonials from "../components/Testimonials.astro";
 import Blog from "../components/Blog.astro";
+import BigText from "../components/BigText.astro";
 ---
 
 <html lang="en" class="scroll-smooth">
@@ -43,8 +44,36 @@ import Blog from "../components/Blog.astro";
       <Testimonials />
       <Blog />
       <Contact />
+      <BigText />
     </main>
 
     <Footer />
+    
+    <script>
+      import { gsap } from "gsap";
+      import { ScrollTrigger } from "gsap/ScrollTrigger";
+      
+      gsap.registerPlugin(ScrollTrigger);
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Global robust text reveals for headings and paragraphs
+        const headings = document.querySelectorAll("h2");
+        headings.forEach(heading => {
+           // Skip humongous text or already custom-animated text
+           if(heading.classList.contains('humongous-text') || heading.id === 'github-title' || heading.classList.contains('about-heading') || heading.classList.contains('skill-heading')) return;
+           
+           gsap.from(heading, {
+             scrollTrigger: {
+               trigger: heading,
+               start: "top 85%",
+             },
+             y: 40,
+             opacity: 0,
+             duration: 1,
+             ease: "power3.out"
+           });
+        });
+      });
+    </script>
   </body>
 </html>

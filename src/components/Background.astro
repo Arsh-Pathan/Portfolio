@@ -10,8 +10,7 @@
 
   if (canvas) {
     const scene = new THREE.Scene();
-    // Thicker fog to hide the end of the tunnel
-    scene.fog = new THREE.FogExp2(0x000000, 0.0008);
+    scene.fog = new THREE.FogExp2(0x000000, 0.0007);
 
     const camera = new THREE.PerspectiveCamera(
       75,
@@ -19,7 +18,6 @@
       1,
       8000
     );
-    // Camera will travel from Z=1000 down to Z=-5000 based on scroll
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -30,32 +28,30 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
+    const tunnelWidth = 2200;
+    const tunnelHeight = 2200;
+    const tunnelLength = 7000; 
+
     // ----------------------------------------------------
     // 1. NEURAL NETWORK TUNNEL
     // ----------------------------------------------------
-    const particleCount = 700; 
-    const maxDistance = 250;
+    const particleCount = 900; // Increased density
+    const maxDistance = 280;
     const maxDistanceSq = maxDistance * maxDistance;
 
     const particles = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
     const particleVelocities = [];
 
-    // Distribute particles in a massive long corridor
-    const tunnelWidth = 2000;
-    const tunnelHeight = 2000;
-    const tunnelLength = 7000; // From Z=1500 to Z=-5500
-
     for (let i = 0; i < particleCount; i++) {
       particlePositions[i * 3] = (Math.random() - 0.5) * tunnelWidth;
       particlePositions[i * 3 + 1] = (Math.random() - 0.5) * tunnelHeight;
-      // Z goes from 1500 down to -5500
       particlePositions[i * 3 + 2] = 1500 - Math.random() * tunnelLength;
 
       particleVelocities.push({
-        x: (Math.random() - 0.5) * 0.8,
-        y: (Math.random() - 0.5) * 0.8,
-        z: (Math.random() - 0.5) * 0.8,
+        x: (Math.random() - 0.5) * 1.2,
+        y: (Math.random() - 0.5) * 1.2,
+        z: (Math.random() - 0.5) * 1.2,
       });
     }
 
@@ -63,17 +59,16 @@
 
     const pMaterial = new THREE.PointsMaterial({
       color: 0xffffff,
-      size: 3,
+      size: 4,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.8,
       blending: THREE.AdditiveBlending,
     });
 
     const particleSystem = new THREE.Points(particles, pMaterial);
     scene.add(particleSystem);
 
-    // Lines for Neural Connections
-    const maxLines = 15000;
+    const maxLines = 20000;
     const linePositions = new Float32Array(maxLines * 6);
     const lineColors = new Float32Array(maxLines * 6);
 
@@ -85,7 +80,7 @@
     const lineMaterial = new THREE.LineBasicMaterial({
       vertexColors: true,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.5,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
@@ -94,23 +89,44 @@
     scene.add(linesMesh);
 
     // ----------------------------------------------------
-    // 2. NANOPARTICLE WORM
+    // 2. AMBIENT DUST (Fill emptiness)
     // ----------------------------------------------------
-    const wormLength = 200;
+    const dustCount = 4000;
+    const dustGeo = new THREE.BufferGeometry();
+    const dustPos = new Float32Array(dustCount * 3);
+    for(let i=0; i<dustCount*3; i+=3) {
+       dustPos[i] = (Math.random() - 0.5) * tunnelWidth * 1.5;
+       dustPos[i+1] = (Math.random() - 0.5) * tunnelHeight * 1.5;
+       dustPos[i+2] = 1500 - Math.random() * tunnelLength;
+    }
+    dustGeo.setAttribute("position", new THREE.BufferAttribute(dustPos, 3));
+    const dustMat = new THREE.PointsMaterial({
+       color: 0xffffff,
+       size: 1.5,
+       transparent: true,
+       opacity: 0.3,
+       blending: THREE.AdditiveBlending
+    });
+    const dustSystem = new THREE.Points(dustGeo, dustMat);
+    scene.add(dustSystem);
+
+    // ----------------------------------------------------
+    // 3. THICK NANOWORM (3 Interwoven Strands)
+    // ----------------------------------------------------
+    const wormLength = 150;
+    const strands = 3;
     const wormGeometry = new THREE.BufferGeometry();
-    const wormPositions = new Float32Array(wormLength * 3);
+    const wormPositions = new Float32Array(wormLength * strands * 3);
     
-    // Initialize worm out of view
-    for(let i=0; i<wormLength * 3; i++) {
+    for(let i=0; i<wormLength * strands * 3; i++) {
         wormPositions[i] = 0;
     }
     
     wormGeometry.setAttribute('position', new THREE.BufferAttribute(wormPositions, 3));
     
-    // Make the worm glow brightly
     const wormMaterial = new THREE.PointsMaterial({
       color: 0xffffff,
-      size: 6,
+      size: 8,
       transparent: true,
       opacity: 0.9,
       blending: THREE.AdditiveBlending
@@ -120,13 +136,51 @@
     scene.add(worm);
 
     // ----------------------------------------------------
+    // 4. LARGE GLOWING ORBS
+    // ----------------------------------------------------
+    // Simple glowing sprite simulation via large points
+    const orbCount = 15;
+    const orbGeo = new THREE.BufferGeometry();
+    const orbPos = new Float32Array(orbCount * 3);
+    for(let i=0; i<orbCount*3; i+=3) {
+       orbPos[i] = (Math.random() - 0.5) * tunnelWidth;
+       orbPos[i+1] = (Math.random() - 0.5) * tunnelHeight;
+       orbPos[i+2] = 1500 - Math.random() * tunnelLength;
+    }
+    orbGeo.setAttribute("position", new THREE.BufferAttribute(orbPos, 3));
+    
+    const createOrbTexture = () => {
+       const canvas = document.createElement('canvas');
+       canvas.width = 128;
+       canvas.height = 128;
+       const ctx = canvas.getContext('2d');
+       const gradient = ctx!.createRadialGradient(64, 64, 0, 64, 64, 64);
+       gradient.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
+       gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+       ctx!.fillStyle = gradient;
+       ctx!.fillRect(0, 0, 128, 128);
+       return new THREE.CanvasTexture(canvas);
+    };
+
+    const orbMat = new THREE.PointsMaterial({
+       color: 0xffffff,
+       size: 600,
+       map: createOrbTexture(),
+       transparent: true,
+       opacity: 0.15,
+       blending: THREE.AdditiveBlending,
+       depthWrite: false
+    });
+    const orbSystem = new THREE.Points(orbGeo, orbMat);
+    scene.add(orbSystem);
+
+    // ----------------------------------------------------
     // INTERACTIVITY & ANIMATION
     // ----------------------------------------------------
     let mouseX = 0;
     let mouseY = 0;
     let scrollPercent = 0;
     
-    // Calculate scroll percentage mapping to tunnel length
     const calculateScroll = () => {
         const h = document.documentElement;
         const b = document.body;
@@ -143,8 +197,8 @@
     window.addEventListener("resize", calculateScroll);
 
     document.addEventListener("mousemove", (event) => {
-      mouseX = (event.clientX - window.innerWidth / 2) * 0.3;
-      mouseY = (event.clientY - window.innerHeight / 2) * 0.3;
+      mouseX = (event.clientX - window.innerWidth / 2) * 0.4;
+      mouseY = (event.clientY - window.innerHeight / 2) * 0.4;
     });
 
     let time = 0;
@@ -153,25 +207,40 @@
       requestAnimationFrame(animate);
       time += 0.015;
 
-      // 1. Update Network Particles
+      // Update Network Particles
       const positions = particleSystem.geometry.attributes.position.array as Float32Array;
-      
       for (let i = 0; i < particleCount; i++) {
         positions[i * 3] += particleVelocities[i].x;
         positions[i * 3 + 1] += particleVelocities[i].y;
         positions[i * 3 + 2] += particleVelocities[i].z;
 
-        // Bounce inside tunnel width/height, loop Z
         if (Math.abs(positions[i * 3]) > tunnelWidth / 2) particleVelocities[i].x *= -1;
         if (Math.abs(positions[i * 3 + 1]) > tunnelHeight / 2) particleVelocities[i].y *= -1;
         
-        // If particle goes behind camera, loop it to the deep end of the tunnel
         if (positions[i * 3 + 2] > 1500) positions[i * 3 + 2] = -5500;
         if (positions[i * 3 + 2] < -5500) positions[i * 3 + 2] = 1500;
       }
       particleSystem.geometry.attributes.position.needsUpdate = true;
 
-      // 2. Rebuild Neural Connections
+      // Update Ambient Dust
+      const dPos = dustSystem.geometry.attributes.position.array as Float32Array;
+      for(let i=0; i<dustCount; i++) {
+         dPos[i*3] += Math.sin(time + i) * 0.5; // Slight drift
+         dPos[i*3+1] += Math.cos(time + i) * 0.5;
+         
+         if (dPos[i * 3 + 2] > 1500) dPos[i * 3 + 2] = -5500;
+      }
+      dustSystem.geometry.attributes.position.needsUpdate = true;
+      
+      // Update Orbs
+      const oPos = orbSystem.geometry.attributes.position.array as Float32Array;
+      for(let i=0; i<orbCount; i++) {
+         oPos[i*3+2] += 1.5; // Drift towards camera
+         if (oPos[i * 3 + 2] > 1500) oPos[i * 3 + 2] = -5500;
+      }
+      orbSystem.geometry.attributes.position.needsUpdate = true;
+
+      // Rebuild Neural Connections
       let vertexCount = 0;
       let colorCount = 0;
 
@@ -192,7 +261,7 @@
             linePositions[vertexCount++] = positions[j * 3 + 2];
 
             const alpha = 1.0 - Math.sqrt(distSq) / maxDistance;
-            const intensity = alpha * 0.7; 
+            const intensity = alpha * 0.9; 
 
             lineColors[colorCount++] = intensity;
             lineColors[colorCount++] = intensity;
@@ -212,41 +281,39 @@
       linesMesh.geometry.attributes.position.needsUpdate = true;
       linesMesh.geometry.attributes.color.needsUpdate = true;
       
-      // 3. Update Nanoparticle Worm
+      // Update Thick Nanoworm (3 Strands)
       const wPositions = worm.geometry.attributes.position.array as Float32Array;
-      
-      // Shift particles back to create trail
-      for(let i = wormLength - 1; i > 0; i--) {
-        wPositions[i*3] = wPositions[(i-1)*3];
-        wPositions[i*3+1] = wPositions[(i-1)*3+1];
-        wPositions[i*3+2] = wPositions[(i-1)*3+2];
-      }
-      
-      // Calculate complex 3D Lissajous curve for worm head
-      // The worm always stays somewhat near the camera's current Z depth
       const currentCameraZ = camera.position.z;
       
-      wPositions[0] = Math.sin(time * 1.2) * 500 + Math.cos(time * 0.8) * 200;
-      wPositions[1] = Math.cos(time * 1.5) * 400 + Math.sin(time * 0.5) * 300;
-      // Swims around the camera depth, sometimes in front, sometimes behind
-      wPositions[2] = currentCameraZ - 300 - Math.sin(time) * 800;
-      
+      for(let s=0; s<strands; s++) {
+         const offset = s * wormLength * 3;
+         
+         // Shift strand back
+         for(let i = wormLength - 1; i > 0; i--) {
+            wPositions[offset + i*3] = wPositions[offset + (i-1)*3];
+            wPositions[offset + i*3+1] = wPositions[offset + (i-1)*3+1];
+            wPositions[offset + i*3+2] = wPositions[offset + (i-1)*3+2];
+         }
+         
+         // Lissajous with phase offset for each strand
+         const phase = s * ((Math.PI * 2) / strands);
+         
+         wPositions[offset] = Math.sin(time * 1.2 + phase) * 600 + Math.cos(time * 0.5) * 300;
+         wPositions[offset + 1] = Math.cos(time * 1.5 + phase) * 500 + Math.sin(time * 0.7) * 300;
+         wPositions[offset + 2] = currentCameraZ - 400 - Math.sin(time * 0.8) * 1000;
+      }
       worm.geometry.attributes.position.needsUpdate = true;
 
-      // 4. Update Camera (Scroll mapping)
-      // Map scroll from Z=1000 (top of page) to Z=-4500 (bottom of page)
-      const startZ = 1000;
+      // Update Camera
+      const startZ = 1200;
       const endZ = -4500;
       const targetZ = startZ + (endZ - startZ) * scrollPercent;
       
-      // Interpolate camera Z for smooth scroll tracking
       camera.position.z += (targetZ - camera.position.z) * 0.08;
-
-      // Mouse parallax
       camera.position.x += (mouseX - camera.position.x) * 0.05;
       camera.position.y += (-mouseY - camera.position.y) * 0.05;
       
-      camera.lookAt(scene.position.x, scene.position.y, targetZ - 1000); // Always look down the tunnel
+      camera.lookAt(scene.position.x, scene.position.y, targetZ - 1000); 
 
       renderer.render(scene, camera);
     }
@@ -257,7 +324,6 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
     
-    // Trigger initial calculations
     calculateScroll();
     animate();
   }

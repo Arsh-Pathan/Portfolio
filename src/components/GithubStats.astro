@@ -1,199 +1,55 @@
 ---
 /**
- * Interactive GSAP horizontal scrolling GitHub section.
+ * Interactive GSAP horizontal scrolling Math section.
  */
-
-const username = "Arsh-Pathan";
-
-async function getGithubData() {
-  try {
-    const [userRes, reposRes] = await Promise.all([
-      fetch(`https://api.github.com/users/${username}`),
-      fetch(
-        `https://api.github.com/users/${username}/repos?sort=updated&per_page=10`,
-      ),
-    ]);
-
-    if (!userRes.ok) throw new Error("API Rate Limit or User Not Found");
-
-    const user = await userRes.json();
-    const repos = await reposRes.json();
-
-    const featuredNames = ["LogicLab", "AureX", "ChessGame", "Portfolio"];
-    const featured = repos
-      .filter((r: any) => featuredNames.includes(r.name))
-      .sort((a: any, b: any) => b.stargazers_count - a.stargazers_count);
-
-    // Get 5 repos for the slider
-    const displayRepos = featured.length >= 4 ? featured : repos.slice(0, 5);
-
-    return {
-      user,
-      featured: displayRepos,
-      stats: {
-        repos: user.public_repos,
-        followers: user.followers,
-        following: user.following,
-        location: user.location,
-        bio: user.bio,
-        created: new Date(user.created_at).getFullYear(),
-      },
-    };
-  } catch (e) {
-    console.error("Github API Error:", e);
-    // Fallback data
-    return {
-      user: {
-        login: username,
-        name: "Arsh Pathan",
-        avatar_url: `https://github.com/${username}.png`,
-      },
-      featured: [
-        {
-          name: "LogicLab",
-          description: "Interactive digital logic simulator built on modern web technologies. Used by educational institutions to teach computer architecture visually.",
-          language: "TypeScript",
-          stargazers_count: 5,
-          forks_count: 1,
-          html_url: "#",
-        },
-        {
-          name: "AureX",
-          description: "A comprehensive mobile application built with React Native for managing curriculum activities and attendance.",
-          language: "TypeScript",
-          stargazers_count: 3,
-          forks_count: 0,
-          html_url: "#",
-        },
-        {
-          name: "CSkyCore",
-          description: "A high-performance Java backend infrastructure powering communities of thousands of concurrent users.",
-          language: "Java",
-          stargazers_count: 12,
-          forks_count: 4,
-          html_url: "#",
-        },
-        {
-          name: "Portfolio",
-          description: "My personal developer portfolio. Built with Astro, Tailwind, and GSAP.",
-          language: "Astro",
-          stargazers_count: 2,
-          forks_count: 0,
-          html_url: "#",
-        }
-      ],
-      stats: {
-        repos: 20,
-        followers: 9,
-        following: 7,
-        location: "Pune, India",
-        bio: "Active Developer",
-        created: 2023,
-      },
-    };
-  }
-}
-
-const data = await getGithubData();
-
-const getLangColor = (lang: string) => {
-  const colors: Record<string, string> = {
-    TypeScript: "#ffffff",
-    JavaScript: "#e5e5e5",
-    Astro: "#cccccc",
-    Python: "#b3b3b3",
-    Java: "#999999",
-    HTML: "#808080",
-    CSS: "#666666",
-    Vue: "#4d4d4d",
-    Go: "#333333",
-    C: "#555555",
-    "C++": "#a3a3a3",
-  };
-  return colors[lang] || "#8b949e";
-};
 ---
 
-<section id="github-journey" class="relative z-10 bg-transparent min-h-screen w-full overflow-hidden flex items-center">
+<section id="math-journey" class="relative z-10 bg-transparent min-h-screen w-full overflow-hidden flex items-center">
   
-  <div class="github-scroll-wrapper flex items-center gap-16 md:gap-32 px-10 md:px-[10vw] h-full w-max flex-nowrap py-20 md:py-0">
+  <div class="math-scroll-wrapper flex items-center gap-32 px-10 md:px-[10vw] h-full w-max flex-nowrap py-20 md:py-0">
     
     <!-- Title Area (First Slide) -->
     <div class="w-full md:w-[80vw] md:max-w-4xl flex-shrink-0 flex flex-col justify-center">
       <div class="flex items-center gap-3 mb-6">
         <div class="h-[1px] w-12 bg-white/50"></div>
-        <span class="text-xs font-bold tracking-widest text-white/80 uppercase">AI & Scalability</span>
+        <span class="text-xs font-bold tracking-widest text-white/80 uppercase">Core Principles</span>
       </div>
-      <h2 class="text-6xl md:text-9xl font-black uppercase tracking-tighter leading-none mb-8" id="github-title">
-        <div class="overflow-hidden"><span class="block title-line translate-y-full text-white/10">NEURAL</span></div>
-        <div class="overflow-hidden"><span class="block title-line translate-y-full text-white/40">SCALE</span></div>
+      <h2 class="text-6xl md:text-9xl font-black uppercase tracking-tighter leading-none mb-8" id="math-title">
+        <div class="overflow-hidden"><span class="block title-line translate-y-full text-white/10">INTELLIGENT</span></div>
+        <div class="overflow-hidden"><span class="block title-line translate-y-full text-white/40">SYSTEMS</span></div>
       </h2>
       <p class="text-white/60 text-lg md:text-xl max-w-lg leading-relaxed font-medium">
-        Architecting intelligent systems and leading technical teams from zero to one. Scroll horizontally to explore my technical journey and open source footprint.
+        At the heart of autonomous agents lies the mathematics of reinforcement learning. Scroll horizontally to explore the Bellman Equation that drives Q-Learning.
       </p>
-      
-      <div class="mt-12 flex gap-12">
-        <div>
-          <p class="text-5xl font-bold text-white">{data.stats.repos}</p>
-          <p class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mt-2">Repositories</p>
-        </div>
-        <div>
-          <p class="text-5xl font-bold text-white">1.2k+</p>
-          <p class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mt-2">Contributions</p>
-        </div>
-      </div>
     </div>
 
-    <!-- Pinned Repos (Next Slides) -->
-    {data.featured.map((repo, i) => (
-       <div class="w-full md:w-[450px] h-[450px] md:h-[500px] flex-shrink-0 relative group">
-          <div class="absolute inset-0 bg-white/5 border border-white/10 rounded-[32px] backdrop-blur-md transform md:group-hover:-translate-y-4 md:group-hover:bg-white/10 transition-all duration-500 ease-out"></div>
+    <!-- The Massive Formula -->
+    <div class="flex-shrink-0 flex items-center">
+       <div class="math-formula flex items-center text-[5rem] md:text-[12rem] font-serif italic text-white whitespace-nowrap tracking-tight">
+          <span class="drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Q(s, a)</span>
+          <span class="text-white/50 text-[3rem] md:text-[8rem] mx-8 md:mx-16 font-sans">&#8592;</span>
+          <span class="drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Q(s, a)</span>
+          <span class="text-white/50 mx-8 md:mx-16 font-sans">+</span>
+          <span class="text-[#cccccc] drop-shadow-[0_0_40px_rgba(255,255,255,0.4)]">&alpha;</span>
+          <span class="text-white/30 mx-4 font-sans">[</span>
+          <span class="drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">R(s, a)</span>
+          <span class="text-white/50 mx-8 md:mx-16 font-sans">+</span>
+          <span class="text-[#cccccc] drop-shadow-[0_0_40px_rgba(255,255,255,0.4)]">&gamma;</span>
           
-          <div class="absolute inset-0 p-8 md:p-10 flex flex-col justify-between z-10 transform md:group-hover:-translate-y-4 transition-all duration-500 ease-out">
-            <div>
-              <div class="flex justify-between items-start mb-6">
-                <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10">
-                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/80"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
-                </div>
-                <a href={repo.html_url} target="_blank" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/20 flex items-center justify-center border border-white/10 transition-colors">
-                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                </a>
-              </div>
-              
-              <h3 class="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight">{repo.name}</h3>
-              <p class="text-white/50 text-sm md:text-base leading-relaxed line-clamp-4">{repo.description || "No description provided."}</p>
-            </div>
-            
-            <div class="flex items-center justify-between border-t border-white/10 pt-6">
-               <div class="flex items-center gap-2">
-                 <span class="w-3 h-3 rounded-full" style={`background-color: ${getLangColor(repo.language)}`}></span>
-                 <span class="text-[10px] font-black text-white/60 uppercase tracking-[0.2em]">{repo.language || "Unknown"}</span>
-               </div>
-               
-               <div class="flex items-center gap-4">
-                 <div class="flex items-center gap-1.5 text-white/50">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-                    <span class="text-xs font-bold">{repo.stargazers_count}</span>
-                 </div>
-                 <div class="flex items-center gap-1.5 text-white/50">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 4v3h6V4l5 5-5 5v-3H9v3l-5-5 5-5z"></path></svg>
-                    <span class="text-xs font-bold">{repo.forks_count}</span>
-                 </div>
-               </div>
-            </div>
+          <div class="flex flex-col items-center justify-center translate-y-4 md:translate-y-12 mx-8 md:mx-12 font-sans">
+            <span class="leading-none text-[3rem] md:text-[7rem] font-bold">max</span>
+            <span class="text-white/60 leading-none text-[1.5rem] md:text-[3rem] italic">a'</span>
           </div>
+          
+          <span class="drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Q(s', a')</span>
+          <span class="text-white/50 mx-8 md:mx-16 font-sans">-</span>
+          <span class="drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Q(s, a)</span>
+          <span class="text-white/30 mx-4 font-sans">]</span>
        </div>
-    ))}
-    
-    <!-- View More Slide -->
-    <div class="w-full md:w-[300px] flex-shrink-0 flex items-center justify-center py-12 md:py-0">
-       <a href={`https://github.com/${username}`} target="_blank" class="flex flex-col items-center gap-4 group">
-          <div class="w-20 h-20 rounded-full border-2 border-white/20 flex items-center justify-center group-hover:bg-white transition-colors duration-500">
-             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white group-hover:text-black transition-colors duration-500"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-          </div>
-          <span class="text-xs font-bold text-white/60 uppercase tracking-widest group-hover:text-white transition-colors">View All Repos</span>
-       </a>
     </div>
+    
+    <!-- End Spacer to allow smooth transition -->
+    <div class="w-[20vw] flex-shrink-0"></div>
 
   </div>
 </section>
@@ -205,7 +61,7 @@ const getLangColor = (lang: string) => {
   gsap.registerPlugin(ScrollTrigger);
 
   document.addEventListener("DOMContentLoaded", () => {
-     const wrapper = document.querySelector('.github-scroll-wrapper') as HTMLElement;
+     const wrapper = document.querySelector('.math-scroll-wrapper') as HTMLElement;
      if (!wrapper) return;
      
      // Animate Title
@@ -215,7 +71,7 @@ const getLangColor = (lang: string) => {
        stagger: 0.2,
        ease: "power4.out",
        scrollTrigger: {
-         trigger: "#github-journey",
+         trigger: "#math-journey",
          start: "top 70%"
        }
      });
@@ -224,7 +80,7 @@ const getLangColor = (lang: string) => {
      const initScroll = () => {
         // Kill existing triggers to prevent duplicates on resize
         ScrollTrigger.getAll().forEach(t => {
-            if(t.vars.trigger === "#github-journey") t.kill();
+            if(t.vars.trigger === "#math-journey") t.kill();
         });
 
         if (window.innerWidth >= 768) {
@@ -232,7 +88,7 @@ const getLangColor = (lang: string) => {
             x: () => -(wrapper.scrollWidth - window.innerWidth) + "px",
             ease: "none",
             scrollTrigger: {
-              trigger: "#github-journey",
+              trigger: "#math-journey",
               pin: true,
               scrub: 1,
               end: () => "+=" + (wrapper.scrollWidth - window.innerWidth)
@@ -258,14 +114,21 @@ const getLangColor = (lang: string) => {
 
 <style>
   @media (max-width: 768px) {
-    .github-scroll-wrapper {
+    .math-scroll-wrapper {
       flex-direction: column;
       height: auto !important;
       width: 100% !important;
     }
-    #github-journey {
+    #math-journey {
       height: auto !important;
       min-height: auto !important;
+    }
+    .math-formula {
+      padding: 4rem 0;
+      white-space: normal;
+      flex-wrap: wrap;
+      justify-content: center;
+      line-height: 1.5;
     }
   }
 </style>

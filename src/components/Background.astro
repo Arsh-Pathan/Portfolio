@@ -104,50 +104,101 @@
        const center = getPathPoint(progress).add(offset);
        const group = new THREE.Group();
        
-       const posArray = [];
-       const linePosArray = [];
+       const posArray: number[] = [];
+       const linePosArray: number[] = [];
        
        if (!is3D) {
-           // 2D LAYERED STRUCTURE
-           const layers = [3, 5, 5, 2];
-           const layerPositions: THREE.Vector3[][] = [];
-           const xSpacing = 60;
-           const ySpacing = 30;
+           const variant = Math.floor(Math.random() * 3);
            
-           for(let i=0; i<layers.length; i++) {
-               const nodes = layers[i];
-               const x = (i - layers.length/2) * xSpacing;
-               const currentLayer: THREE.Vector3[] = [];
-               
-               for(let j=0; j<nodes; j++) {
-                   const y = (j - nodes/2) * ySpacing;
-                   posArray.push(x, y, 0);
-                   currentLayer.push(new THREE.Vector3(x, y, 0));
+           if (variant === 0) {
+               // Classic Layered
+               const layers = [4, 7, 10, 7, 4]; 
+               const layerSpacing = 35;
+               const nodeSpacing = 25;
+               for(let l=0; l<layers.length; l++) {
+                   for(let n=0; n<layers[l]; n++) {
+                       posArray.push(
+                           (l - layers.length/2) * layerSpacing,
+                           (n - layers[l]/2) * nodeSpacing,
+                           0
+                       );
+                   }
                }
-               layerPositions.push(currentLayer);
-           }
-           
-           // Connect adjacent layers
-           for(let i=0; i<layers.length-1; i++) {
-               const current = layerPositions[i];
-               const next = layerPositions[i+1];
-               for(let a=0; a<current.length; a++) {
-                   for(let b=0; b<next.length; b++) {
-                       linePosArray.push(current[a].x, current[a].y, current[a].z);
-                       linePosArray.push(next[b].x, next[b].y, next[b].z);
+               let offsetIdx = 0;
+               for(let l=0; l<layers.length-1; l++) {
+                   const currentLayerNodes = layers[l];
+                   const nextLayerNodes = layers[l+1];
+                   for(let i=0; i<currentLayerNodes; i++) {
+                       for(let j=0; j<nextLayerNodes; j++) {
+                           if(Math.random() > 0.3) {
+                               const idx1 = offsetIdx + i;
+                               const idx2 = offsetIdx + currentLayerNodes + j;
+                               linePosArray.push(posArray[idx1*3], posArray[idx1*3+1], posArray[idx1*3+2]);
+                               linePosArray.push(posArray[idx2*3], posArray[idx2*3+1], posArray[idx2*3+2]);
+                           }
+                       }
+                   }
+                   offsetIdx += currentLayerNodes;
+               }
+           } else if (variant === 1) {
+               // Grid / Matrix (CNN-like)
+               const sizeX = 7;
+               const sizeY = 7;
+               const spacing = 22;
+               for(let x=0; x<sizeX; x++) {
+                   for(let y=0; y<sizeY; y++) {
+                       posArray.push((x - sizeX/2)*spacing, (y - sizeY/2)*spacing, 0);
+                   }
+               }
+               for(let x=0; x<sizeX; x++) {
+                   for(let y=0; y<sizeY; y++) {
+                       const idx = x * sizeY + y;
+                       if(x < sizeX - 1) {
+                           const rightIdx = (x+1)*sizeY + y;
+                           linePosArray.push(posArray[idx*3], posArray[idx*3+1], posArray[idx*3+2]);
+                           linePosArray.push(posArray[rightIdx*3], posArray[rightIdx*3+1], posArray[rightIdx*3+2]);
+                       }
+                       if(y < sizeY - 1) {
+                           const downIdx = x*sizeY + (y+1);
+                           linePosArray.push(posArray[idx*3], posArray[idx*3+1], posArray[idx*3+2]);
+                           linePosArray.push(posArray[downIdx*3], posArray[downIdx*3+1], posArray[downIdx*3+2]);
+                       }
+                   }
+               }
+           } else {
+               // Radial / Star topology
+               const rings = [1, 6, 12, 18];
+               for(let r=0; r<rings.length; r++) {
+                   const nodesInRing = rings[r];
+                   const radius = r * 25;
+                   for(let i=0; i<nodesInRing; i++) {
+                       const angle = (Math.PI * 2 * i) / nodesInRing;
+                       posArray.push( Math.cos(angle)*radius, Math.sin(angle)*radius, 0 );
+                   }
+               }
+               const count = posArray.length / 3;
+               for(let i=0; i<count; i++) {
+                   for(let j=i+1; j<count; j++) {
+                       const dx = posArray[i*3] - posArray[j*3];
+                       const dy = posArray[i*3+1] - posArray[j*3+1];
+                       if (dx*dx + dy*dy < 32*32) {
+                           if(Math.random() > 0.2) {
+                               linePosArray.push(posArray[i*3], posArray[i*3+1], posArray[i*3+2]);
+                               linePosArray.push(posArray[j*3], posArray[j*3+1], posArray[j*3+2]);
+                           }
+                       }
                    }
                }
            }
        } else {
            // 3D CLUSTER STRUCTURE: Concentric Spheres
-           const layers3D = [4, 12, 24]; // nodes per sphere layer
+           const layers3D = [4, 12, 24];
            const radius3D = [30, 80, 140];
            
            for(let l=0; l<layers3D.length; l++) {
                const nodes = layers3D[l];
                const r = radius3D[l];
                for(let i=0; i<nodes; i++) {
-                   // Fibonacci sphere distribution for even spacing
                    const phi = Math.acos(1 - 2 * (i + 0.5) / nodes);
                    const theta = Math.PI * (1 + Math.sqrt(5)) * (i + 0.5);
                    posArray.push(
@@ -158,7 +209,6 @@
                }
            }
            const count = posArray.length / 3;
-           // Connect close nodes
            for(let i=0; i<count; i++) {
                for(let j=i+1; j<count; j++) {
                    const dx = posArray[i*3] - posArray[j*3];
@@ -196,7 +246,7 @@
        group.add(outerMesh);
        
        // Lines between layers/nodes
-       const lineCount = linePosArray.length / 6; // 6 floats per line
+       const lineCount = linePosArray.length / 6;
        const lineColors = new Float32Array(lineCount * 6);
        const lineGeo = new THREE.BufferGeometry();
        lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePosArray, 3));
@@ -205,12 +255,10 @@
        const linesMesh = new THREE.LineSegments(lineGeo, lineMat);
        group.add(linesMesh);
        
-       // State for rapid flashing computations
        const nodeActivations = new Float32Array(nodeCount);
        const lineActivations = new Float32Array(lineCount);
        
        group.position.copy(center);
-       // Orient them somewhat randomly but clearly 2D planes
        group.rotation.set(Math.random()*0.5, Math.random()*0.5, Math.random()*0.5);
        scene.add(group);
        
@@ -225,13 +273,11 @@
                if (dist < 2000) {
                    fade = 1.0 - Math.max(0, (dist - 400) / 1600);
                }
-               // Make the neural network much fainter so it doesn't interfere with text
                innerMat.opacity = 0.2 * fade;
                outerMat.opacity = 0.5 * fade;
                lineMat.opacity = 0.35 * fade;
            },
            update: (time: number) => {
-               // Drift smoothly in 3D space instead of rotating
                const t = time + timeOffset;
                group.position.x = center.x + Math.sin(t * 0.4) * 30;
                group.position.y = center.y + Math.cos(t * 0.3) * 30;
@@ -240,36 +286,27 @@
                const nColors = outerMesh.geometry.attributes.color.array as Float32Array;
                const lColors = linesMesh.geometry.attributes.color.array as Float32Array;
                
-               // Rapidly fire random nodes (High probability)
                if (Math.random() < 0.8) {
                    const rNode = Math.floor(Math.random() * nodeCount);
                    nodeActivations[rNode] = 1.0;
                }
                
-               // Rapidly fire random weights
                for(let i=0; i<2; i++) {
                    const rLine = Math.floor(Math.random() * lineCount);
                    lineActivations[rLine] = 1.0;
                }
                
-               // Decay and apply colors for Nodes (Neurons)
                for(let i=0; i<nodeCount; i++) {
-                   // Fast decay for rapid blink
                    nodeActivations[i] = Math.max(0, nodeActivations[i] - 0.15); 
-                   // 0.3 (visible gray) to 1.0 (bright white)
                    const v = 0.3 + nodeActivations[i] * 0.7; 
                    nColors[i*3] = v;
                    nColors[i*3+1] = v;
                    nColors[i*3+2] = v;
                }
                
-               // Decay and apply colors for Lines (Weights)
                for(let i=0; i<lineCount; i++) {
-                   // Fast decay
                    lineActivations[i] = Math.max(0, lineActivations[i] - 0.20); 
-                   // 0.2 (gray) to 1.0 (bright white)
                    const v = 0.2 + lineActivations[i] * 0.8; 
-                   // Two vertices per line segment
                    lColors[i*6] = v;
                    lColors[i*6+1] = v;
                    lColors[i*6+2] = v;
@@ -284,11 +321,13 @@
        });
     }
     
-    // Repositioned Neural Networks
-    createStructuredNN(0.12, new THREE.Vector3(-300, 200, -100), true); // 2D
-    createStructuredNN(0.45, new THREE.Vector3(-450, 100, 150), false); // 3D - Moved significantly
-    createStructuredNN(0.60, new THREE.Vector3(-250, -250, 100), true); // 2D
-    createStructuredNN(0.80, new THREE.Vector3(450, -150, -100), false); // 3D - Pushed further out
+    // Repositioned Neural Networks (No early ones to protect Hero section)
+    createStructuredNN(0.32, new THREE.Vector3(350, 150, -50), false); // 2D 
+    createStructuredNN(0.45, new THREE.Vector3(-450, 100, 150), true); // 3D
+    createStructuredNN(0.55, new THREE.Vector3(-300, -200, 100), false); // 2D
+    createStructuredNN(0.68, new THREE.Vector3(350, -250, -50), false); // 2D
+    createStructuredNN(0.80, new THREE.Vector3(450, -150, -100), true); // 3D
+    createStructuredNN(0.92, new THREE.Vector3(-350, 250, 50), false); // 2D
 
     // ----------------------------------------------------
     // ZONE 2: NANOPARTICLE WORMS

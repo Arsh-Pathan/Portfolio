@@ -175,13 +175,16 @@
        const nodeCount = posArray.length / 3;
        const pos = new Float32Array(posArray);
        const nodeGeo = new THREE.BufferGeometry();
-       const ringMat = new THREE.PointsMaterial({ 
-           map: ringTex, size: 14, color: 0xffffff, transparent: true, opacity: 0.3, depthWrite: false, blending: THREE.AdditiveBlending 
-       });
-       const ringMesh = new THREE.Points(nodeGeo, ringMat);
-       group.add(ringMesh);
+       nodeGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
        
-       // Flashing Inner Dot
+       // Constant Outer Node (Solid Circle, Dim Gray)
+       const outerMat = new THREE.PointsMaterial({ 
+           map: circleTex, size: 16, color: 0x666666, transparent: true, opacity: 0.3, depthWrite: false, blending: THREE.AdditiveBlending 
+       });
+       const outerMesh = new THREE.Points(nodeGeo, outerMat);
+       group.add(outerMesh);
+       
+       // Flashing Inner Dot (Solid Circle, Bright)
        const nodeColors = new Float32Array(nodeCount * 3);
        const dotGeo = new THREE.BufferGeometry();
        dotGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
@@ -222,7 +225,7 @@
                if (dist < 2000) {
                    fade = 1.0 - Math.max(0, (dist - 400) / 1600);
                }
-               ringMat.opacity = 0.3 * fade;
+               outerMat.opacity = 0.3 * fade;
                dotMat.opacity = 1.0 * fade;
                lineMat.opacity = 0.8 * fade;
            },
@@ -236,23 +239,24 @@
                const nColors = dotMesh.geometry.attributes.color.array as Float32Array;
                const lColors = linesMesh.geometry.attributes.color.array as Float32Array;
                
-               // Rapidly fire random nodes
-               for(let i=0; i<2; i++) {
+               // Randomly fire a node (Slower: ~50% chance per frame instead of 2 guaranteed)
+               if (Math.random() < 0.5) {
                    const rNode = Math.floor(Math.random() * nodeCount);
                    nodeActivations[rNode] = 1.0;
                }
                
-               // Rapidly fire random weights (lines)
-               for(let i=0; i<3; i++) {
+               // Randomly fire a weight (Slower: ~80% chance per frame instead of 3 guaranteed)
+               if (Math.random() < 0.8) {
                    const rLine = Math.floor(Math.random() * lineCount);
                    lineActivations[rLine] = 1.0;
                }
                
                // Decay and apply colors for Nodes (Neurons)
                for(let i=0; i<nodeCount; i++) {
-                   nodeActivations[i] = Math.max(0, nodeActivations[i] - 0.15); 
-                   // 0.3 (visible gray) to 1.0 (bright white dot)
-                   const v = 0.3 + nodeActivations[i] * 0.7; 
+                   // Slower decay for a smoother, longer blink
+                   nodeActivations[i] = Math.max(0, nodeActivations[i] - 0.05); 
+                   // 0.2 (dim gray) to 1.0 (bright white dot)
+                   const v = 0.2 + nodeActivations[i] * 0.8; 
                    nColors[i*3] = v;
                    nColors[i*3+1] = v;
                    nColors[i*3+2] = v;
@@ -260,9 +264,10 @@
                
                // Decay and apply colors for Lines (Weights)
                for(let i=0; i<lineCount; i++) {
-                   lineActivations[i] = Math.max(0, lineActivations[i] - 0.2); 
-                   // 0.15 (dark gray) to 0.8 (bright white)
-                   const v = 0.15 + lineActivations[i] * 0.65; 
+                   // Slower decay
+                   lineActivations[i] = Math.max(0, lineActivations[i] - 0.04); 
+                   // 0.1 (dark gray) to 0.7 (bright white)
+                   const v = 0.1 + lineActivations[i] * 0.6; 
                    // Two vertices per line segment
                    lColors[i*6] = v;
                    lColors[i*6+1] = v;

@@ -206,14 +206,21 @@
 
     const text = element.innerText;
     element.innerText = "";
+    
+    let isLastName = false;
 
     text.split("").forEach((char) => {
       const span = document.createElement("span");
       if (char === " ") {
         span.innerHTML = "&nbsp;";
+        isLastName = true;
       } else {
         span.innerText = char;
         addHangFallToElement(span);
+        // Make the last name grayish
+        if (isLastName) {
+            span.classList.add("text-gray-400");
+        }
       }
       element.appendChild(span);
     });

@@ -251,8 +251,8 @@
                // Decay and apply colors for Nodes (Neurons)
                for(let i=0; i<nodeCount; i++) {
                    nodeActivations[i] = Math.max(0, nodeActivations[i] - 0.15); 
-                   // 0.0 (invisible) to 1.0 (bright white dot)
-                   const v = nodeActivations[i]; 
+                   // 0.3 (visible gray) to 1.0 (bright white dot)
+                   const v = 0.3 + nodeActivations[i] * 0.7; 
                    nColors[i*3] = v;
                    nColors[i*3+1] = v;
                    nColors[i*3+2] = v;
@@ -261,8 +261,8 @@
                // Decay and apply colors for Lines (Weights)
                for(let i=0; i<lineCount; i++) {
                    lineActivations[i] = Math.max(0, lineActivations[i] - 0.2); 
-                   // 0.0 (invisible) to 0.8 (bright white)
-                   const v = lineActivations[i] * 0.8; 
+                   // 0.15 (dark gray) to 0.8 (bright white)
+                   const v = 0.15 + lineActivations[i] * 0.65; 
                    // Two vertices per line segment
                    lColors[i*6] = v;
                    lColors[i*6+1] = v;

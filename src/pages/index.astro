@@ -31,7 +31,7 @@ import BigText from "../components/BigText.astro";
   <body class="bg-bg-primary text-text-main antialiased">
     <Background />
 
-    <main>
+    <main style="will-change: filter;">
       <Hero />
       <About />
       <Experience />
@@ -73,6 +73,30 @@ import BigText from "../components/BigText.astro";
              ease: "power3.out"
            });
         });
+
+        // Motion Blur on Scroll
+        const mainContent = document.querySelector('main');
+        const footerContent = document.querySelector('footer');
+        let scrollTimeout;
+        let lastScroll = window.scrollY;
+
+        window.addEventListener("scroll", () => {
+            const currentScroll = window.scrollY;
+            const velocity = Math.abs(currentScroll - lastScroll);
+            lastScroll = currentScroll;
+            
+            // Map velocity to blur amount (tweak multipliers for intensity)
+            const blurValue = Math.min(velocity * 0.08, 12);
+            
+            if (mainContent) mainContent.style.filter = `blur(${blurValue}px)`;
+            if (footerContent) footerContent.style.filter = `blur(${blurValue}px)`;
+            
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                if (mainContent) mainContent.style.filter = "blur(0px)";
+                if (footerContent) footerContent.style.filter = "blur(0px)";
+            }, 60);
+        }, { passive: true });
       });
     </script>
   </body>

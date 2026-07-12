@@ -225,9 +225,10 @@
                if (dist < 2000) {
                    fade = 1.0 - Math.max(0, (dist - 400) / 1600);
                }
-               innerMat.opacity = 0.5 * fade;
-               outerMat.opacity = 1.0 * fade;
-               lineMat.opacity = 0.8 * fade;
+               // Make the neural network much fainter so it doesn't interfere with text
+               innerMat.opacity = 0.2 * fade;
+               outerMat.opacity = 0.5 * fade;
+               lineMat.opacity = 0.35 * fade;
            },
            update: (time: number) => {
                // Drift smoothly in 3D space instead of rotating

@@ -369,15 +369,18 @@
                const geo = new THREE.PlaneGeometry(width, height);
                const mesh = new THREE.Mesh(geo, mat);
                
-               // Position tightly around the 70-80% mark of the path (Exactly at 75% scroll)
+               // Position tightly around the 70-80% mark of the path
                const progress = 0.70 + (Math.random() * 0.10);
                const basePos = getPathPoint(progress);
                
-               // Moved "a little down" by subtracting 600 from Y
+               // Cluster them tightly to the sides of the camera path ("all aside")
+               // This pushes them 300 to 700 units either left or right of the exact path
+               const sideOffset = (Math.random() > 0.5 ? 1 : -1) * (250 + Math.random() * 450);
+               
                mesh.position.set(
-                   basePos.x + (Math.random() - 0.5) * 1800,
-                   basePos.y - 600 + (Math.random() - 0.5) * 1000,
-                   basePos.z + (Math.random() - 0.5) * 1200
+                   basePos.x + sideOffset,
+                   basePos.y - 150 + (Math.random() - 0.5) * 500, // Tighter vertical spread
+                   basePos.z + (Math.random() - 0.5) * 1000 // Tighter depth spread
                );
                
                // Random orientation

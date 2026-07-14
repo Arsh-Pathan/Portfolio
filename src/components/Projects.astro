@@ -82,14 +82,14 @@ const projects = [
     </div>
 
     <!-- 3 Column Grid for compactness -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 projects-grid preserve-3d">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 projects-grid group/grid">
       {projects.map((project, idx) => (
-        <div class="project-card opacity-0 group/card block relative rounded-2xl bg-white/[0.01] backdrop-blur-sm border border-white/10 overflow-visible transition-all duration-700 hover:bg-white/[0.05] hover:border-white/30 preserve-3d transform-style-3d hover:z-50">
+        <div class="project-card opacity-0 group block relative rounded-2xl bg-white/[0.01] backdrop-blur-sm border border-white/10 overflow-visible transition-all duration-700 hover:bg-white/[0.05] hover:border-white/30 hover:z-50 group-hover/grid:[&:not(:hover)]:!opacity-20 group-hover/grid:[&:not(:hover)]:!blur-[2px]">
           
           <!-- Floating Tech Nodes -->
           <div class="absolute inset-0 z-10 pointer-events-none">
              {project.tags.map((tag, i) => (
-                <div class={`absolute top-1/2 left-1/2 opacity-0 group-hover/card:opacity-100 transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] tech-pos-${i}`}>
+                <div class={`absolute top-1/2 left-1/2 opacity-0 group-hover:opacity-100 transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] tech-pos-${i}`}>
                    <div class={`animate-float-${i} px-4 py-2 bg-black/80 backdrop-blur-xl border border-white/20 rounded-full text-white/90 text-[10px] sm:text-xs font-mono font-bold tracking-widest whitespace-nowrap shadow-[0_0_30px_rgba(255,255,255,0.15)]`}>
                       {tag}
                    </div>
@@ -98,7 +98,7 @@ const projects = [
           </div>
 
           <!-- Card Content Wrapper -->
-          <div class="relative z-20 w-full h-full rounded-2xl overflow-hidden shadow-2xl transition-all duration-700 group-hover/card:shadow-[0_0_80px_-20px_rgba(255,255,255,0.15)] group-hover/card:scale-[1.02]">
+          <div class="relative z-20 w-full h-full rounded-2xl overflow-hidden shadow-2xl transition-all duration-700 group-hover:shadow-[0_0_80px_-20px_rgba(255,255,255,0.15)] group-hover:scale-[1.02]">
 
           <!-- Compact Image Container -->
           <div class="relative w-full h-[220px] overflow-hidden bg-transparent">
@@ -116,7 +116,7 @@ const projects = [
           </div>
 
           <!-- Compact Content Container -->
-          <div class="relative p-6 md:p-8 -mt-12 bg-gradient-to-b from-transparent via-black/90 to-black flex flex-col h-[240px] translate-z-10">
+          <div class="relative p-6 md:p-8 -mt-12 bg-gradient-to-b from-transparent via-black/90 to-black flex flex-col h-[240px]">
             <h3 class="text-xl font-bold text-white mb-2 tracking-tight drop-shadow-md">{project.title}</h3>
             <p class="text-white/60 text-xs leading-relaxed mb-4 flex-grow">{project.description}</p>
             
@@ -150,23 +150,9 @@ const projects = [
   .perspective-\[2000px\] {
     perspective: 2000px;
   }
-  .preserve-3d {
-    transform-style: preserve-3d;
-  }
-  .transform-style-3d {
-    transform-style: preserve-3d;
-  }
-  .translate-z-10 {
-    transform: translateZ(20px);
-  }
 
-  /* Grid Hover Dimming */
   .project-card {
-    transition: opacity 0.5s ease, filter 0.5s ease;
-  }
-  .project-card.is-dimmed {
-    opacity: 0.2 !important;
-    filter: blur(2px) !important;
+    transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
   }
 
   /* Tech Node Initial States */
@@ -175,10 +161,10 @@ const projects = [
   }
 
   /* Tech Node Hover States (Bursting Outwards) */
-  .group\/card:hover .tech-pos-0 { transform: translate(-120%, -220%) scale(1); }
-  .group\/card:hover .tech-pos-1 { transform: translate(50%, -180%) scale(1); }
-  .group\/card:hover .tech-pos-2 { transform: translate(60%, 100%) scale(1); }
-  .group\/card:hover .tech-pos-3 { transform: translate(-110%, 130%) scale(1); }
+  .project-card:hover .tech-pos-0 { transform: translate(-120%, -220%) scale(1); }
+  .project-card:hover .tech-pos-1 { transform: translate(50%, -180%) scale(1); }
+  .project-card:hover .tech-pos-2 { transform: translate(60%, 100%) scale(1); }
+  .project-card:hover .tech-pos-3 { transform: translate(-110%, 130%) scale(1); }
 
   /* Smooth Floating Animations */
   .animate-float-0 { animation: float-1 4s ease-in-out infinite alternate; }
@@ -246,16 +232,6 @@ const projects = [
         yoyo: true,
         repeat: -1,
         ease: "sine.inOut"
-      });
-
-      // Robust Hover Dimming Logic
-      card.addEventListener('mouseenter', () => {
-        cards.forEach(c => {
-          if (c !== card) c.classList.add('is-dimmed');
-        });
-      });
-      card.addEventListener('mouseleave', () => {
-        cards.forEach(c => c.classList.remove('is-dimmed'));
       });
     });
   });

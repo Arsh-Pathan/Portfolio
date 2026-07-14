@@ -369,8 +369,8 @@
                const geo = new THREE.PlaneGeometry(width, height);
                const mesh = new THREE.Mesh(geo, mat);
                
-               // Position tightly around the 50-58% mark of the path (Exactly at Project Section)
-               const progress = 0.50 + (Math.random() * 0.08);
+               // Position tightly around the 75-85% mark of the path (Exactly at Project Section/80% scroll)
+               const progress = 0.75 + (Math.random() * 0.10);
                const basePos = getPathPoint(progress);
                
                // Moved "a little down" by subtracting 600 from Y

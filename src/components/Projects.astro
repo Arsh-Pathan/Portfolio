@@ -60,6 +60,33 @@ const projects = [
     year: '2026'
   }
 ];
+
+const techIconMap: Record<string, string> = {
+  'React Native': 'react/react-original.svg',
+  'Mobile': 'android/android-original.svg',
+  'Node.js': 'nodejs/nodejs-original.svg',
+  'Expo': 'react/react-original.svg',
+  'Java': 'java/java-original.svg',
+  'Game Dev': 'unity/unity-original.svg',
+  'Redis': 'redis/redis-original.svg',
+  'Netty': 'java/java-original.svg',
+  'Go': 'go/go-original.svg',
+  'Cloud': 'googlecloud/googlecloud-original.svg',
+  'Docker': 'docker/docker-original.svg',
+  'K8s': 'kubernetes/kubernetes-plain.svg',
+  'TypeScript': 'typescript/typescript-original.svg',
+  'WebGL': 'opengl/opengl-original.svg',
+  'Canvas': 'html5/html5-original.svg',
+  'C++': 'cplusplus/cplusplus-original.svg',
+  'AI': 'python/python-original.svg',
+  'CUDA': 'c/c-original.svg',
+  'Math': 'jupyter/jupyter-original.svg',
+  'React': 'react/react-original.svg',
+  'CSS': 'css3/css3-original.svg',
+  'Framer Motion': 'framermotion/framermotion-original.svg',
+};
+
+const getIcon = (tag: string) => techIconMap[tag] || 'javascript/javascript-original.svg';
 ---
 
 <section id="projects" class="py-32 relative z-10 bg-transparent">
@@ -86,12 +113,23 @@ const projects = [
       {projects.map((project, idx) => (
         <div class="project-card opacity-0 group block relative rounded-2xl bg-white/[0.01] backdrop-blur-sm border border-white/10 overflow-visible transition-all duration-700 hover:bg-white/[0.05] hover:border-white/30 hover:z-50">
           
-          <!-- Floating Tech Nodes -->
-          <div class="absolute inset-0 z-10 pointer-events-none">
+          <!-- Floating Tech Nodes (Microscope Labels) -->
+          <div class="absolute inset-0 z-0 pointer-events-none flex items-center justify-center">
              {project.tags.map((tag, i) => (
-                <div class={`absolute top-1/2 left-1/2 opacity-0 group-hover:opacity-100 transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] tech-pos-${i}`}>
-                   <div class={`animate-float-${i} px-4 py-2 bg-black/80 backdrop-blur-xl border border-white/20 rounded-full text-white/90 text-[10px] sm:text-xs font-mono font-bold tracking-widest whitespace-nowrap shadow-[0_0_30px_rgba(255,255,255,0.15)]`}>
-                      {tag}
+                <div class={`absolute tech-line-${i} w-0 group-hover:w-[100px] md:group-hover:w-[130px] h-px bg-white/40 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] origin-left`}>
+                   <!-- Dot at the card center -->
+                   <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                   
+                   <!-- Icon container at the far end -->
+                   <div class={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-full pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-150 tech-icon-${i}`}>
+                      <div class="w-8 h-8 rounded-full bg-black/80 border border-white/20 backdrop-blur-md flex items-center justify-center p-1.5 shadow-[0_0_15px_rgba(255,255,255,0.1)] relative">
+                          <img 
+                            src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${getIcon(tag)}`} 
+                            alt={tag} 
+                            title={tag}
+                            class="w-full h-full object-contain filter grayscale opacity-80" 
+                          />
+                      </div>
                    </div>
                 </div>
              ))}
@@ -157,31 +195,18 @@ const projects = [
     transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
   }
 
-  /* Tech Node Initial States */
-  .tech-pos-0, .tech-pos-1, .tech-pos-2, .tech-pos-3 {
-    transform: translate(-50%, -50%) scale(0.5);
-  }
+  /* Microscope Label Lines & Icons */
+  .tech-line-0 { transform: rotate(-135deg); }
+  .tech-icon-0 { transform: translateY(-50%) translateX(100%) rotate(135deg); }
 
-  /* Tech Node Hover States (Bursting Outwards) */
-  .project-card:hover .tech-pos-0 { transform: translate(-120%, -220%) scale(1); }
-  .project-card:hover .tech-pos-1 { transform: translate(50%, -180%) scale(1); }
-  .project-card:hover .tech-pos-2 { transform: translate(60%, 100%) scale(1); }
-  .project-card:hover .tech-pos-3 { transform: translate(-110%, 130%) scale(1); }
+  .tech-line-1 { transform: rotate(-45deg); }
+  .tech-icon-1 { transform: translateY(-50%) translateX(100%) rotate(45deg); }
 
-  /* Smooth Floating Animations */
-  .animate-float-0 { animation: float-1 4s ease-in-out infinite alternate; }
-  .animate-float-1 { animation: float-2 5s ease-in-out infinite alternate-reverse; }
-  .animate-float-2 { animation: float-1 3.5s ease-in-out infinite alternate; }
-  .animate-float-3 { animation: float-2 4.5s ease-in-out infinite alternate-reverse; }
+  .tech-line-2 { transform: rotate(30deg); }
+  .tech-icon-2 { transform: translateY(-50%) translateX(100%) rotate(-30deg); }
 
-  @keyframes float-1 {
-    0% { transform: translateY(0px) rotate(0deg); }
-    100% { transform: translateY(-20px) rotate(5deg); }
-  }
-  @keyframes float-2 {
-    0% { transform: translateY(0px) rotate(0deg); }
-    100% { transform: translateY(15px) rotate(-5deg); }
-  }
+  .tech-line-3 { transform: rotate(140deg); }
+  .tech-icon-3 { transform: translateY(-50%) translateX(100%) rotate(-140deg); }
 </style>
 
 <script>

@@ -258,6 +258,78 @@
     createSingularity(0.96, new THREE.Vector3(0, -300, 0));
 
     // ----------------------------------------------------
+    // ZONE 4: PROJECT DEBRIS
+    // ----------------------------------------------------
+    const projectImages = [
+      'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1000&auto=format&fit=crop'
+    ];
+
+    const textureLoader = new THREE.TextureLoader();
+    textureLoader.setCrossOrigin('anonymous');
+    
+    function createProjectDebris() {
+       projectImages.forEach((url) => {
+           textureLoader.load(url, (tex) => {
+               tex.colorSpace = THREE.SRGBColorSpace;
+               
+               // Create 15 instances of each project image floating in space
+               for (let i = 0; i < 15; i++) {
+                   const mat = new THREE.MeshBasicMaterial({ 
+                       map: tex, 
+                       transparent: true, 
+                       opacity: 0.15, // Low saturation/opacity floating vibe
+                       side: THREE.DoubleSide,
+                       depthWrite: false,
+                       blending: THREE.AdditiveBlending 
+                   });
+                   const aspect = tex.image.width / tex.image.height;
+                   const width = 150 + Math.random() * 150;
+                   const height = width / aspect;
+                   const geo = new THREE.PlaneGeometry(width, height);
+                   const mesh = new THREE.Mesh(geo, mat);
+                   
+                   // Position roughly around the 45-60% mark of the path (Project Section)
+                   const progress = 0.45 + (Math.random() * 0.15);
+                   const basePos = getPathPoint(progress);
+                   
+                   mesh.position.set(
+                       basePos.x + (Math.random() - 0.5) * 2000,
+                       basePos.y + (Math.random() - 0.5) * 2000,
+                       basePos.z + (Math.random() - 0.5) * 1500
+                   );
+                   
+                   // Random orientation
+                   mesh.rotation.set(
+                       Math.random() * Math.PI * 2,
+                       Math.random() * Math.PI * 2,
+                       Math.random() * Math.PI * 2
+                   );
+                   
+                   scene.add(mesh);
+                   
+                   // Spin slowly
+                   const spinRates = [
+                       (Math.random() - 0.5) * 0.005,
+                       (Math.random() - 0.5) * 0.005,
+                       (Math.random() - 0.5) * 0.005
+                   ];
+                   
+                   updatables.push((time: number) => {
+                       mesh.rotation.x += spinRates[0];
+                       mesh.rotation.y += spinRates[1];
+                       mesh.rotation.z += spinRates[2];
+                   });
+               }
+           });
+       });
+    }
+    
+    createProjectDebris();
+
+    // ----------------------------------------------------
     // FLOATING MATH EQUATIONS
     // ----------------------------------------------------
     const equations = [

@@ -113,28 +113,6 @@ const getIcon = (tag: string) => techIconMap[tag] || 'javascript/javascript-orig
       {projects.map((project, idx) => (
         <div class="project-card opacity-0 group block relative rounded-2xl bg-white/[0.01] backdrop-blur-sm border border-white/10 overflow-visible transition-all duration-700 hover:bg-white/[0.05] hover:border-white/30 hover:z-50">
           
-          <!-- Floating Tech Nodes (Microscope Labels) -->
-          <div class="absolute inset-0 z-0 pointer-events-none flex items-center justify-center">
-             {project.tags.map((tag, i) => (
-                <div class={`absolute tech-line-${i} w-0 group-hover:w-[100px] md:group-hover:w-[130px] h-px bg-white/40 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] origin-left`}>
-                   <!-- Dot at the card center -->
-                   <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                   
-                   <!-- Icon container at the far end -->
-                   <div class={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-full pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-150 tech-icon-${i}`}>
-                      <div class="w-8 h-8 rounded-full bg-black/80 border border-white/20 backdrop-blur-md flex items-center justify-center p-1.5 shadow-[0_0_15px_rgba(255,255,255,0.1)] relative">
-                          <img 
-                            src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${getIcon(tag)}`} 
-                            alt={tag} 
-                            title={tag}
-                            class="w-full h-full object-contain filter grayscale opacity-80" 
-                          />
-                      </div>
-                   </div>
-                </div>
-             ))}
-          </div>
-
           <!-- Card Content Wrapper -->
           <div class="relative z-20 w-full h-full rounded-2xl overflow-hidden shadow-2xl transition-all duration-700 group-hover:shadow-[0_0_80px_-20px_rgba(255,255,255,0.15)] group-hover:scale-[1.02]">
 
@@ -177,6 +155,29 @@ const getIcon = (tag: string) => techIconMap[tag] || 'javascript/javascript-orig
           </div>
           
           </div> <!-- End Card Content Wrapper -->
+
+          <!-- Floating Tech Nodes (Microscope Labels) - NOW ON TOP -->
+          <div class="absolute inset-0 z-50 pointer-events-none">
+             {project.tags.map((tag, i) => (
+                <div class={`absolute tech-line-${i} w-0 group-hover:w-[140px] md:group-hover:w-[180px] h-px bg-white/50 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] origin-left`}>
+                   <!-- Dot at the card edge -->
+                   <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                   
+                   <!-- Icon container at the far end -->
+                   <div class={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-full pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-150 tech-icon-${i}`}>
+                      <div class="w-9 h-9 rounded-full bg-black/95 border border-white/20 backdrop-blur-md flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(255,255,255,0.15)] relative">
+                          <img 
+                            src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${getIcon(tag)}`} 
+                            alt={tag} 
+                            title={tag}
+                            class="w-full h-full object-contain filter grayscale opacity-90 transition-opacity duration-300" 
+                          />
+                      </div>
+                   </div>
+                </div>
+             ))}
+          </div>
+
         </div>
       ))}
     </div>
@@ -196,17 +197,22 @@ const getIcon = (tag: string) => techIconMap[tag] || 'javascript/javascript-orig
   }
 
   /* Microscope Label Lines & Icons */
-  .tech-line-0 { transform: rotate(-135deg); }
+  
+  /* Origin 1: Top Left pointing up-left */
+  .tech-line-0 { top: 20%; left: 20%; transform: rotate(-135deg); }
   .tech-icon-0 { transform: translateY(-50%) translateX(100%) rotate(135deg); }
 
-  .tech-line-1 { transform: rotate(-45deg); }
+  /* Origin 2: Top Right pointing up-right */
+  .tech-line-1 { top: 25%; left: 80%; transform: rotate(-45deg); }
   .tech-icon-1 { transform: translateY(-50%) translateX(100%) rotate(45deg); }
 
-  .tech-line-2 { transform: rotate(30deg); }
-  .tech-icon-2 { transform: translateY(-50%) translateX(100%) rotate(-30deg); }
+  /* Origin 3: Bottom Right pointing down-right */
+  .tech-line-2 { top: 75%; left: 80%; transform: rotate(35deg); }
+  .tech-icon-2 { transform: translateY(-50%) translateX(100%) rotate(-35deg); }
 
-  .tech-line-3 { transform: rotate(140deg); }
-  .tech-icon-3 { transform: translateY(-50%) translateX(100%) rotate(-140deg); }
+  /* Origin 4: Bottom Left pointing down-left */
+  .tech-line-3 { top: 70%; left: 20%; transform: rotate(145deg); }
+  .tech-icon-3 { transform: translateY(-50%) translateX(100%) rotate(-145deg); }
 </style>
 
 <script>

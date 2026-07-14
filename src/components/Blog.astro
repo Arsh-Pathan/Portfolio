@@ -33,7 +33,7 @@ const posts = [
           <div class="h-[1px] w-8 bg-white/50"></div>
           <span class="text-xs font-semibold tracking-widest text-white/80 uppercase">Writing</span>
         </div>
-        <h2 class="text-4xl md:text-5xl font-medium text-white tracking-tight">
+        <h2 class="text-4xl md:text-5xl font-medium text-white tracking-tight blog-heading opacity-0 translate-y-10">
           Recent <span class="text-white/40">Insights</span>
         </h2>
       </div>
@@ -45,7 +45,7 @@ const posts = [
 
     <div class="flex flex-col gap-6">
       {posts.map((post) => (
-        <a href={post.href} class="blog-row group block relative p-8 md:p-10 bg-white/[0.01] hover:bg-white/[0.03] border border-white/5 hover:border-white/20 rounded-3xl backdrop-blur-sm transition-all duration-300">
+        <a href={post.href} class="blog-row opacity-0 -translate-x-8 group block relative p-8 md:p-10 bg-white/[0.01] hover:bg-white/[0.03] border border-white/5 hover:border-white/20 rounded-3xl backdrop-blur-sm transition-all duration-300">
            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
              <div class="flex-grow">
                <div class="flex items-center gap-4 mb-3">
@@ -77,13 +77,26 @@ const posts = [
   gsap.registerPlugin(ScrollTrigger);
 
   document.addEventListener("DOMContentLoaded", () => {
-    gsap.from(".blog-row", {
+    // Heading animation
+    gsap.to(".blog-heading", {
       scrollTrigger: {
         trigger: "#insights",
         start: "top 80%",
       },
-      x: -30,
-      opacity: 0,
+      y: 0,
+      opacity: 1,
+      duration: 1,
+      ease: "power3.out"
+    });
+
+    // Rows staggered animation
+    gsap.to(".blog-row", {
+      scrollTrigger: {
+        trigger: "#insights",
+        start: "top 80%",
+      },
+      x: 0,
+      opacity: 1,
       duration: 0.8,
       stagger: 0.15,
       ease: "power2.out"

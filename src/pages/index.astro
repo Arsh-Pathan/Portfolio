@@ -59,8 +59,7 @@ import BigText from "../components/BigText.astro";
         // Global robust text reveals for headings and paragraphs
         const headings = document.querySelectorAll("h2");
         headings.forEach(heading => {
-           // Skip humongous text or already custom-animated text
-           if(heading.classList.contains('humongous-text') || heading.id === 'github-title' || heading.classList.contains('about-heading') || heading.classList.contains('skill-heading')) return;
+           if(heading.classList.contains('humongous-text') || heading.id === 'github-title' || heading.classList.contains('about-heading') || heading.classList.contains('skill-heading') || heading.classList.contains('service-heading') || heading.classList.contains('project-heading') || heading.classList.contains('blog-heading')) return;
            
            gsap.from(heading, {
              scrollTrigger: {

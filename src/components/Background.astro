@@ -357,8 +357,8 @@
        projectData.forEach((project) => {
            const tex = createProjectCardTexture(project);
            
-           // Create 1 instance of each project card floating in space (Reduced count)
-           for (let i = 0; i < 1; i++) {
+           // Create 2 instances of each project card floating in space (12 total)
+           for (let i = 0; i < 2; i++) {
                const baseOpacity = 0.35;
                const mat = new THREE.MeshBasicMaterial({ 
                    map: tex, 
@@ -378,13 +378,13 @@
                const progress = 0.75 + (Math.random() * 0.05);
                const basePos = getPathPoint(progress);
                
-               // Cluster them much closer to the camera path on the sides
-               const sideOffset = (Math.random() > 0.5 ? 1 : -1) * (150 + Math.random() * 200);
+               // Cluster them a little bit apart on the sides of the camera path
+               const sideOffset = (Math.random() > 0.5 ? 1 : -1) * (200 + Math.random() * 300);
                
                mesh.position.set(
                    basePos.x + sideOffset,
-                   basePos.y - 100 + (Math.random() - 0.5) * 300, // Very tight vertical spread
-                   basePos.z + (Math.random() - 0.5) * 500 // Very tight depth spread
+                   basePos.y - 100 + (Math.random() - 0.5) * 600, // Spread vertically a bit more
+                   basePos.z + (Math.random() - 0.5) * 800 // Spread depth a bit more
                );
                
                // Random orientation

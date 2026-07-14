@@ -369,18 +369,17 @@
                const geo = new THREE.PlaneGeometry(width, height);
                const mesh = new THREE.Mesh(geo, mat);
                
-               // Position tightly around the 65-75% mark of the path (Exactly at 70% scroll)
-               const progress = 0.65 + (Math.random() * 0.10);
+               // Position very tightly around the 65% mark of the path
+               const progress = 0.65 + (Math.random() * 0.05);
                const basePos = getPathPoint(progress);
                
-               // Cluster them tightly to the sides of the camera path ("all aside")
-               // This pushes them 300 to 700 units either left or right of the exact path
-               const sideOffset = (Math.random() > 0.5 ? 1 : -1) * (250 + Math.random() * 450);
+               // Cluster them much closer to the camera path on the sides
+               const sideOffset = (Math.random() > 0.5 ? 1 : -1) * (150 + Math.random() * 200);
                
                mesh.position.set(
                    basePos.x + sideOffset,
-                   basePos.y - 150 + (Math.random() - 0.5) * 500, // Tighter vertical spread
-                   basePos.z + (Math.random() - 0.5) * 1000 // Tighter depth spread
+                   basePos.y - 100 + (Math.random() - 0.5) * 300, // Very tight vertical spread
+                   basePos.z + (Math.random() - 0.5) * 500 // Very tight depth spread
                );
                
                // Random orientation
@@ -405,9 +404,9 @@
                    updateFade: (camPos: THREE.Vector3) => {
                        const dist = camPos.distanceTo(mesh.position);
                        let fade = 0;
-                       // Appear slowly (fade in) only when close so they don't appear too early
-                       if (dist < 2000) {
-                           fade = 1.0 - Math.max(0, (dist - 800) / 1200);
+                       // Tight visibility window: fade in/out only when very close
+                       if (dist < 1200) {
+                           fade = 1.0 - Math.max(0, (dist - 400) / 800);
                        }
                        mat.opacity = baseOpacity * fade;
                    },

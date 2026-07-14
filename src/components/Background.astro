@@ -369,8 +369,8 @@
                const geo = new THREE.PlaneGeometry(width, height);
                const mesh = new THREE.Mesh(geo, mat);
                
-               // Position very tightly around the 65% mark of the path
-               const progress = 0.65 + (Math.random() * 0.05);
+               // Position very tightly around the 75% mark of the path
+               const progress = 0.75 + (Math.random() * 0.05);
                const basePos = getPathPoint(progress);
                
                // Cluster them much closer to the camera path on the sides

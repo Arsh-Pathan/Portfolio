@@ -161,11 +161,12 @@ const projects = [
   }
 
   /* Grid Hover Dimming */
-  .projects-grid:has(.project-card:hover) .project-card:not(:hover) {
+  .project-card {
+    transition: opacity 0.5s ease, filter 0.5s ease;
+  }
+  .project-card.is-dimmed {
     opacity: 0.2 !important;
-    transform: scale(0.95) !important;
     filter: blur(2px) !important;
-    transition: all 0.5s ease;
   }
 
   /* Tech Node Initial States */
@@ -245,6 +246,16 @@ const projects = [
         yoyo: true,
         repeat: -1,
         ease: "sine.inOut"
+      });
+
+      // Robust Hover Dimming Logic
+      card.addEventListener('mouseenter', () => {
+        cards.forEach(c => {
+          if (c !== card) c.classList.add('is-dimmed');
+        });
+      });
+      card.addEventListener('mouseleave', () => {
+        cards.forEach(c => c.classList.remove('is-dimmed'));
       });
     });
   });

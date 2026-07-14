@@ -363,14 +363,14 @@
                    depthWrite: false,
                    blending: THREE.AdditiveBlending 
                });
-               // Scaled down significantly
-               const width = 120 + Math.random() * 60;
+               // Scaled down even further (smaller and shorter)
+               const width = 80 + Math.random() * 40;
                const height = width * (400 / 600); // match canvas aspect ratio
                const geo = new THREE.PlaneGeometry(width, height);
                const mesh = new THREE.Mesh(geo, mat);
                
-               // Position tightly around the 75-85% mark of the path (Exactly at Project Section/80% scroll)
-               const progress = 0.75 + (Math.random() * 0.10);
+               // Position tightly around the 70-80% mark of the path (Exactly at 75% scroll)
+               const progress = 0.70 + (Math.random() * 0.10);
                const basePos = getPathPoint(progress);
                
                // Moved "a little down" by subtracting 600 from Y

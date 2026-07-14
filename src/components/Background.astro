@@ -379,12 +379,12 @@
                const basePos = getPathPoint(progress);
                
                // Cluster them a little bit apart on the sides of the camera path
-               const sideOffset = (Math.random() > 0.5 ? 1 : -1) * (200 + Math.random() * 300);
+               const sideOffset = (Math.random() > 0.5 ? 1 : -1) * (180 + Math.random() * 250);
                
                mesh.position.set(
                    basePos.x + sideOffset,
-                   basePos.y - 100 + (Math.random() - 0.5) * 600, // Spread vertically a bit more
-                   basePos.z + (Math.random() - 0.5) * 800 // Spread depth a bit more
+                   basePos.y - 100 + (Math.random() - 0.5) * 450, // Balanced vertical spread
+                   basePos.z + (Math.random() - 0.5) * 600 // Balanced depth spread
                );
                
                // Random orientation

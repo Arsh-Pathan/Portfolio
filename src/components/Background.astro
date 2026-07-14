@@ -323,14 +323,19 @@
            ctx.roundRect(0, 0, 600, 250, [30, 30, 0, 0]);
            ctx.clip();
            
-           ctx.globalAlpha = 0.4; // Low saturation/opacity look
-           ctx.fillStyle = '#000';
-           ctx.fillRect(0, 0, 600, 250);
-           
            const scale = Math.max(600 / img.width, 250 / img.height);
            const w = img.width * scale;
            const h = img.height * scale;
+           
+           // Apply low saturation filter and reduce opacity slightly
+           ctx.filter = 'grayscale(80%) brightness(70%)';
+           ctx.globalAlpha = 0.6;
+           
            ctx.drawImage(img, (600 - w)/2, (250 - h)/2, w, h);
+           
+           // Reset filter and alpha for text
+           ctx.filter = 'none';
+           ctx.globalAlpha = 1.0;
            ctx.restore();
            
            // Text Content
@@ -352,8 +357,8 @@
        projectData.forEach((project) => {
            const tex = createProjectCardTexture(project);
            
-           // Create 3 instances of each project card floating in space (Reduced count)
-           for (let i = 0; i < 3; i++) {
+           // Create 1 instance of each project card floating in space (Reduced count)
+           for (let i = 0; i < 1; i++) {
                const baseOpacity = 0.35;
                const mat = new THREE.MeshBasicMaterial({ 
                    map: tex, 

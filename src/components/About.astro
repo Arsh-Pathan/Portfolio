@@ -30,21 +30,140 @@
              <p class="text-xs font-bold text-white/40 uppercase tracking-widest">Years Coding</p>
           </div>
           <div class="border-l border-white/20 pl-6">
-             <p class="text-4xl font-bold text-white mb-1">10M+</p>
-             <p class="text-xs font-bold text-white/40 uppercase tracking-widest">Data Points Processed</p>
+             <p class="text-4xl font-bold text-white mb-1">650+</p>
+             <p class="text-xs font-bold text-white/40 uppercase tracking-widest">GitHub Contributions</p>
           </div>
         </div>
       </div>
       
-      <div class="w-full md:w-1/2 relative about-visual">
-         <!-- Abstract 3D/Visual representation for About section -->
-         <div class="aspect-square w-full max-w-md mx-auto rounded-full border border-white/10 relative flex items-center justify-center p-8">
-            <div class="absolute inset-0 rounded-full border border-white/5 animate-[spin_20s_linear_infinite]"></div>
-            <div class="absolute inset-4 rounded-full border border-white/5 animate-[spin_15s_linear_infinite_reverse]"></div>
-            <div class="w-full h-full rounded-full bg-gradient-to-tr from-white/5 to-transparent backdrop-blur-3xl flex items-center justify-center relative overflow-hidden">
-               <div class="absolute w-32 h-32 bg-white/20 blur-[50px] rounded-full"></div>
-               <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-white/50 relative z-10"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-            </div>
+      <div class="w-full md:w-1/2 relative about-visual group flex justify-center items-center">
+         <!-- Antimony (Sb) Atom 2D Model - Protons, Neutrons, Electrons in a single plane -->
+         <div class="aspect-square w-full max-w-[400px] mx-auto relative flex items-center justify-center">
+            
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" overflow="visible" class="w-full h-full relative z-10 scale-110 md:scale-125 transition-transform duration-700 ease-out atom-svg">
+                
+                <defs>
+                  <radialGradient id="grad-electron" cx="35%" cy="35%" r="65%">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="50%" stop-color="#d4d4d8"/>
+                    <stop offset="100%" stop-color="#52525b"/>
+                  </radialGradient>
+                  <radialGradient id="grad-neutron" cx="30%" cy="30%" r="70%">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="60%" stop-color="#e4e4e7"/>
+                    <stop offset="100%" stop-color="#71717a"/>
+                  </radialGradient>
+                  <radialGradient id="grad-proton" cx="30%" cy="30%" r="70%">
+                    <stop offset="0%" stop-color="#a1a1aa"/>
+                    <stop offset="50%" stop-color="#3f3f46"/>
+                    <stop offset="100%" stop-color="#18181b"/>
+                  </radialGradient>
+                </defs>
+
+                <!-- Container for dynamically spawned photon worms -->
+                <g id="photon-container"></g>
+
+                <!-- Shell 1 (2 electrons) -->
+                <g class="origin-center animate-[spin_10s_linear_infinite]">
+                    <circle cx="200" cy="200" r="45" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 4" opacity="0.6" class="shell-ring" data-ring="1"/>
+                    <circle cx="200" cy="155" r="3.5" fill="url(#grad-electron)" class="electron-dot" data-shell="1" />
+                    <circle cx="200" cy="245" r="3.5" fill="url(#grad-electron)" class="electron-dot" data-shell="1" />
+                </g>
+
+                <!-- Shell 2 (8 electrons) -->
+                <g class="origin-center animate-[spin_15s_linear_infinite]">
+                    <circle cx="200" cy="200" r="80" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 6" opacity="0.5" class="shell-ring" data-ring="2"/>
+                    <circle cx="200" cy="120" r="3.5" fill="url(#grad-electron)" class="electron-dot" data-shell="2" />
+                    <circle cx="200" cy="120" r="3.5" fill="url(#grad-electron)" class="electron-dot" data-shell="2" transform="rotate(45 200 200)"/>
+                    <circle cx="200" cy="120" r="3.5" fill="url(#grad-electron)" class="electron-dot" data-shell="2" transform="rotate(90 200 200)"/>
+                    <circle cx="200" cy="120" r="3.5" fill="url(#grad-electron)" class="electron-dot" data-shell="2" transform="rotate(135 200 200)"/>
+                    <circle cx="200" cy="120" r="3.5" fill="url(#grad-electron)" class="electron-dot" data-shell="2" transform="rotate(180 200 200)"/>
+                    <circle cx="200" cy="120" r="3.5" fill="url(#grad-electron)" class="electron-dot" data-shell="2" transform="rotate(225 200 200)"/>
+                    <circle cx="200" cy="120" r="3.5" fill="url(#grad-electron)" class="electron-dot" data-shell="2" transform="rotate(270 200 200)"/>
+                    <circle cx="200" cy="120" r="3.5" fill="url(#grad-electron)" class="electron-dot" data-shell="2" transform="rotate(315 200 200)"/>
+                </g>
+
+                <!-- Shell 3 (18 electrons) -->
+                <g class="origin-center animate-[spin_22s_linear_infinite]">
+                    <circle cx="200" cy="200" r="115" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 8" opacity="0.4" class="shell-ring" data-ring="3"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" />
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(20 200 200)"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(40 200 200)"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(60 200 200)"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(80 200 200)"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(100 200 200)"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(120 200 200)"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(140 200 200)"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(160 200 200)"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(180 200 200)"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(200 200 200)"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(220 200 200)"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(240 200 200)"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(260 200 200)"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(280 200 200)"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(300 200 200)"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(320 200 200)"/>
+                    <circle cx="200" cy="85" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="3" transform="rotate(340 200 200)"/>
+                </g>
+
+                <!-- Shell 4 (18 electrons) -->
+                <g class="origin-center animate-[spin_28s_linear_infinite]">
+                    <circle cx="200" cy="200" r="150" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 10" opacity="0.3" class="shell-ring" data-ring="4"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" />
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(20 200 200)"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(40 200 200)"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(60 200 200)"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(80 200 200)"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(100 200 200)"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(120 200 200)"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(140 200 200)"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(160 200 200)"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(180 200 200)"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(200 200 200)"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(220 200 200)"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(240 200 200)"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(260 200 200)"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(280 200 200)"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(300 200 200)"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(320 200 200)"/>
+                    <circle cx="200" cy="50" r="3" fill="url(#grad-electron)" class="electron-dot" data-shell="4" transform="rotate(340 200 200)"/>
+                </g>
+
+                <!-- Shell 5 (5 valence electrons) -->
+                <g class="origin-center animate-[spin_35s_linear_infinite]">
+                    <circle cx="200" cy="200" r="185" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 12" opacity="0.2" class="shell-ring" data-ring="5"/>
+                    <circle cx="200" cy="15" r="4" fill="url(#grad-electron)" class="electron-dot" data-shell="5" />
+                    <circle cx="200" cy="15" r="4" fill="url(#grad-electron)" class="electron-dot" data-shell="5" transform="rotate(72 200 200)"/>
+                    <circle cx="200" cy="15" r="4" fill="url(#grad-electron)" class="electron-dot" data-shell="5" transform="rotate(144 200 200)"/>
+                    <circle cx="200" cy="15" r="4" fill="url(#grad-electron)" class="electron-dot" data-shell="5" transform="rotate(216 200 200)"/>
+                    <circle cx="200" cy="15" r="4" fill="url(#grad-electron)" class="electron-dot" data-shell="5" transform="rotate(288 200 200)"/>
+                </g>
+
+                <!-- Nucleus -->
+                <g transform="translate(200, 200)" id="nucleus-group">
+                    
+                    <circle cx="0" cy="0" r="4" fill="url(#grad-neutron)" class="particle-1 nucleon" />
+                    <circle cx="-6" cy="-6" r="4" fill="url(#grad-neutron)" class="particle-2 nucleon" />
+                    <circle cx="7" cy="-5" r="4" fill="url(#grad-neutron)" class="particle-3 nucleon" />
+                    <circle cx="-5" cy="8" r="4" fill="url(#grad-neutron)" class="particle-1 nucleon" />
+                    <circle cx="8" cy="6" r="4" fill="url(#grad-neutron)" class="particle-2 nucleon" />
+                    <circle cx="-10" cy="0" r="4" fill="url(#grad-neutron)" class="particle-3 nucleon" />
+                    <circle cx="0" cy="10" r="4" fill="url(#grad-neutron)" class="particle-1 nucleon" />
+                    
+                    <circle cx="0" cy="-9" r="4" fill="url(#grad-proton)" stroke="none" class="particle-2 nucleon" />
+                    <circle cx="-9" cy="4" r="4" fill="url(#grad-proton)" stroke="none" class="particle-3 nucleon" />
+                    
+                    <!-- The surviving Hydrogen Proton -->
+                    <circle cx="9" cy="0" r="4" fill="url(#grad-proton)" stroke="none" class="particle-1 hydrogen-proton" />
+                    
+                    <circle cx="5" cy="10" r="4" fill="url(#grad-proton)" stroke="none" class="particle-2 nucleon" />
+                    <circle cx="-4" cy="-11" r="4" fill="url(#grad-proton)" stroke="none" class="particle-3 nucleon" />
+                    <circle cx="11" cy="-7" r="4" fill="url(#grad-proton)" stroke="none" class="particle-1 nucleon" />
+                    <circle cx="-10" cy="-8" r="4" fill="url(#grad-proton)" stroke="none" class="particle-2 nucleon" />
+                </g>
+                
+            </svg>
          </div>
       </div>
       
@@ -59,6 +178,7 @@
   gsap.registerPlugin(ScrollTrigger);
 
   document.addEventListener("DOMContentLoaded", () => {
+    // Scroll Animations
     gsap.from(".about-heading", {
       scrollTrigger: {
         trigger: "#about",
@@ -104,5 +224,160 @@
       duration: 1.5,
       ease: "elastic.out(1, 0.5)"
     });
+
+    // Atom Decay Logic (Continuous over time)
+    const electrons = Array.from(document.querySelectorAll('.electron-dot'));
+    const nucleons = Array.from(document.querySelectorAll('.nucleon'));
+    const photonContainer = document.getElementById('photon-container');
+    const shellRadii = { 1: 45, 2: 80, 3: 115, 4: 150, 5: 185 };
+
+    let currentElectrons = [...electrons];
+    let currentNucleons = [...nucleons];
+
+    function decayStep() {
+      if (currentElectrons.length <= 1) {
+        // Move the final surviving proton to the center
+        gsap.to('.hydrogen-proton', { attr: { cx: 0, cy: 0 }, duration: 1.5, ease: "power2.inOut" });
+        return; 
+      }
+
+      // 1. Group electrons by shell
+      let shells = {};
+      currentElectrons.forEach(e => {
+        let s = parseInt(e.dataset.shell);
+        if (!shells[s]) shells[s] = [];
+        shells[s].push(e);
+      });
+
+      // 2. Pick a shell to decay from (outermost shells have higher probability)
+      let availableShells = Object.keys(shells).map(Number).sort((a, b) => b - a); // Descending [5, 4, 3...]
+      if (availableShells.length === 0) return;
+
+      let decayShell;
+      let rand = Math.random();
+      if (rand < 0.65) {
+          decayShell = availableShells[0]; // 65% chance for outermost
+      } else if (rand < 0.90 && availableShells.length > 1) {
+          decayShell = availableShells[1]; // 25% chance for 2nd outermost
+      } else if (availableShells.length > 2) {
+          decayShell = availableShells[2]; // 10% chance for 3rd outermost
+      } else {
+          decayShell = availableShells[Math.floor(Math.random() * availableShells.length)];
+      }
+
+      // 3. Pick a random electron from this shell
+      let decayElectron = shells[decayShell][Math.floor(Math.random() * shells[decayShell].length)];
+      currentElectrons = currentElectrons.filter(e => e !== decayElectron);
+      
+      // 4. Get its absolute center relative to the SVG for the photon spawn
+      let rect = decayElectron.getBoundingClientRect();
+      let svgBox = document.querySelector('.atom-svg').getBoundingClientRect();
+      let startX = rect.left - svgBox.left + rect.width/2;
+      let startY = rect.top - svgBox.top + rect.height/2;
+
+      // 5. Spawn photon wave & fade out electron
+      spawnPhoton(startX, startY);
+      gsap.to(decayElectron, { opacity: 0, duration: 0.3, onComplete: () => decayElectron.remove() });
+
+      // 6. Fade out a nucleon (simulating nuclear decay proportionally)
+      let targetNucleons = Math.ceil((currentElectrons.length / 51) * 14);
+      if (currentNucleons.length > targetNucleons && currentNucleons.length > 1) {
+         let n = currentNucleons.pop();
+         gsap.to(n, { opacity: 0, duration: 0.5, onComplete: () => n.remove() });
+      } 
+      
+      // If we've reached the end (1 electron left), fade out the core backdrop
+      if (currentElectrons.length === 1) {
+         gsap.to('.nucleon-core', { opacity: 0, duration: 0.5 });
+      }
+
+      // 7. "Take its place": An outer electron falls into this shell
+      let outerShell = decayShell + 1;
+      while(!shells[outerShell] && outerShell <= 5) outerShell++;
+      
+      if (shells[outerShell] && shells[outerShell].length > 0) {
+         let replacement = shells[outerShell][Math.floor(Math.random() * shells[outerShell].length)];
+         
+         // Move the element in the DOM to the target shell's group so it inherits the new orbital speed
+         let targetGroup = document.querySelector(`.shell-ring[data-ring="${decayShell}"]`).parentElement;
+         targetGroup.appendChild(replacement);
+         
+         // Copy the exact angular slot from the decayed electron so it doesn't overlap existing electrons
+         let decayedTransform = decayElectron.getAttribute('transform');
+         if (decayedTransform) {
+             replacement.setAttribute('transform', decayedTransform);
+         } else {
+             replacement.removeAttribute('transform');
+         }
+         
+         // Animate its 'cy' to the target shell's radius (since cx="200")
+         let targetCy = 200 - shellRadii[decayShell];
+         
+         gsap.to(replacement, { 
+             attr: { cy: targetCy }, 
+             duration: 1.2, 
+             ease: "power2.inOut" 
+         });
+         
+         // Update dataset so it belongs to the inner shell now
+         replacement.dataset.shell = decayShell;
+      }
+
+      // 8. Hide empty rings
+      let activeShells = new Set(currentElectrons.map(e => e.dataset.shell));
+      for (let i = 1; i <= 5; i++) {
+         if (!activeShells.has(i.toString())) {
+             gsap.to(`.shell-ring[data-ring="${i}"]`, { opacity: 0, duration: 1.5 });
+         }
+      }
+
+      // Schedule next decay (random interval between 2.5s and 4s)
+      setTimeout(decayStep, 2500 + Math.random() * 1500);
+    }
+
+    function spawnPhoton(x, y) {
+      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      let angle = Math.random() * 360;
+      g.setAttribute("transform", `translate(${x}, ${y}) rotate(${angle})`);
+      
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", "M0,0 Q10,15 20,0 T40,0 T60,0 T80,0 T100,0 T120,0 T140,0 T160,0 T180,0 T200,0 T220,0 T240,0 T260,0 T280,0 T300,0 T320,0 T340,0 T360,0 T380,0 T400,0 T420,0 T440,0 T460,0 T480,0 T500,0");
+      path.setAttribute("fill", "none");
+      
+      let colors = ["#f4f4f5", "#a1a1aa", "#52525b", "#71717a"];
+      path.setAttribute("stroke", colors[Math.floor(Math.random()*colors.length)]);
+      path.setAttribute("stroke-width", "2");
+      path.setAttribute("stroke-dasharray", "60 600");
+      path.setAttribute("stroke-dashoffset", "660");
+      path.setAttribute("stroke-linecap", "round");
+      
+      g.appendChild(path);
+      document.getElementById('photon-container').appendChild(g);
+
+      // Animate strokeDashoffset backwards so dash travels forwards
+      gsap.to(path, {
+        strokeDashoffset: 0,
+        opacity: 0,
+        duration: 1.8,
+        ease: "power1.in",
+        onComplete: () => g.remove()
+      });
+    }
+
+    // Start continuous decay loop after 3 seconds
+    setTimeout(decayStep, 3000);
   });
 </script>
+
+<style>
+  @keyframes vibrate {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(1px, -0.5px); }
+    50% { transform: translate(-1px, 1px); }
+    75% { transform: translate(0.5px, -1px); }
+    100% { transform: translate(0, 0); }
+  }
+  .particle-1 { animation: vibrate 0.15s infinite linear; }
+  .particle-2 { animation: vibrate 0.2s infinite linear reverse; }
+  .particle-3 { animation: vibrate 0.25s infinite linear; }
+</style>

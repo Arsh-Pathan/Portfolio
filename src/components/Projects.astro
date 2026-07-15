@@ -6,84 +6,77 @@
 
 const projects = [
   {
-    title: 'AureX',
-    description: 'A comprehensive mobile application built with React Native for managing curriculum activities and attendance.',
-    tags: ['React Native', 'Mobile', 'Node.js', 'Expo'],
-    github: '#',
-    website: '#',
-    image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop',
+    title: 'Roamr',
+    description: 'A high-performance Android travel app featuring offline mapping and smart trip planning via local Edge inference.',
+    tags: ['Kotlin', 'Llama', 'Mobile'],
+    github: 'https://github.com/Arsh-Pathan',
+    website: 'https://github.com/Arsh-Pathan',
+    image: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000&auto=format&fit=crop',
     year: '2025'
-  },
-  {
-    title: 'CSkyCore',
-    description: 'A high-performance Java backend infrastructure powering communities of thousands of concurrent users.',
-    tags: ['Java', 'Game Dev', 'Redis', 'Netty'],
-    github: '#',
-    website: '#',
-    image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1000&auto=format&fit=crop',
-    year: '2024'
   },
   {
     title: 'CodeHost',
-    description: 'A cloud platform-as-a-service allowing users to deploy and manage applications instantly via custom containers.',
-    tags: ['Go', 'Cloud', 'Docker', 'K8s'],
-    github: '#',
-    website: '#',
+    description: 'A cloud PaaS allowing developers to deploy full-stack apps instantly. Built with live terminal streams and Traefik reverse proxies.',
+    tags: ['TypeScript', 'Cloud', 'Docker', 'PostgreSQL'],
+    github: 'https://github.com/Arsh-Pathan',
+    website: 'https://github.com/Arsh-Pathan',
     image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1000&auto=format&fit=crop',
-    year: '2026'
+    year: '2024'
   },
   {
     title: 'LogicLab',
-    description: 'Interactive digital logic simulator built on modern web technologies to teach computer architecture visually.',
-    tags: ['TypeScript', 'WebGL', 'Canvas'],
-    github: '#',
-    website: '#',
+    description: 'High-precision digital logic laboratory simulator allowing engineers to render, trace, and package complex digital circuitry using a 3D overlay grid.',
+    tags: ['React', 'WebGL', 'PostgreSQL'],
+    github: 'https://github.com/Arsh-Pathan',
+    website: 'https://github.com/Arsh-Pathan',
     image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1000&auto=format&fit=crop',
-    year: '2025'
+    year: '2024'
   },
   {
-    title: 'NeuralNet',
-    description: 'A custom deep learning framework written from scratch in C++ for educational and research purposes.',
-    tags: ['C++', 'AI', 'CUDA', 'Math'],
-    github: '#',
-    website: '#',
+    title: 'NeuralNetwork Framework',
+    description: 'Dependency-free neural network system engineered from scratch in Java, supporting complete forward and backward mathematical propagation.',
+    tags: ['Java', 'AI', 'Math'],
+    github: 'https://github.com/Arsh-Pathan',
+    website: 'https://github.com/Arsh-Pathan',
     image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000&auto=format&fit=crop',
     year: '2023'
   },
   {
-    title: 'Nexus UI',
-    description: 'A beautifully designed, accessible component library for modern React applications with a focus on animation.',
-    tags: ['React', 'CSS', 'Framer Motion'],
-    github: '#',
-    website: '#',
+    title: 'MaterialForge',
+    description: 'A reinforcement learning environment where AI agents design crystalline atomic structures on an 8x8 lattice using Meta\'s OpenEnv framework.',
+    tags: ['Python', 'AI', 'Cloud'],
+    github: 'https://github.com/Arsh-Pathan',
+    website: 'https://github.com/Arsh-Pathan',
     image: 'https://images.unsplash.com/photo-1507238692062-5a04238eb145?q=80&w=1000&auto=format&fit=crop',
-    year: '2026'
+    year: '2024'
+  },
+  {
+    title: 'NeuroBoard',
+    description: 'An AI canvas parsing sketches and solving complex handwritten math operations for real-time interactive pedagogy.',
+    tags: ['React', 'AI', 'Python'],
+    github: 'https://github.com/Arsh-Pathan',
+    website: 'https://github.com/Arsh-Pathan',
+    image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop',
+    year: '2025'
   }
 ];
 
 const techIconMap: Record<string, string> = {
-  'React Native': 'react/react-original.svg',
+  'Kotlin': 'kotlin/kotlin-original.svg',
+  'Llama': 'python/python-original.svg',
   'Mobile': 'android/android-original.svg',
   'Node.js': 'nodejs/nodejs-original.svg',
-  'Expo': 'react/react-original.svg',
   'Java': 'java/java-original.svg',
-  'Game Dev': 'unity/unity-original.svg',
   'Redis': 'redis/redis-original.svg',
-  'Netty': 'java/java-original.svg',
-  'Go': 'go/go-original.svg',
   'Cloud': 'googlecloud/googlecloud-original.svg',
   'Docker': 'docker/docker-original.svg',
-  'K8s': 'kubernetes/kubernetes-plain.svg',
   'TypeScript': 'typescript/typescript-original.svg',
   'WebGL': 'opengl/opengl-original.svg',
-  'Canvas': 'html5/html5-original.svg',
-  'C++': 'cplusplus/cplusplus-original.svg',
   'AI': 'python/python-original.svg',
-  'CUDA': 'c/c-original.svg',
   'Math': 'jupyter/jupyter-original.svg',
   'React': 'react/react-original.svg',
-  'CSS': 'css3/css3-original.svg',
-  'Framer Motion': 'framermotion/framermotion-original.svg',
+  'Python': 'python/python-original.svg',
+  'PostgreSQL': 'postgresql/postgresql-original.svg',
 };
 
 const getIcon = (tag: string) => techIconMap[tag] || 'javascript/javascript-original.svg';
